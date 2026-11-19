@@ -5,6 +5,7 @@ import { fileURLToPath } from 'node:url';
 const ROOT = path.resolve(import.meta.dirname, '..');
 const DEST = path.join(ROOT, 'dist');
 const SITE = (process.env.SITE_URL || 'https://antiracketmantis.willowinworlds.com').replace(/\/+$/, '');
+const SITE_ORIGIN = new URL(SITE).origin;
 
 function walkHtml(dir, list = []) {
   for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
@@ -16,7 +17,7 @@ function walkHtml(dir, list = []) {
 }
 
 function resolveInternalPath(urlPath) {
-  const clean = urlPath.split('?')[0];
+  const clean = decodeURIComponent(urlPath.split('?')[0]);
   if (clean.endsWith('/')) return path.join(DEST, clean, 'index.html');
   const direct = path.join(DEST, clean);
   if (fs.existsSync(direct) && fs.statSync(direct).isFile()) return direct;
@@ -69,6 +70,7 @@ export function checkDist() {
   for (const file of htmlFiles) {
     const rel = path.relative(DEST, file).replace(/\\/g, '/');
     const html = htmlByFile.get(file);
+    const pageUrl = new URL('/' + rel.replace(/index\.html$/, ''), SITE);
 
     // 1. Forbidden out-of-scope terms
     const forbiddenMatch = html.match(forbiddenRe);
@@ -179,8 +181,17 @@ export function checkDist() {
       const attr = attrMatch[1].toLowerCase();
       const target = attrMatch[2].trim();
 
-      if (target.startsWith('http://') || target.startsWith('https://')) {
-        if (attr === 'href' && !target.startsWith(SITE)) {
+      let targetUrl;
+      try {
+        targetUrl = new URL(target, pageUrl);
+      } catch {
+        errors.push(`[${rel}] Некорректный URL: ${target}`);
+        continue;
+      }
+      if (!['http:', 'https:'].includes(targetUrl.protocol)) continue;
+
+      if (targetUrl.origin !== SITE_ORIGIN) {
+        if (attr === 'href') {
           const pos = attrMatch.index;
           const tagStart = html.lastIndexOf('<', pos);
           const tagEnd = html.indexOf('>', pos);
@@ -192,38 +203,33 @@ export function checkDist() {
         continue;
       }
 
-      if (target.startsWith('#')) {
-        const id = target.slice(1);
-        if (!id || !idsByFile.get(file)?.has(id)) {
-          errors.push(`[${rel}] Якорная ссылка ${target} ведёт на несуществующий id в этом файле`);
-        }
-        continue;
-      }
-
-      if (target.startsWith('/')) {
-        const [pathPart, hashPart] = target.split('#');
-        const resolved = resolveInternalPath(pathPart);
+      try {
+        const resolved = resolveInternalPath(targetUrl.pathname);
         if (!fs.existsSync(resolved)) {
           errors.push(`[${rel}] Битая внутренняя ссылка или ассет: ${target} (не найден ${path.relative(DEST, resolved)})`);
           continue;
         }
+        const hashPart = decodeURIComponent(targetUrl.hash.slice(1));
         if (hashPart && resolved.endsWith('.html')) {
           const targetIds = idsByFile.get(resolved);
           if (!targetIds || !targetIds.has(hashPart)) {
             errors.push(`[${rel}] Ссылка ${target} указывает на отсутствующий якорь #${hashPart} в ${path.relative(DEST, resolved)}`);
           }
         }
+      } catch {
+        errors.push(`[${rel}] Некорректный путь или якорь: ${target}`);
       }
     }
   }
 
   // 10. Check that every sitemap URL exists in dist
   for (const loc of sitemapLocs) {
-    if (!loc.startsWith(SITE)) {
+    const sitemapUrl = new URL(loc);
+    if (sitemapUrl.origin !== SITE_ORIGIN) {
       errors.push(`[sitemap.xml] URL ${loc} не начинается с базового адреса ${SITE}`);
       continue;
     }
-    const route = loc.slice(SITE.length) || '/';
+    const route = sitemapUrl.pathname;
     const resolved = resolveInternalPath(route);
     if (!fs.existsSync(resolved)) {
       errors.push(`[sitemap.xml] URL ${loc} ведёт на несуществующий файл ${path.relative(DEST, resolved)}`);
@@ -237,7 +243,9 @@ export function checkDist() {
     for (const m of css.matchAll(/url\((['"]?)([^)'"]+)\1\)/g)) {
       const ref = m[2].trim();
       if (ref.startsWith('data:') || ref.startsWith('http')) continue;
-      const assetPath = path.resolve(path.dirname(cssPath), ref);
+      const assetUrl = new URL(ref, `${SITE}/assets/styles.css`);
+      if (assetUrl.origin !== SITE_ORIGIN) continue;
+      const assetPath = path.join(DEST, decodeURIComponent(assetUrl.pathname));
       if (!fs.existsSync(assetPath)) {
         errors.push(`[assets/styles.css] Битая ссылка на ресурс в CSS: ${ref}`);
       }
