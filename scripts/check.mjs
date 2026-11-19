@@ -1,0 +1,266 @@
+import fs from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+
+const ROOT = path.resolve(import.meta.dirname, '..');
+const DEST = path.join(ROOT, 'dist');
+const SITE = (process.env.SITE_URL || 'https://antiracketmantis.willowinworlds.com').replace(/\/+$/, '');
+
+function walkHtml(dir, list = []) {
+  for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+    const full = path.join(dir, entry.name);
+    if (entry.isDirectory()) walkHtml(full, list);
+    else if (entry.isFile() && entry.name.endsWith('.html')) list.push(full);
+  }
+  return list;
+}
+
+function resolveInternalPath(urlPath) {
+  const clean = urlPath.split('?')[0];
+  if (clean.endsWith('/')) return path.join(DEST, clean, 'index.html');
+  const direct = path.join(DEST, clean);
+  if (fs.existsSync(direct) && fs.statSync(direct).isFile()) return direct;
+  return path.join(DEST, clean, 'index.html');
+}
+
+export function checkDist() {
+  const errors = [];
+  if (!fs.existsSync(DEST)) {
+    throw new Error('Папка dist/ не найдена. Сначала запустите сборку: node scripts/build.mjs');
+  }
+
+  for (const requiredFile of ['robots.txt', 'sitemap.xml', '404.html', '_headers']) {
+    if (!fs.existsSync(path.join(DEST, requiredFile))) {
+      errors.push(`Отсутствует обязательный файл: dist/${requiredFile}`);
+    }
+  }
+
+  const headersPath = path.join(DEST, '_headers');
+  if (fs.existsSync(headersPath)) {
+    const headersText = fs.readFileSync(headersPath, 'utf8');
+    if (!/Content-Security-Policy:/i.test(headersText)) {
+      errors.push('[dist/_headers] Отсутствует заголовок Content-Security-Policy');
+    }
+    if (!/Referrer-Policy:/i.test(headersText)) {
+      errors.push('[dist/_headers] Отсутствует заголовок Referrer-Policy');
+    }
+  }
+
+  const sitemapPath = path.join(DEST, 'sitemap.xml');
+  const sitemapXml = fs.existsSync(sitemapPath) ? fs.readFileSync(sitemapPath, 'utf8') : '';
+  const sitemapLocs = new Set([...sitemapXml.matchAll(/<loc>([^<]+)<\/loc>/g)].map(m => m[1].trim()));
+
+  const htmlFiles = walkHtml(DEST).sort();
+  if (!htmlFiles.length) errors.push('В папке dist/ не найдено ни одного HTML-файла.');
+
+  const htmlByFile = new Map();
+  const idsByFile = new Map();
+  for (const file of htmlFiles) {
+    const content = fs.readFileSync(file, 'utf8');
+    htmlByFile.set(file, content);
+    const ids = new Set([...content.matchAll(/\bid="([^"]+)"/g)].map(m => m[1]));
+    idsByFile.set(file, ids);
+  }
+
+  const titles = new Map();
+  const descriptions = new Map();
+  const forbiddenRe = /(\bPRO\b|\$39|CAPTCHA|капч|автоматизац)/i;
+
+  for (const file of htmlFiles) {
+    const rel = path.relative(DEST, file).replace(/\\/g, '/');
+    const html = htmlByFile.get(file);
+
+    // 1. Forbidden out-of-scope terms
+    const forbiddenMatch = html.match(forbiddenRe);
+    if (forbiddenMatch) {
+      errors.push(`[${rel}] Найдено запрещённое слово вне скоупа: «${forbiddenMatch[0]}»`);
+    }
+
+    // 2. Title check (non-empty and unique)
+    const titleMatch = html.match(/<title>([^<]*)<\/title>/i);
+    const title = titleMatch ? titleMatch[1].trim() : '';
+    if (!title) {
+      errors.push(`[${rel}] Отсутствует или пустой тег <title>`);
+    } else if (titles.has(title)) {
+      errors.push(`[${rel}] Дублирующийся <title> «${title}» (уже используется в ${titles.get(title)})`);
+    } else {
+      titles.set(title, rel);
+    }
+
+    // 3. Meta description check (non-empty and unique)
+    const descMatch = html.match(/<meta\s+name="description"\s+content="([^"]*)"/i);
+    const desc = descMatch ? descMatch[1].trim() : '';
+    if (!desc) {
+      errors.push(`[${rel}] Отсутствует или пустой <meta name="description">`);
+    } else if (descriptions.has(desc)) {
+      errors.push(`[${rel}] Дублирующийся meta description (уже используется в ${descriptions.get(desc)})`);
+    } else {
+      descriptions.set(desc, rel);
+    }
+
+    // 4. Canonical & sitemap membership
+    const canonMatch = html.match(/<link\s+rel="canonical"\s+href="([^"]+)"/i);
+    const canonical = canonMatch ? canonMatch[1].trim() : '';
+    if (!canonical) {
+      errors.push(`[${rel}] Отсутствует <link rel="canonical">`);
+    } else if (rel !== '404.html' && !sitemapLocs.has(canonical)) {
+      errors.push(`[${rel}] Страница отсутствует в sitemap.xml (ожидался <loc>${canonical}</loc>)`);
+    }
+
+    // 5. Security meta tags & strict CSP hygiene (no inline scripts/styles/handlers)
+    if (!/<meta\s+http-equiv="Content-Security-Policy"\s+content="[^"]+"/i.test(html)) {
+      errors.push(`[${rel}] Отсутствует мета-тег Content-Security-Policy`);
+    }
+    if (!/<meta\s+name="referrer"\s+content="[^"]+"/i.test(html)) {
+      errors.push(`[${rel}] Отсутствует мета-тег Referrer-Policy`);
+    }
+    for (const scriptMatch of html.matchAll(/<script\b([^>]*)>([\s\S]*?)<\/script>/gi)) {
+      const attrs = scriptMatch[1];
+      const body = scriptMatch[2].trim();
+      const isLd = /\btype="application\/ld\+json"/i.test(attrs);
+      const hasSrc = /\bsrc="/i.test(attrs);
+      if (!isLd && !hasSrc && body) {
+        errors.push(`[${rel}] Обнаружен inline <script>, несовместимый со строгим CSP script-src 'self'`);
+      }
+    }
+    if (/\sstyle="/i.test(html)) {
+      errors.push(`[${rel}] Обнаружен inline-атрибут style="...", несовместимый со строгим CSP style-src 'self'`);
+    }
+    if (/\bon(click|load|error|mouseover|keydown|submit|change|input|focus|blur)\s*=/i.test(html)) {
+      errors.push(`[${rel}] Обнаружен inline-обработчик событий в HTML`);
+    }
+
+    // 6. Heading hierarchy: exactly one H1 and no skipped levels
+    const headings = [...html.matchAll(/<h([1-6])\b[^>]*>/gi)].map(m => Number(m[1]));
+    const h1Count = headings.filter(level => level === 1).length;
+    if (h1Count !== 1) {
+      errors.push(`[${rel}] Должен быть ровно один заголовок <h1>, найдено: ${h1Count}`);
+    }
+    for (let i = 1; i < headings.length; i++) {
+      if (headings[i] > headings[i - 1] + 1) {
+        errors.push(`[${rel}] Нарушена иерархия заголовков: переход с <h${headings[i - 1]}> сразу на <h${headings[i]}>`);
+      }
+    }
+
+    // 7. Images: alt (non-empty unless decorative aria-hidden="true"), width, height
+    for (const imgMatch of html.matchAll(/<img\b([^>]+)>/gi)) {
+      const attrs = imgMatch[1];
+      const srcMatch = attrs.match(/\bsrc="([^"]+)"/i);
+      const altMatch = attrs.match(/\balt="([^"]*)"/i);
+      const isHidden = /\baria-hidden="true"/i.test(attrs);
+      const widthMatch = attrs.match(/\bwidth="(\d+)"/i);
+      const heightMatch = attrs.match(/\bheight="(\d+)"/i);
+      const src = srcMatch ? srcMatch[1] : '(без src)';
+      if (!altMatch) {
+        errors.push(`[${rel}] У изображения ${src} отсутствует атрибут alt`);
+      } else if (!altMatch[1].trim() && !isHidden) {
+        errors.push(`[${rel}] У видимого изображения ${src} пустой атрибут alt`);
+      }
+      if (!widthMatch || !heightMatch) {
+        errors.push(`[${rel}] У изображения ${src} не заданы атрибуты width и height`);
+      }
+    }
+
+    // 8. JSON-LD validation
+    for (const ldMatch of html.matchAll(/<script\s+type="application\/ld\+json">([\s\S]*?)<\/script>/gi)) {
+      try {
+        const parsed = JSON.parse(ldMatch[1]);
+        const raw = JSON.stringify(parsed);
+        if (/"(aggregateRating|review|offers|price|interactionStatistic|downloadCount|datePublished|dateModified)"/.test(raw)) {
+          errors.push(`[${rel}] В JSON-LD присутствуют неподтверждённые поля (рейтинги, отзывы, цены или даты)`);
+        }
+      } catch (err) {
+        errors.push(`[${rel}] Некорректный JSON-LD: ${err.message}`);
+      }
+    }
+
+    // 9. Links and assets validation
+    for (const attrMatch of html.matchAll(/\b(href|src)="([^"]+)"/gi)) {
+      const attr = attrMatch[1].toLowerCase();
+      const target = attrMatch[2].trim();
+
+      if (target.startsWith('http://') || target.startsWith('https://')) {
+        if (attr === 'href' && !target.startsWith(SITE)) {
+          const pos = attrMatch.index;
+          const tagStart = html.lastIndexOf('<', pos);
+          const tagEnd = html.indexOf('>', pos);
+          const tag = html.slice(tagStart, tagEnd + 1);
+          if (/^<a\b/i.test(tag) && !/\brel="[^"]*noopener[^"]*"/i.test(tag)) {
+            errors.push(`[${rel}] Внешняя ссылка ${target} не содержит rel="noopener"`);
+          }
+        }
+        continue;
+      }
+
+      if (target.startsWith('#')) {
+        const id = target.slice(1);
+        if (!id || !idsByFile.get(file)?.has(id)) {
+          errors.push(`[${rel}] Якорная ссылка ${target} ведёт на несуществующий id в этом файле`);
+        }
+        continue;
+      }
+
+      if (target.startsWith('/')) {
+        const [pathPart, hashPart] = target.split('#');
+        const resolved = resolveInternalPath(pathPart);
+        if (!fs.existsSync(resolved)) {
+          errors.push(`[${rel}] Битая внутренняя ссылка или ассет: ${target} (не найден ${path.relative(DEST, resolved)})`);
+          continue;
+        }
+        if (hashPart && resolved.endsWith('.html')) {
+          const targetIds = idsByFile.get(resolved);
+          if (!targetIds || !targetIds.has(hashPart)) {
+            errors.push(`[${rel}] Ссылка ${target} указывает на отсутствующий якорь #${hashPart} в ${path.relative(DEST, resolved)}`);
+          }
+        }
+      }
+    }
+  }
+
+  // 10. Check that every sitemap URL exists in dist
+  for (const loc of sitemapLocs) {
+    if (!loc.startsWith(SITE)) {
+      errors.push(`[sitemap.xml] URL ${loc} не начинается с базового адреса ${SITE}`);
+      continue;
+    }
+    const route = loc.slice(SITE.length) || '/';
+    const resolved = resolveInternalPath(route);
+    if (!fs.existsSync(resolved)) {
+      errors.push(`[sitemap.xml] URL ${loc} ведёт на несуществующий файл ${path.relative(DEST, resolved)}`);
+    }
+  }
+
+  // 11. Check CSS font/asset urls
+  const cssPath = path.join(DEST, 'assets', 'styles.css');
+  if (fs.existsSync(cssPath)) {
+    const css = fs.readFileSync(cssPath, 'utf8');
+    for (const m of css.matchAll(/url\((['"]?)([^)'"]+)\1\)/g)) {
+      const ref = m[2].trim();
+      if (ref.startsWith('data:') || ref.startsWith('http')) continue;
+      const assetPath = path.resolve(path.dirname(cssPath), ref);
+      if (!fs.existsSync(assetPath)) {
+        errors.push(`[assets/styles.css] Битая ссылка на ресурс в CSS: ${ref}`);
+      }
+    }
+  } else {
+    errors.push('Отсутствует файл dist/assets/styles.css');
+  }
+
+  if (errors.length) {
+    console.error(`Проверка dist/ завершилась с ошибками (${errors.length}):`);
+    for (const err of errors) console.error(`  ✗ ${err}`);
+    process.exitCode = 1;
+    throw new Error(`Найдено ошибок: ${errors.length}`);
+  }
+
+  console.log(`✓ Проверка check.mjs пройдена: ${htmlFiles.length} HTML-страниц, ${sitemapLocs.size} адресов в sitemap.xml, 0 ошибок.`);
+  return { pages: htmlFiles.length, sitemapUrls: sitemapLocs.size };
+}
+
+if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
+  try {
+    checkDist();
+  } catch {
+    process.exit(1);
+  }
+}

@@ -1,6 +1,6 @@
 # AntiRacketMantis — сайт (русская версия)
 
-Сборка: `node scripts/build.mjs` → готовый сайт в `dist/` (статические файлы, без зависимостей).
+Сборка: `node scripts/build.mjs` → готовый сайт в `dist/` (статические файлы, без зависимостей; автоматически запускает проверку `node scripts/check.mjs` и формирует `dist/_headers`).
 
 - Адрес сайта: `SITE_URL=https://antiracketmantis.willowinworlds.com` по умолчанию; при переезде на свой домен —
   `SITE_URL=https://antiracketmantis.com node scripts/build.mjs` (canonical, sitemap, robots, Open Graph пересоберутся).
