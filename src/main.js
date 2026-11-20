@@ -10,16 +10,6 @@
   const initialMotionOff = storedMotionOff || reducedMotion;
 
   const reveals = document.querySelectorAll('.reveal');
-  const vh = window.innerHeight || document.documentElement.clientHeight;
-  const aboveFold = [];
-  const deferred = [];
-  if (!initialMotionOff && 'IntersectionObserver' in window) {
-    reveals.forEach(node => {
-      const rect = node.getBoundingClientRect();
-      if (rect.top < vh + 140 && rect.bottom > -40) aboveFold.push(node);
-      else deferred.push(node);
-    });
-  }
 
   document.documentElement.dataset.armReady = '1';
   document.documentElement.classList.add('js');
@@ -104,7 +94,7 @@
       }
     });
     window.addEventListener('resize', () => {
-      if (window.innerWidth > 950 && nav.classList.contains('open')) setMenuState(false);
+      if (nav.classList.contains('open') && window.innerWidth > 950) setMenuState(false);
     });
   }
 
@@ -145,8 +135,7 @@
         }
       }
     }, { threshold: 0, rootMargin: '140px 0px' });
-    aboveFold.forEach(node => node.classList.add('in-view'));
-    deferred.forEach(node => observer.observe(node));
+    reveals.forEach(node => observer.observe(node));
     setTimeout(() => document.documentElement.classList.add('reveal-safe'), 900);
   } else {
     reveals.forEach(node => node.classList.add('in-view'));
