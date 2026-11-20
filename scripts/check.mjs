@@ -39,11 +39,19 @@ export function checkDist() {
   const headersPath = path.join(DEST, '_headers');
   if (fs.existsSync(headersPath)) {
     const headersText = fs.readFileSync(headersPath, 'utf8');
-    if (!/Content-Security-Policy:/i.test(headersText)) {
-      errors.push('[dist/_headers] Отсутствует заголовок Content-Security-Policy');
+    for (const requiredHeader of [
+      'Content-Security-Policy',
+      'X-Content-Type-Options',
+      'Referrer-Policy',
+      'Permissions-Policy',
+      'Cross-Origin-Opener-Policy'
+    ]) {
+      if (!new RegExp(`${requiredHeader}:`, 'i').test(headersText)) {
+        errors.push(`[dist/_headers] Отсутствует заголовок ${requiredHeader}`);
+      }
     }
-    if (!/Referrer-Policy:/i.test(headersText)) {
-      errors.push('[dist/_headers] Отсутствует заголовок Referrer-Policy');
+    if (!/\/assets\/\*/.test(headersText) || !/Cache-Control:/i.test(headersText)) {
+      errors.push('[dist/_headers] Отсутствуют правила кеширования Cache-Control для /assets/*');
     }
   }
 
@@ -65,7 +73,7 @@ export function checkDist() {
 
   const titles = new Map();
   const descriptions = new Map();
-  const forbiddenRe = /(\bPRO\b|\$39|CAPTCHA|капч|автоматизац)/i;
+  const forbiddenRe = /(\bPRO\b|\$39|CAPTCHA|капч|автоматизац|OCR|nopecha|2captcha|rucaptcha|anti-captcha|capmonster)/i;
 
   for (const file of htmlFiles) {
     const rel = path.relative(DEST, file).replace(/\\/g, '/');
@@ -236,22 +244,26 @@ export function checkDist() {
     }
   }
 
-  // 11. Check CSS font/asset urls
-  const cssPath = path.join(DEST, 'assets', 'styles.css');
-  if (fs.existsSync(cssPath)) {
-    const css = fs.readFileSync(cssPath, 'utf8');
+  // 11. Check CSS font/asset urls across all stylesheets in dist/assets
+  const assetsDir = path.join(DEST, 'assets');
+  const cssFiles = fs.existsSync(assetsDir)
+    ? fs.readdirSync(assetsDir).filter(f => f.endsWith('.css')).sort()
+    : [];
+  if (!cssFiles.includes('styles.css')) {
+    errors.push('Отсутствует файл dist/assets/styles.css');
+  }
+  for (const cssFile of cssFiles) {
+    const css = fs.readFileSync(path.join(assetsDir, cssFile), 'utf8');
     for (const m of css.matchAll(/url\((['"]?)([^)'"]+)\1\)/g)) {
       const ref = m[2].trim();
       if (ref.startsWith('data:') || ref.startsWith('http')) continue;
-      const assetUrl = new URL(ref, `${SITE}/assets/styles.css`);
+      const assetUrl = new URL(ref, `${SITE}/assets/${cssFile}`);
       if (assetUrl.origin !== SITE_ORIGIN) continue;
       const assetPath = path.join(DEST, decodeURIComponent(assetUrl.pathname));
       if (!fs.existsSync(assetPath)) {
-        errors.push(`[assets/styles.css] Битая ссылка на ресурс в CSS: ${ref}`);
+        errors.push(`[assets/${cssFile}] Битая ссылка на ресурс в CSS: ${ref}`);
       }
     }
-  } else {
-    errors.push('Отсутствует файл dist/assets/styles.css');
   }
 
   if (errors.length) {

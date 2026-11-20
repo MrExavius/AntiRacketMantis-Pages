@@ -1,8 +1,28 @@
 (() => {
   'use strict';
+  const locale = document.body.dataset.lang || 'ru';
+  const motionToggle = document.querySelector('[data-motion-toggle]');
+  let storedMotionOff = false;
+  try {
+    storedMotionOff = localStorage.getItem('arm-motion-off') === 'true';
+  } catch (_error) {}
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const initialMotionOff = storedMotionOff || reducedMotion;
+
+  const reveals = document.querySelectorAll('.reveal');
+  const vh = window.innerHeight || document.documentElement.clientHeight;
+  const aboveFold = [];
+  const deferred = [];
+  if (!initialMotionOff && 'IntersectionObserver' in window) {
+    reveals.forEach(node => {
+      const rect = node.getBoundingClientRect();
+      if (rect.top < vh + 140 && rect.bottom > -40) aboveFold.push(node);
+      else deferred.push(node);
+    });
+  }
+
   document.documentElement.dataset.armReady = '1';
   document.documentElement.classList.add('js');
-  const locale = document.body.dataset.lang || 'ru';
 
   const toastMessage = {
     ru: 'Страница в магазине браузера появится после публикации расширения. Подробная инструкция доступна в разделе «Установка».',
@@ -88,12 +108,6 @@
     });
   }
 
-  const motionToggle = document.querySelector('[data-motion-toggle]');
-  let storedMotionOff = false;
-  try {
-    storedMotionOff = localStorage.getItem('arm-motion-off') === 'true';
-  } catch (_error) {}
-  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const motionText = {
     ru: ['Отключить анимации', 'Включить анимации'],
     en: ['Pause animations', 'Play animations'],
@@ -109,7 +123,7 @@
       motionToggle.title = label;
     }
   }
-  updateMotion(storedMotionOff || reducedMotion);
+  updateMotion(initialMotionOff);
 
   if (motionToggle) {
     motionToggle.addEventListener('click', () => {
@@ -122,10 +136,7 @@
     });
   }
 
-  const motionEnabled = !document.body.classList.contains('motion-off');
-  const reveals = document.querySelectorAll('.reveal');
-  if ('IntersectionObserver' in window && motionEnabled) {
-    const vh = window.innerHeight || document.documentElement.clientHeight;
+  if ('IntersectionObserver' in window && !initialMotionOff) {
     const observer = new IntersectionObserver(entries => {
       for (const entry of entries) {
         if (entry.isIntersecting) {
@@ -133,16 +144,10 @@
           observer.unobserve(entry.target);
         }
       }
-    }, { threshold: 0.06 });
-    reveals.forEach(node => {
-      const rect = node.getBoundingClientRect();
-      if (rect.top < vh && rect.bottom > 0) {
-        node.classList.add('in-view');
-      } else {
-        observer.observe(node);
-      }
-    });
-    setTimeout(() => document.documentElement.classList.add('reveal-safe'), 2200);
+    }, { threshold: 0, rootMargin: '140px 0px' });
+    aboveFold.forEach(node => node.classList.add('in-view'));
+    deferred.forEach(node => observer.observe(node));
+    setTimeout(() => document.documentElement.classList.add('reveal-safe'), 900);
   } else {
     reveals.forEach(node => node.classList.add('in-view'));
   }

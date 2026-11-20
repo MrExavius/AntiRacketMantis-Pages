@@ -502,6 +502,14 @@ const faqData = [
       en: 'Remove it from your browser’s extensions page; the browser deletes local extension storage.',
       tr: 'Tarayıcının eklentiler sayfasından kaldırabilirsiniz; yerel veriler de silinir.'
     }
+  },
+  {
+    q: { ru: 'Зачем расширение, если в браузере уже есть режим Инкогнито?', en: 'Why use an extension if I have Incognito mode?', tr: 'Gizli mod varken neden uzantıya ihtiyacım var?' },
+    a: {
+      ru: 'Режим Инкогнито (приватное окно) лишь не сохраняет историю посещений и cookies на вашем устройстве после закрытия окна, но не мешает рекламным сетям и счётчикам отслеживать вас во время самой сессии. AntiRacketMantis блокирует известные трекеры и счётчики при загрузке страниц — при этом ни Инкогнито, ни расширение не скрывают ваш IP-адрес.',
+      en: 'Incognito only avoids saving local history after closing the window; it does not block third-party trackers while browsing.',
+      tr: 'Gizli mod yalnızca yerel geçmişi kaydetmez; gezinirken izleyicileri engellemez.'
+    }
   }
 ];
 
@@ -645,9 +653,121 @@ function featuresGrid(lang) {
 </div>`;
 }
 
-function levelsStrip() {
+const screenshotsData = {
+  popupShield: {
+    base: 'popup-shield',
+    width: 728,
+    height: 750,
+    alt: 'Окно расширения AntiRacketMantis, вкладка «Защита» на тестовой странице example.org: статус «Защита включена», переключатель для сайта, счётчик активных списков 4, ползунок уровня 2 из 5 («Мягкая защита») и переключатель маскировки canvas',
+    title: 'Вкладка «Защита» в окне расширения',
+    desc: 'Главный экран показывает статус защиты на открытом сайте, число активных списков и даёт в один клик выключить фильтрацию для текущей страницы или сменить уровень от 1 до 5.',
+    caption: 'Снимок версии 0.11.0 · вкладка «Защита» на странице example.org'
+  },
+  optionsLevels: {
+    base: 'options-levels',
+    width: 746,
+    height: 215,
+    alt: 'Раздел настроек «Уровень защиты: 2 из 5» с ползунком от «Совместимость» до «Максимум» и списком активных правил по умолчанию для уровня «Мягкая защита»',
+    title: 'Выбор уровня защиты (1–5)',
+    desc: 'Ползунок переключает режимы от мягкой фильтрации без косметических правок (уровень 2 по умолчанию) до строгих правил приватности.',
+    caption: 'Снимок версии 0.11.0 · раздел «Защита и приватность»'
+  },
+  optionsExceptionsCookies: {
+    base: 'options-exceptions-cookies',
+    width: 774,
+    height: 334,
+    alt: 'Настройки исключений «Без защиты на сайтах» (до 100 доменов) и выпадающий список «Cookie-баннеры» со значением «Отклонять необязательные cookies»',
+    title: 'Исключения по домену и cookie-баннеры',
+    desc: 'Список доменов без фильтрации (включая поддомены) и отдельная настройка отказа от необязательных cookies на совместимых баннерах.',
+    caption: 'Снимок версии 0.11.0 · исключения и режим cookie-баннеров'
+  },
+  optionsLists: {
+    base: 'options-filter-lists',
+    width: 746,
+    height: 443,
+    alt: 'Раскрытая таблица встроенных списков фильтров в настройках AntiRacketMantis: EasyPrivacy (9 162 правила), RU AdList: Counters (1 086), uBlock filters – Badware risks (435) и Peter Lowe в статусе «включён»',
+    title: 'Прозрачная таблица встроенных списков',
+    desc: 'В настройках видно каждый встроенный список правил (на базе uBlock Origin Lite 2026.1116.1650), число правил и его состояние; во время просмотра сайтов ничего не скачивается.',
+    caption: 'Снимок версии 0.11.0 · встроенные списки фильтров'
+  },
+  welcomeProtections: {
+    base: 'welcome-protections',
+    width: 841,
+    height: 263,
+    alt: 'Три карточки защиты на экране приветствия AntiRacketMantis: «Реклама и трекеры», «Cookie-баннеры и всплывающие окна» и «Твой выбор, который легко отменить»',
+    title: 'Краткая сводка при первом запуске',
+    desc: 'Приветственная страница объясняет, как работают списки правил, отказ от cookie-баннеров, защита от всплывающих окон без клика (с уровня 3) и отключение защиты для одного сайта.',
+    caption: 'Снимок версии 0.11.0 · карточки защиты на экране приветствия'
+  },
+  optionsTheme: {
+    base: 'options-theme',
+    width: 731,
+    height: 69,
+    alt: 'Выпадающий список «Тема» в настройках AntiRacketMantis с выбранным оформлением «Mantis — белая (основная)»',
+    title: 'Светлые и тёмные темы интерфейса',
+    desc: 'Оформление окна расширения и страницы настроек можно оставить системным или выбрать светлую и тёмную палитры Mantis вручную.',
+    caption: 'Снимок версии 0.11.0 · выбор темы оформления'
+  }
+};
+
+function shotCard(item, extraClass = '', withReveal = true) {
+  return `<figure class="shot-card${extraClass ? ` ${extraClass}` : ''}${withReveal ? ' reveal' : ''}">
+    <div class="shot-frame">
+      <picture>
+        <source srcset="/assets/screenshots/${item.base}.webp" type="image/webp">
+        <img src="/assets/screenshots/${item.base}.png" alt="${escapeAttr(item.alt)}" width="${item.width}" height="${item.height}" loading="lazy" decoding="async">
+      </picture>
+    </div>
+    <div class="shot-body">
+      <h3>${item.title}</h3>
+      <p>${item.desc}</p>
+    </div>
+    <figcaption class="shot-caption">${item.caption}</figcaption>
+  </figure>`;
+}
+
+function interfaceSectionHome(lang) {
+  return `<section class="section interface-section" id="interface">
+  <div class="container">
+    <div class="section-title centered reveal">
+      <span class="eyebrow">Реальный интерфейс</span>
+      <h2>Интерфейс расширения</h2>
+      <p>Настоящие снимки окна AntiRacketMantis и настроек защиты — именно так выглядят переключатели, уровни и исключения в браузере.</p>
+    </div>
+    <div class="shots-grid shots-home">
+      ${shotCard(screenshotsData.popupShield, 'shot-popup')}
+      <div class="shots-home-stack">
+        ${shotCard(screenshotsData.optionsLevels)}
+        ${shotCard(screenshotsData.optionsExceptionsCookies)}
+      </div>
+    </div>
+    <div class="center-action">
+      <a class="text-link" href="${url(lang, 'how-it-works/')}#interface">Смотреть все снимки настроек и списков фильтров →</a>
+    </div>
+  </div>
+</section>`;
+}
+
+function interfaceSectionDoc() {
+  return `<section class="container interface-doc-section" id="interface">
+  <div class="interface-doc-head">
+    <h2>Интерфейс расширения</h2>
+    <p>Ниже показаны реальные экраны защиты версии ${VERSION}: окно расширения для текущего сайта, настройка уровня 1–5, встроенные списки фильтров, исключения, cookie-баннеры, всплывающие окна и тема.</p>
+  </div>
+  <div class="shots-grid shots-all">
+    ${shotCard(screenshotsData.popupShield, 'shot-popup', false)}
+    ${shotCard(screenshotsData.optionsLists, '', false)}
+    ${shotCard(screenshotsData.optionsLevels, '', false)}
+    ${shotCard(screenshotsData.optionsExceptionsCookies, '', false)}
+    ${shotCard(screenshotsData.welcomeProtections, 'shot-wide', false)}
+    ${shotCard(screenshotsData.optionsTheme, 'shot-wide', false)}
+  </div>
+</section>`;
+}
+
+function levelsStrip(withReveal = true) {
   return `<div class="levels-grid">
-  ${levelsData.map(lv => `<article class="level-card${lv.isDefault ? ' level-default' : ''} reveal">
+  ${levelsData.map(lv => `<article class="level-card${lv.isDefault ? ' level-default' : ''}${withReveal ? ' reveal' : ''}">
     <span class="level-badge"><span>Уровень ${lv.n}</span><span>${lv.badge}</span></span>
     <h3>${lv.name}</h3>
     <p>${lv.summary}</p>
@@ -814,12 +934,14 @@ function home(lang) {
         <h2>${t.levelsTitle}</h2>
         <p>${t.levelsIntro}</p>
       </div>
-      ${levelsStrip()}
+      ${levelsStrip(false)}
       <div class="center-action">
         <a class="text-link" href="${url(lang, 'how-it-works/')}#levels">Подробно о каждом уровне →</a>
       </div>
     </div>
   </section>
+
+  ${interfaceSectionHome(lang)}
 
   <section class="section how-section" id="how">
     <div class="container">
@@ -978,16 +1100,19 @@ function detailPage(lang, kind) {
     <article class="doc-card">
       <h2>Пять уровней защиты (от 1 до 5)</h2>
       <p>Вы можете переключать уровень в окне расширения или на странице настроек. Сетевые и страничные изменения применяются к новым загрузкам после перезагрузки вкладки.</p>
-      ${levelsStrip()}
+      ${levelsStrip(false)}
     </article>
     <article class="doc-card">
-      <h2>Что НЕ включено в расширение</h2>
+      <h2>Встроенные списки и перенос без аккаунта</h2>
       <ul>
+        <li><strong>Списки внутри пакета расширения:</strong> правила фильтрации (на базе uBlock Origin Lite 2026.1116.1650 и движок cookie-баннеров DuckDuckGo autoconsent 18.6.0) встроены в само расширение и обновляются вместе с его версией — при просмотре сайтов ничего не скачивается с удалённых серверов.</li>
+        <li><strong>Перенос настроек без регистрации:</strong> вам не нужен аккаунт или облачная синхронизация — уровень защиты, режим cookie-баннеров и списки исключений можно перенести между компьютерами через экспорт и импорт файла JSON в настройках.</li>
         <li><strong>Нет проксирования сторонних библиотек через локальный CDN:</strong> устаревшие подходы вроде LocalCDN здесь не дублируются — трекинг через CDN режут сетевые правила EasyPrivacy.</li>
         <li><strong>Нет непредсказуемого «самообучения» блокировщика:</strong> фильтрация предсказуема и опирается на выбранный уровень и явные исключения пользователя.</li>
       </ul>
     </article>
   </section>
+  ${interfaceSectionDoc()}
   ${pageNudge(lang, 'Следующий шаг', 'Проверьте совместимость браузера или прочитайте политику конфиденциальности.', [['install/', 'Установка', 'btn-primary'], ['privacy/', 'Приватность', 'btn-secondary']])}
 </main>`;
   }
@@ -1031,9 +1156,10 @@ function detailPage(lang, kind) {
     <article class="doc-card">
       <h2>Что проверить сразу после установки</h2>
       <ul>
-        <li>Откройте обычный сайт и нажмите значок AntiRacketMantis: вы увидите текущий статус защиты и переключатель «Защита на этом сайте».</li>
-        <li>Если на привычном сайте перестали загружаться комментарии, видео или форма входа — просто выключите переключатель для этого сайта и нажмите «Перезагрузить».</li>
-        <li>Перед установкой вы можете изучить <a class="inline-link" href="${url(lang, 'privacy/')}#permissions">зачем нужны разрешения</a> и <a class="inline-link" href="${url(lang, 'compatibility/')}">требования к версиям браузера</a>.</li>
+        <li><strong>Закрепите значок на панели:</strong> в Chrome нажмите на значок пазла «Расширения» и кликните булавку рядом с AntiRacketMantis; в Firefox значок доступен через меню расширений на панели адреса.</li>
+        <li><strong>Откройте обычный сайт (<code>http://</code> или <code>https://</code>):</strong> на служебных вкладках браузера (<code>chrome://</code>, <code>about:</code> и страницах магазинов) переключатель сайта недоступен из-за ограничений безопасности самого браузера.</li>
+        <li><strong>Проверьте поведение на уровне 2 и выше:</strong> если на привычном сайте перестали загружаться комментарии, видео или форма входа — снимите переключатель «Защита на этом сайте» во вкладке «Защита» и нажмите «Перезагрузить».</li>
+        <li><strong>Изучите детали перед запуском:</strong> проверьте <a class="inline-link" href="${url(lang, 'privacy/')}#permissions">зачем нужны разрешения</a> и <a class="inline-link" href="${url(lang, 'compatibility/')}">требования к версиям браузера</a>.</li>
       </ul>
     </article>
   </section>
@@ -1115,8 +1241,9 @@ function detailPage(lang, kind) {
     </article>
     <article class="info-card">
       <span class="info-icon">${icon('sliders')}</span>
-      <h2>Различия возможностей браузеров</h2>
+      <h2>Различия возможностей браузеров и защищённые страницы</h2>
       <p>В Chrome расширение может показывать число сработавших сетевых правил для активной вкладки, а в Firefox браузер не передаёт этот счётчик расширению — в таком случае отображается прочерк с пояснением.</p>
+      <p>Кроме того, ни одно расширение не работает на внутренних страницах браузера (<code>chrome://</code>, <code>about:</code>) и в официальных магазинах дополнений — это встроенное ограничение безопасности самих браузеров.</p>
     </article>
   </section>
   ${pageNudge(lang, 'Столкнулись со сбоем на конкретном сайте?', 'Посмотрите советы в поддержке или уточните совместимость браузера.', [['support/', 'Поддержка', 'btn-primary'], ['compatibility/', 'Совместимость', 'btn-secondary']])}
@@ -1161,6 +1288,9 @@ function detailPage(lang, kind) {
             </tr>
           </tbody>
         </table>
+      </div>
+      <div class="doc-callout">
+        <p><strong>Техническая возможность и реальные действия:</strong> стандартное предупреждение браузера «Читать и изменять данные на всех сайтах» означает лишь технический допуск к разметке страниц для скрытия рекламных блоков и закрытия cookie-баннеров. Базовая фильтрация не читает ваши пароли, переписку и содержимое закрытых форм и не отправляет историю просмотров разработчику.</p>
       </div>
     </article>
     <article class="doc-card">
@@ -1242,6 +1372,9 @@ function detailPage(lang, kind) {
             </tr>
           </tbody>
         </table>
+      </div>
+      <div class="doc-callout">
+        <p><strong>Техническая возможность и реальные действия:</strong> стандартное предупреждение браузера «Читать и изменять данные на всех сайтах» означает лишь технический допуск к разметке страниц для скрытия рекламных блоков и закрытия cookie-баннеров. Базовая фильтрация не читает ваши пароли, переписку и содержимое закрытых форм и не отправляет историю просмотров разработчику.</p>
       </div>
     </article>
 
@@ -1557,8 +1690,10 @@ function htmlPage(lang, kind) {
   <link rel="canonical" href="${canonical}">
   <link rel="icon" href="/assets/mark.svg" type="image/svg+xml">
   <link rel="preload" href="/assets/fonts/nunito-cyrillic.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="preload" href="${preloadMascot}" as="image" type="image/svg+xml">
+  <link rel="preload" href="${preloadMascot}" as="image" type="image/svg+xml" fetchpriority="high">
   <link rel="stylesheet" href="/assets/styles.css">
+  <link rel="stylesheet" href="/assets/${kind === 'home' ? 'home.css' : 'inner.css'}">
+  <noscript><link rel="stylesheet" href="/assets/nojs.css"></noscript>
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="AntiRacketMantis">
   <meta property="og:title" content="${escapeAttr(title)}">
@@ -1630,6 +1765,7 @@ const serverHeaders = `# Security & cache headers for static hosting (Cloudflare
   X-Content-Type-Options: nosniff
   Referrer-Policy: no-referrer
   Permissions-Policy: camera=(), microphone=(), geolocation=()
+  Cross-Origin-Opener-Policy: same-origin
   Cache-Control: public, max-age=300, must-revalidate
 
 /assets/*
@@ -1640,8 +1776,39 @@ const serverHeaders = `# Security & cache headers for static hosting (Cloudflare
 `;
 write('_headers', serverHeaders);
 
+function minifyCss(css) {
+  return css
+    .replace(/\/\*[\s\S]*?\*\//g, '')
+    .split('\n')
+    .map(line => line.trim())
+    .filter(Boolean)
+    .join('')
+    .replace(/\s*([{}:;,])\s*/g, '$1')
+    .replace(/;}/g, '}')
+    .replace(/@media\s*\(/g, '@media(')
+    .replace(/\band\(/g, 'and (');
+}
+
+function minifyJs(js) {
+  return js
+    .split('\n')
+    .map(line => line.trim())
+    .filter(line => line && !line.startsWith('//'))
+    .join('\n');
+}
+
 fs.mkdirSync(path.join(DEST, 'assets'), { recursive: true });
-for (const file of ['styles.css', 'main.js', 'mascot.svg', 'mascot-block.svg', 'mascot-celebrate.svg', 'mascot-thinking.svg', 'mark.svg', 'og.svg', 'og.png']) {
+for (const cssFile of ['styles.css', 'home.css', 'inner.css', 'nojs.css']) {
+  const srcPath = path.join(ROOT, 'src', cssFile);
+  if (fs.existsSync(srcPath)) {
+    fs.writeFileSync(path.join(DEST, 'assets', cssFile), minifyCss(fs.readFileSync(srcPath, 'utf8')));
+  }
+}
+const jsSrc = path.join(ROOT, 'src', 'main.js');
+if (fs.existsSync(jsSrc)) {
+  fs.writeFileSync(path.join(DEST, 'assets', 'main.js'), minifyJs(fs.readFileSync(jsSrc, 'utf8')));
+}
+for (const file of ['mascot.svg', 'mascot-block.svg', 'mascot-celebrate.svg', 'mascot-thinking.svg', 'mark.svg', 'og.svg', 'og.png']) {
   const srcPath = path.join(ROOT, 'src', file);
   if (fs.existsSync(srcPath)) {
     fs.copyFileSync(srcPath, path.join(DEST, 'assets', file));
@@ -1651,6 +1818,14 @@ for (const file of ['styles.css', 'main.js', 'mascot.svg', 'mascot-block.svg', '
 fs.mkdirSync(path.join(DEST, 'assets', 'fonts'), { recursive: true });
 for (const file of fs.readdirSync(path.join(ROOT, 'src', 'fonts'))) {
   fs.copyFileSync(path.join(ROOT, 'src', 'fonts', file), path.join(DEST, 'assets', 'fonts', file));
+}
+
+const screenshotsSrc = path.join(ROOT, 'src', 'screenshots');
+if (fs.existsSync(screenshotsSrc)) {
+  fs.mkdirSync(path.join(DEST, 'assets', 'screenshots'), { recursive: true });
+  for (const file of fs.readdirSync(screenshotsSrc)) {
+    fs.copyFileSync(path.join(screenshotsSrc, file), path.join(DEST, 'assets', 'screenshots', file));
+  }
 }
 
 console.log(`Generated ${LANGS.length * ROUTES.length + 1} HTML pages for AntiRacketMantis`);
