@@ -265,6 +265,11 @@ code{font-family:ui-monospace,'SFMono-Regular',Menlo,Consolas,monospace;font-siz
 
 /* Keep the roadmap status readable beside short navigation labels. */
 .main-nav>a[data-status]{flex-direction:column;justify-content:center;gap:2px}
+/* Inside the open mobile menu: PRO row reads left-aligned like the other items; the Install CTA keeps white text and its own padding (.main-nav a would otherwise override both). */
+@media(max-width:1300px){
+  .main-nav>a[data-status]{flex-direction:row;justify-content:flex-start;gap:10px}
+  .main-nav .nav-cta-mobile,.main-nav .nav-cta-mobile:hover{color:#fff;padding:10px 18px;border-bottom:0}
+}
 .main-nav>a[data-status] .status-pill{font-family:var(--body);font-size:.65rem;line-height:1.2;padding:2px 5px;margin:0;white-space:normal;text-align:center}
 .footer-nav-list a[data-status]{flex-wrap:wrap;gap:6px}
 .hero-links .status-pill,.breadcrumbs .status-pill{margin:0;font-size:.72rem;padding:3px 8px}
