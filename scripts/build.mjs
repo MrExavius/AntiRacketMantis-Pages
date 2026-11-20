@@ -1,3 +1,4 @@
+import crypto from 'node:crypto';
 import fs from 'node:fs';
 import path from 'node:path';
 import { checkDist } from './check.mjs';
@@ -1740,20 +1741,82 @@ if (fs.existsSync(DEST)) {
   fs.rmSync(DEST, { recursive: true, force: true });
 }
 
+const pages = [];
 for (const l of LANGS) {
   for (const k of ROUTES) {
     const out = `${l === 'ru' ? '' : `${l}/`}${k === 'home' ? 'index.html' : `${k}/index.html`}`;
-    write(out, htmlPage(l, k));
+    const html = htmlPage(l, k);
+    write(out, html);
+    pages.push(html);
   }
 }
 
-write('404.html', htmlPage('ru', '404'));
-write('robots.txt', `User-agent: *\nAllow: /\nSitemap: ${SITE}/sitemap.xml\n`);
+const notFoundHtml = htmlPage('ru', '404');
+write('404.html', notFoundHtml);
+pages.push(notFoundHtml);
 
-const sitemapEntries = LANGS.flatMap(l =>
-  ROUTES.map(k => (k === 'home' ? '' : `${k}/`)).map(p => `<url><loc>${SITE}${url(l, p)}</loc></url>`)
+// robots.txt mirrors the crawler policy of the sister site willowinworlds.com (owner's policy: do not add or remove bots here).
+const AI_SEARCH_BOTS = ['OAI-SearchBot', 'PerplexityBot', 'Claude-SearchBot'];
+const AI_USER_BOTS = ['ChatGPT-User', 'Perplexity-User', 'Claude-User'];
+const AI_TRAINING_BOTS = ['GPTBot', 'ClaudeBot', 'CCBot', 'Google-Extended', 'Applebot-Extended', 'Meta-ExternalAgent', 'Bytespider'];
+const allowGroup = bot => `User-agent: ${bot}\nAllow: /\n`;
+write('robots.txt', `# AI search indexing. These groups deliberately mirror the public-site rules below.
+${AI_SEARCH_BOTS.map(allowGroup).join('\n')}
+# User-requested retrieval by AI assistants.
+${AI_USER_BOTS.map(allowGroup).join('\n')}
+# AI/ML training crawlers: site assets must not be used for model training (see /terms/).
+${AI_TRAINING_BOTS.map(bot => `User-agent: ${bot}`).join('\n')}
+Disallow: /assets/
+
+User-agent: *
+Allow: /
+
+Sitemap: ${SITE}/sitemap.xml
+`);
+
+// sitemap.xml lists every indexable page (no noindex) and takes canonical, hreflang alternates and images from the page HTML itself.
+const LASTMOD_FILE = path.join(ROOT, 'scripts', 'sitemap-lastmod.json');
+const canonicalOf = html => html.match(/<link rel="canonical" href="([^"]+)"/)[1];
+const lastmodKey = html => new URL(canonicalOf(html)).pathname;
+
+// Content hash of a page; the build year and the site origin are volatile, so they are left out.
+export function pageHash(html) {
+  return crypto.createHash('sha256').update(html.replaceAll(SITE, '').replace(/©\s*\d{4}/g, '©')).digest('hex');
+}
+
+// prev: { "/path/": { hash, lastmod } }. A page gets `today` only when its hash is new or changed.
+export function updateLastmod(prev, htmls, today) {
+  const next = { ...prev };
+  for (const html of htmls) {
+    const key = lastmodKey(html);
+    const hash = pageHash(html);
+    if (next[key]?.hash !== hash) next[key] = { hash, lastmod: today };
+  }
+  return next;
+}
+
+function sitemapUrl(html, lastmod) {
+  const alternates = [...html.matchAll(/<link rel="alternate" hreflang="([^"]+)" href="([^"]+)"/g)]
+    .map(m => `    <xhtml:link rel="alternate" hreflang="${m[1]}" href="${m[2]}" />`);
+  const images = [...new Set([...html.matchAll(/<img\b(?![^>]*aria-hidden="true")[^>]*\bsrc="(\/[^"]+)"/g)].map(m => m[1]))]
+    .map(src => `    <image:image>\n      <image:loc>${SITE}${src}</image:loc>\n    </image:image>`);
+  return ['  <url>', `    <loc>${canonicalOf(html)}</loc>`, `    <lastmod>${lastmod}</lastmod>`, ...alternates, ...images, '  </url>'].join('\n');
+}
+
+const indexable = pages.filter(html => !/<meta name="robots" content="[^"]*noindex/i.test(html));
+const lastmods = updateLastmod(
+  fs.existsSync(LASTMOD_FILE) ? JSON.parse(fs.readFileSync(LASTMOD_FILE, 'utf8')) : {},
+  indexable,
+  new Date().toISOString().slice(0, 10)
 );
-write('sitemap.xml', `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${sitemapEntries.join('\n')}\n</urlset>\n`);
+fs.writeFileSync(LASTMOD_FILE, `${JSON.stringify(lastmods, null, 2)}\n`);
+write('sitemap.xml', `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml">
+${indexable.map(html => sitemapUrl(html, lastmods[lastmodKey(html)].lastmod)).join('\n')}
+</urlset>
+`);
 
 const serverHeaders = `# Security & cache headers for static hosting (Cloudflare Pages / Netlify compatible)
 /*
