@@ -1,6 +1,7 @@
 .menu-toggle,.motion-toggle{display:none}
-@media(max-width:950px){
+@media(max-width:1080px){
   .site-header{position:static}
   .nav-shell{height:auto;min-height:84px;flex-wrap:wrap;gap:8px;padding:12px 0}
-  .main-nav{position:static;display:flex;flex-direction:row;flex-wrap:wrap;order:3;width:100%;margin:0;padding:0;border:0;box-shadow:none}
+  .main-nav{position:static;display:flex;flex-direction:row;flex-wrap:wrap;order:3;width:100%;margin:0;padding:8px 0 4px;border:0;box-shadow:none;background:transparent}
+  .mobile-nav-tools{display:flex;width:100%;margin-top:8px;padding-top:10px}
 }

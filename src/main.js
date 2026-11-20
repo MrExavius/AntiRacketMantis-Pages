@@ -1,6 +1,7 @@
 (() => {
   'use strict';
   const locale = document.body.dataset.lang || 'ru';
+  const page = document.body.dataset.page || 'home';
   const motionToggle = document.querySelector('[data-motion-toggle]');
   let storedMotionOff = false;
   try {
@@ -14,37 +15,32 @@
   document.documentElement.dataset.armReady = '1';
   document.documentElement.classList.add('js');
 
-  const toastMessage = {
-    ru: 'Страница в магазине браузера появится после публикации расширения. Подробная инструкция доступна в разделе «Установка».',
-    en: 'Store links will appear when the extension is published.',
-    tr: 'Mağaza bağlantıları uzantı yayınlanınca eklenecek.'
-  };
-  const toast = document.querySelector('.toast');
-  let toastTimer;
-  function showToast(message) {
-    if (!toast) return;
-    toast.textContent = message;
-    toast.classList.add('visible');
-    clearTimeout(toastTimer);
-    toastTimer = setTimeout(() => toast.classList.remove('visible'), 4000);
+  // Inert analytics hook: sends nothing and sets no cookies unless a future approved provider is wired.
+  function track(_eventName, _payload) {
+    return undefined;
   }
-  document.querySelectorAll('[data-store]').forEach(button => {
-    button.addEventListener('click', () => showToast(toastMessage[locale] || toastMessage.ru));
+
+  document.addEventListener('click', e => {
+    const el = e.target.closest('[data-event]');
+    if (!el) return;
+    track(el.dataset.event, {
+      lang: locale,
+      page,
+      store: el.dataset.store || undefined,
+      targetLang: el.dataset.targetLang || undefined
+    });
   });
 
   const menu = document.querySelector('.menu-toggle');
   const nav = document.querySelector('.main-nav');
-  const menuText = {
-    ru: ['Открыть меню', 'Закрыть меню'],
-    en: ['Open menu', 'Close menu'],
-    tr: ['Menüyü aç', 'Menüyü kapat']
-  }[locale] || ['Открыть меню', 'Закрыть меню'];
+  const openLabel = menu?.dataset.labelOpen || 'Open menu';
+  const closeLabel = menu?.dataset.labelClose || 'Close menu';
 
   function setMenuState(open, restoreFocus = false) {
     if (!menu || !nav) return;
     nav.classList.toggle('open', open);
     menu.setAttribute('aria-expanded', String(open));
-    const label = open ? menuText[1] : menuText[0];
+    const label = open ? closeLabel : openLabel;
     menu.setAttribute('aria-label', label);
     menu.title = label;
     if (!open && restoreFocus) menu.focus();
@@ -56,11 +52,11 @@
       const next = !nav.classList.contains('open');
       setMenuState(next);
       if (next) {
-        const firstLink = nav.querySelector('a');
+        const firstLink = nav.querySelector('a[href]');
         if (firstLink) firstLink.focus();
       }
     });
-    nav.querySelectorAll('a').forEach(a => {
+    nav.querySelectorAll('a[href]').forEach(a => {
       a.addEventListener('click', () => setMenuState(false));
     });
     document.addEventListener('click', e => {
@@ -94,21 +90,18 @@
       }
     });
     window.addEventListener('resize', () => {
-      if (nav.classList.contains('open') && window.innerWidth > 950) setMenuState(false);
+      if (nav.classList.contains('open') && window.innerWidth > 1080) setMenuState(false);
     });
   }
 
-  const motionText = {
-    ru: ['Отключить анимации', 'Включить анимации'],
-    en: ['Pause animations', 'Play animations'],
-    tr: ['Animasyonları durdur', 'Animasyonları oynat']
-  }[locale] || ['Отключить анимации', 'Включить анимации'];
+  const motionLabelOff = motionToggle?.dataset.labelOff || 'Pause animations';
+  const motionLabelOn = motionToggle?.dataset.labelOn || 'Play animations';
 
   function updateMotion(off) {
     document.body.classList.toggle('motion-off', off);
     if (motionToggle) {
       motionToggle.setAttribute('aria-pressed', String(off));
-      const label = off ? motionText[1] : motionText[0];
+      const label = off ? motionLabelOn : motionLabelOff;
       motionToggle.setAttribute('aria-label', label);
       motionToggle.title = label;
     }
@@ -150,17 +143,6 @@
       update();
     }
   }
-
-  function languageRoute(next, page) {
-    const base = next === 'ru' ? '' : `/${next}`;
-    const suffix = page === 'home' ? '/' : page === '404' ? '/' : `/${page}/`;
-    return base + suffix;
-  }
-  document.querySelectorAll('[data-language]').forEach(select => {
-    select.addEventListener('change', () => {
-      location.href = languageRoute(select.value, select.dataset.page);
-    });
-  });
 
   const header = document.getElementById('site-header');
   if (header && 'IntersectionObserver' in window) {
