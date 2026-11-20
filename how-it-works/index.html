@@ -1,0 +1,260 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <meta name="theme-color" content="#d9f3dc">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; object-src 'none'; base-uri 'self'; form-action 'none'">
+  <meta name="referrer" content="no-referrer">
+  
+  <title>Как работает защита и 5 уровней — AntiRacketMantis</title>
+  <meta name="description" content="Техническое устройство AntiRacketMantis: сетевые правила declarativeNetRequest, косметическое скрытие, cookie-баннеры и подробный разбор 5 уровней защиты.">
+  <link rel="canonical" href="https://antiracketmantis.willowinworlds.com/how-it-works/">
+  <link rel="icon" href="/assets/mark.svg" type="image/svg+xml">
+  <link rel="preload" href="/assets/fonts/nunito-cyrillic.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/assets/mascot-thinking.svg" as="image" type="image/svg+xml" fetchpriority="high">
+  <link rel="stylesheet" href="/assets/styles.css">
+  <link rel="stylesheet" href="/assets/inner.css">
+  <noscript><link rel="stylesheet" href="/assets/nojs.css"></noscript>
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="AntiRacketMantis">
+  <meta property="og:title" content="Как работает защита и 5 уровней — AntiRacketMantis">
+  <meta property="og:description" content="Техническое устройство AntiRacketMantis: сетевые правила declarativeNetRequest, косметическое скрытие, cookie-баннеры и подробный разбор 5 уровней защиты.">
+  <meta property="og:url" content="https://antiracketmantis.willowinworlds.com/how-it-works/">
+  <meta property="og:locale" content="ru_RU">
+  <meta property="og:image" content="https://antiracketmantis.willowinworlds.com/assets/og.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="AntiRacketMantis — интернет без рекламы, трекеров и лишних окон">
+  <meta name="twitter:card" content="summary_large_image">
+  
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Главная","item":"https://antiracketmantis.willowinworlds.com/"},{"@type":"ListItem","position":2,"name":"Как работает защита и 5 уровней","item":"https://antiracketmantis.willowinworlds.com/how-it-works/"}]}</script>
+  <script src="/assets/main.js" defer></script>
+</head>
+<body data-lang="ru" data-page="how-it-works">
+<a class="skip-link" href="#main">К содержимому</a>
+<header class="site-header" id="site-header">
+  <div class="nav-shell">
+    <a class="brand" href="/" aria-label="AntiRacketMantis — на главную">
+      <img src="/assets/mark.svg" alt="" aria-hidden="true" width="42" height="42">
+      <span>AntiRacket<span class="brand-mantis">Mantis</span></span>
+    </a>
+    <nav class="main-nav" id="main-nav" aria-label="Основное меню">
+      <a href="/features/">Возможности</a><a href="/how-it-works/" aria-current="page">Как работает</a><a href="/privacy/">Приватность</a><a href="/faq/">Вопросы</a><a href="/support/">Поддержка</a>
+    </nav>
+    <div class="nav-actions">
+      <button class="motion-toggle" type="button" data-motion-toggle data-motion-label="Отключить анимации" aria-label="Отключить анимации" aria-pressed="false" title="Отключить анимации">
+        <svg class="motion-icon" viewBox="0 0 24 24" aria-hidden="true">
+          <g class="mi-pause"><rect x="6.5" y="5" width="3.6" height="14" rx="1.6"/><rect x="13.9" y="5" width="3.6" height="14" rx="1.6"/></g>
+          <path class="mi-play" d="M8 5.6v12.8a1 1 0 0 0 1.5.86l10.2-6.4a1 1 0 0 0 0-1.72L9.5 4.74A1 1 0 0 0 8 5.6z"/>
+        </svg>
+      </button>
+      
+      <a class="nav-cta" href="/install/">Установить</a>
+      <button class="menu-toggle" type="button" aria-label="Открыть меню" aria-expanded="false" aria-controls="main-nav"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+</header>
+<main id="main" class="inner-page">
+  <nav class="breadcrumbs container" aria-label="Хлебные крошки">
+  <ol>
+    <li><a href="/">Главная</a></li>
+    <li aria-current="page">Как это работает</li>
+  </ol>
+</nav>
+  <section class="page-hero container page-hero-split">
+  <div>
+    <span class="eyebrow">Принцип работы</span>
+    <h1>Как устроена защита в браузере</h1>
+    <p>AntiRacketMantis опирается на стандартный движок правил Manifest V3, изолированные скрипты страницы и понятные уровни строгости — без отправки вашей истории посещений на сторонние серверы.</p>
+  </div>
+  <img class="page-hero-mascot mascot-reactive" src="/assets/mascot-thinking.svg" alt="Богомол Минти изучает схему работы защиты" width="220" height="265" fetchpriority="high">
+</section>
+  <section class="container info-grid">
+    <article class="info-card">
+      <span class="info-icon"><svg viewBox="0 0 32 32" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M16 3 28 8v9c0 7-5 11-12 14C9 28 4 24 4 17V8Z"/><path d="m10 17 4 4 8-9"/></svg></span>
+      <h2>1. Сетевые правила браузера</h2>
+      <p>Для блокировки рекламы, счётчиков, опасных доменов и меток отслеживания используется встроенный API браузера <code>declarativeNetRequest</code>.</p>
+      <p>Браузер сам сопоставляет запросы со встроенными списками правил (EasyList, EasyPrivacy, uBlock filters, RU AdList, Peter Lowe, AdGuard Turkish), не передавая адреса открытых страниц во внешнюю сеть.</p>
+    </article>
+    <article class="info-card">
+      <span class="info-icon"><svg viewBox="0 0 32 32" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="6" width="22" height="21" rx="4"/><path d="M5 12h22M11 9h1M16 9h1M11 20l4 3 6-7"/></svg></span>
+      <h2>2. Косметика и анти-pop-up</h2>
+      <p>Начиная с уровня 3 подключаются косметические фильтры для скрытия пустых контейнеров и рекламных блоков, которые остались в разметке страницы.</p>
+      <p>Отдельный защитник всплывающих окон сдерживает попытки сайтов открыть лишнее окно или фоновую вкладку без явного клика пользователя.</p>
+    </article>
+    <article class="info-card">
+      <span class="info-icon"><svg viewBox="0 0 32 32" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M25 15a7 7 0 0 1-8-8 11 11 0 1 0 8 8Z"/><circle cx="12" cy="15" r="1.5" fill="currentColor" stroke="none"/><circle cx="20" cy="22" r="1.5" fill="currentColor" stroke="none"/><circle cx="12" cy="24" r="1.2" fill="currentColor" stroke="none"/></svg></span>
+      <h2>3. Cookie-баннеры и исключения</h2>
+      <p>Модуль cookie-баннеров работает в изолированном мире страницы и пытается отклонять необязательные cookies на совместимых окнах согласия, если эта настройка включена.</p>
+      <p>Если сайт перестал открываться или требует полного допуска, переключатель в окне расширения добавляет домен в приоритетное исключение, которое стоит выше всех правил уровня.</p>
+    </article>
+  </section>
+  <section class="container doc-stack" id="levels">
+    <article class="doc-card">
+      <h2>Пять уровней защиты (от 1 до 5)</h2>
+      <p>Вы можете переключать уровень в окне расширения или на странице настроек. Сетевые и страничные изменения применяются к новым загрузкам после перезагрузки вкладки.</p>
+      <div class="levels-grid">
+  <article class="level-card">
+    <span class="level-badge"><span>Уровень 1</span><span>Минимум правок</span></span>
+    <h3>Совместимость</h3>
+    <p>Сетевые и косметические фильтры выключены. Настройка cookie-баннеров действует отдельно.</p>
+  </article><article class="level-card level-default">
+    <span class="level-badge"><span>Уровень 2</span><span>По умолчанию</span></span>
+    <h3>Мягкая защита</h3>
+    <p>Блокировка трекеров (EasyPrivacy, RU AdList Counters), мошеннических адресов и части рекламных серверов.</p>
+  </article><article class="level-card">
+    <span class="level-badge"><span>Уровень 3</span><span>Для тишины</span></span>
+    <h3>Баланс</h3>
+    <p>Полные списки рекламы (uBlock filters, EasyList, RU AdList), очистка ссылок от меток, Sec-GPC/DNT, косметическое скрытие и анти-pop-up.</p>
+  </article><article class="level-card">
+    <span class="level-badge"><span>Уровень 4</span><span>Без лишних связей</span></span>
+    <h3>Строго</h3>
+    <p>Дополнительно удаляет сторонние cookies из запросов и блокирует сетевые скрипты cookie-уведомлений и виджетов соцсетей.</p>
+  </article><article class="level-card">
+    <span class="level-badge"><span>Уровень 5</span><span>Максимум</span></span>
+    <h3>Максимум</h3>
+    <p>Дополнительно включает защиту отпечатков (canvas, WebGL, аудио), блокирует маячки (ping, CSP) и требует HTTPS.</p>
+  </article>
+</div>
+    </article>
+    <article class="doc-card">
+      <h2>Встроенные списки и перенос без аккаунта</h2>
+      <ul>
+        <li><strong>Списки внутри пакета расширения:</strong> правила фильтрации (на базе uBlock Origin Lite 2026.1116.1650 и движок cookie-баннеров DuckDuckGo autoconsent 18.6.0) встроены в само расширение и обновляются вместе с его версией — при просмотре сайтов ничего не скачивается с удалённых серверов.</li>
+        <li><strong>Перенос настроек без регистрации:</strong> вам не нужен аккаунт или облачная синхронизация — уровень защиты, режим cookie-баннеров и списки исключений можно перенести между компьютерами через экспорт и импорт файла JSON в настройках.</li>
+        <li><strong>Нет проксирования сторонних библиотек через локальный CDN:</strong> устаревшие подходы вроде LocalCDN здесь не дублируются — трекинг через CDN режут сетевые правила EasyPrivacy.</li>
+        <li><strong>Нет непредсказуемого «самообучения» блокировщика:</strong> фильтрация предсказуема и опирается на выбранный уровень и явные исключения пользователя.</li>
+      </ul>
+    </article>
+  </section>
+  <section class="container interface-doc-section" id="interface">
+  <div class="interface-doc-head">
+    <h2>Интерфейс расширения</h2>
+    <p>Ниже показаны реальные экраны защиты версии 0.11.0: окно расширения для текущего сайта, настройка уровня 1–5, встроенные списки фильтров, исключения, cookie-баннеры, всплывающие окна и тема.</p>
+  </div>
+  <div class="shots-grid shots-all">
+    <figure class="shot-card shot-popup">
+    <div class="shot-frame">
+      <picture>
+        <source srcset="/assets/screenshots/popup-shield.webp" type="image/webp">
+        <img src="/assets/screenshots/popup-shield.png" alt="Окно расширения AntiRacketMantis, вкладка «Защита» на тестовой странице example.org: статус «Защита включена», переключатель для сайта, счётчик активных списков 4, ползунок уровня 2 из 5 («Мягкая защита») и переключатель маскировки canvas" width="728" height="750" loading="lazy" decoding="async">
+      </picture>
+    </div>
+    <div class="shot-body">
+      <h3>Вкладка «Защита» в окне расширения</h3>
+      <p>Главный экран показывает статус защиты на открытом сайте, число активных списков и даёт в один клик выключить фильтрацию для текущей страницы или сменить уровень от 1 до 5.</p>
+    </div>
+    <figcaption class="shot-caption">Снимок версии 0.11.0 · вкладка «Защита» на странице example.org</figcaption>
+  </figure>
+    <figure class="shot-card">
+    <div class="shot-frame">
+      <picture>
+        <source srcset="/assets/screenshots/options-filter-lists.webp" type="image/webp">
+        <img src="/assets/screenshots/options-filter-lists.png" alt="Раскрытая таблица встроенных списков фильтров в настройках AntiRacketMantis: EasyPrivacy (9 162 правила), RU AdList: Counters (1 086), uBlock filters – Badware risks (435) и Peter Lowe в статусе «включён»" width="746" height="443" loading="lazy" decoding="async">
+      </picture>
+    </div>
+    <div class="shot-body">
+      <h3>Прозрачная таблица встроенных списков</h3>
+      <p>В настройках видно каждый встроенный список правил (на базе uBlock Origin Lite 2026.1116.1650), число правил и его состояние; во время просмотра сайтов ничего не скачивается.</p>
+    </div>
+    <figcaption class="shot-caption">Снимок версии 0.11.0 · встроенные списки фильтров</figcaption>
+  </figure>
+    <figure class="shot-card">
+    <div class="shot-frame">
+      <picture>
+        <source srcset="/assets/screenshots/options-levels.webp" type="image/webp">
+        <img src="/assets/screenshots/options-levels.png" alt="Раздел настроек «Уровень защиты: 2 из 5» с ползунком от «Совместимость» до «Максимум» и списком активных правил по умолчанию для уровня «Мягкая защита»" width="746" height="215" loading="lazy" decoding="async">
+      </picture>
+    </div>
+    <div class="shot-body">
+      <h3>Выбор уровня защиты (1–5)</h3>
+      <p>Ползунок переключает режимы от мягкой фильтрации без косметических правок (уровень 2 по умолчанию) до строгих правил приватности.</p>
+    </div>
+    <figcaption class="shot-caption">Снимок версии 0.11.0 · раздел «Защита и приватность»</figcaption>
+  </figure>
+    <figure class="shot-card">
+    <div class="shot-frame">
+      <picture>
+        <source srcset="/assets/screenshots/options-exceptions-cookies.webp" type="image/webp">
+        <img src="/assets/screenshots/options-exceptions-cookies.png" alt="Настройки исключений «Без защиты на сайтах» (до 100 доменов) и выпадающий список «Cookie-баннеры» со значением «Отклонять необязательные cookies»" width="774" height="334" loading="lazy" decoding="async">
+      </picture>
+    </div>
+    <div class="shot-body">
+      <h3>Исключения по домену и cookie-баннеры</h3>
+      <p>Список доменов без фильтрации (включая поддомены) и отдельная настройка отказа от необязательных cookies на совместимых баннерах.</p>
+    </div>
+    <figcaption class="shot-caption">Снимок версии 0.11.0 · исключения и режим cookie-баннеров</figcaption>
+  </figure>
+    <figure class="shot-card shot-wide">
+    <div class="shot-frame">
+      <picture>
+        <source srcset="/assets/screenshots/welcome-protections.webp" type="image/webp">
+        <img src="/assets/screenshots/welcome-protections.png" alt="Три карточки защиты на экране приветствия AntiRacketMantis: «Реклама и трекеры», «Cookie-баннеры и всплывающие окна» и «Твой выбор, который легко отменить»" width="841" height="263" loading="lazy" decoding="async">
+      </picture>
+    </div>
+    <div class="shot-body">
+      <h3>Краткая сводка при первом запуске</h3>
+      <p>Приветственная страница объясняет, как работают списки правил, отказ от cookie-баннеров, защита от всплывающих окон без клика (с уровня 3) и отключение защиты для одного сайта.</p>
+    </div>
+    <figcaption class="shot-caption">Снимок версии 0.11.0 · карточки защиты на экране приветствия</figcaption>
+  </figure>
+    <figure class="shot-card shot-wide">
+    <div class="shot-frame">
+      <picture>
+        <source srcset="/assets/screenshots/options-theme.webp" type="image/webp">
+        <img src="/assets/screenshots/options-theme.png" alt="Выпадающий список «Тема» в настройках AntiRacketMantis с выбранным оформлением «Mantis — белая (основная)»" width="731" height="69" loading="lazy" decoding="async">
+      </picture>
+    </div>
+    <div class="shot-body">
+      <h3>Светлые и тёмные темы интерфейса</h3>
+      <p>Оформление окна расширения и страницы настроек можно оставить системным или выбрать светлую и тёмную палитры Mantis вручную.</p>
+    </div>
+    <figcaption class="shot-caption">Снимок версии 0.11.0 · выбор темы оформления</figcaption>
+  </figure>
+  </div>
+</section>
+  <section class="container">
+  <div class="info-nudge">
+    <div class="info-nudge-copy">
+      <h2>Следующий шаг</h2>
+      <p>Проверьте совместимость браузера или прочитайте политику конфиденциальности.</p>
+    </div>
+    <div class="info-nudge-actions">
+      <a class="btn btn-primary" href="/install/">Установка</a><a class="btn btn-secondary" href="/privacy/">Приватность</a>
+    </div>
+  </div>
+</section>
+</main>
+<footer class="footer">
+  <div class="container footer-top">
+    <div class="footer-brand-col">
+      <a class="brand" href="/" aria-label="AntiRacketMantis — на главную">
+        <img src="/assets/mark.svg" alt="" aria-hidden="true" width="43" height="43">
+        <span>AntiRacket<span class="brand-mantis">Mantis</span></span>
+      </a>
+      <p>Расширение для спокойного просмотра сайтов без навязчивой рекламы, трекеров и лишних окон.</p>
+      <p class="footer-studio">Продукт студии <a href="https://willowinworlds.com/" rel="noopener">WillowinWorlds</a> · Версия 0.11.0, готовится к публикации</p>
+    </div>
+    <nav aria-label="О расширении">
+      <span class="footer-nav-heading">О расширении</span>
+      <div class="footer-nav-list">
+        <a href="/features/">Возможности</a><a href="/how-it-works/">Как это работает</a><a href="/install/">Установка</a><a href="/uninstall/">Как удалить</a><a href="/compatibility/">Совместимость</a><a href="/limits/">Известные ограничения</a>
+      </div>
+    </nav>
+    <nav aria-label="Доверие и помощь">
+      <span class="footer-nav-heading">Документы и помощь</span>
+      <div class="footer-nav-list">
+        <a href="/privacy/">Политика конфиденциальности</a><a href="/terms/">Пользовательское соглашение</a><a href="/faq/">Частые вопросы</a><a href="/support/">Поддержка</a><a href="/changelog/">История обновлений</a>
+      </div>
+    </nav>
+  </div>
+  <div class="container footer-bottom">
+    <span>© 2026 AntiRacketMantis · WillowinWorlds</span>
+    <span>Сделано для спокойного интернета ✦</span>
+  </div>
+</footer>
+<div class="toast" role="status" aria-live="polite"></div>
+</body>
+</html>
