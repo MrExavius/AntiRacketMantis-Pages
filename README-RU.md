@@ -1,4 +1,17 @@
-# AntiRacketMantis — сайт (русская версия)
+# AntiRacketMantis — сайт
+
+Исходники и сборка сайта https://antiracketmantis.willowinworlds.com в одном репозитории (бывший репозиторий
+AntiRacketMantis-Website влит сюда вместе с историей 2026-11-20).
+
+## Публикация
+
+- `main` — опубликованная версия. Сборка `dist/` в Git не хранится: её делает GitHub Actions
+  (`.github/workflows/pages.yml`): проверки на каждом push/PR, деплой только при push в `main`.
+- **Перед первым слиянием `dev` → `main`** переключите *Settings → Pages → Source* на **GitHub Actions**
+  (сейчас там «Deploy from a branch: main /»). Иначе GitHub Pages опубликует корень репозитория с исходниками
+  вместо сайта. Домен берётся из настроек Pages (файл `CNAME` оставлен для справки).
+- Работа ведётся в `dev`; перед коммитом: `node scripts/build.mjs` (обновляет `scripts/sitemap-lastmod.json`,
+  CI проверяет, что он закоммичен) и `node scripts/test-check.mjs`.
 
 Сборка: `node scripts/build.mjs` → готовый сайт в `dist/` (статические файлы, без зависимостей; автоматически запускает проверку `node scripts/check.mjs` и формирует `dist/_headers`).
 
