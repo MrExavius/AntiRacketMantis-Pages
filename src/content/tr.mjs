@@ -111,7 +111,7 @@ export default {
     pro: {
       title: 'AntiRacketMantis PRO (Geliştiriliyor) — $39/ay Planlanan',
       desc: 'Geliştirilmekte olan AntiRacketMantis PRO ($39/ay planlanan fiyat): aynı uzantıda yerel yapay zekâ, CAPTCHA yardımı ve otomasyon. Temel koruma ücretsizdir.',
-      breadcrumb: 'PRO (geliştiriliyor)'
+      breadcrumb: 'PRO'
     },
     'how-it-works': {
       title: 'Koruma ve 5 Seviye Nasıl Çalışır? — AntiRacketMantis',
@@ -645,7 +645,7 @@ export default {
   },
 
   proPage: {
-    eyebrow: 'Yol haritası · Geliştiriliyor',
+    eyebrow: 'Yol haritası',
     title: 'AntiRacketMantis PRO',
     lead: 'Tek tarayıcı uzantısı: temel koruma ücretsiz kalırken, ileride yerel sinir ağları, yapay zekâ destekli CAPTCHA yardımı ve gelişmiş otomasyon isteyenler için isteğe bağlı PRO aboneliği geliştiriliyor.',
     mascotAlt: 'Planlanan PRO sürümünü simgeleyen vizörlü ve yerel yapay zekâ çipli peygamberdevesi Minty',
@@ -663,12 +663,13 @@ export default {
       secondaryCta: 'Yayın durumunu takip edin'
     },
     plannedTitle: 'AntiRacketMantis PRO için planlananlar',
-    plannedIntro: 'Bu PRO özelliklerinin hiçbiri henüz yayınlanmadı; üzerinde çalışılan alanlar aşağıdadır:',
+    plannedIntro: 'PRO, ücretsiz sürümdeki her şeyi içerecek. Yeni PRO özellikleri henüz yayınlanmadı; üzerinde çalışılan alanlar aşağıdadır:',
     plannedItems: [
       {
         icon: 'shield',
         tone: 'lime',
-        badge: 'Geliştiriliyor',
+        included: true,
+        badge: 'Ücretsiz sürümde var',
         title: 'Ücretsiz sürümdeki her şey',
         text: 'Eksiksiz temel koruma: 5 seviyeli reklam ve izleyici filtreleme, çerez bildirimi reddi, açılır pencere kontrolü, parmak izi ayarları ve istisnalar.'
       },

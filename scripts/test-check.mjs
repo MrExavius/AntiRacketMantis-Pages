@@ -146,7 +146,7 @@ try {
   check('invisible breadcrumb', enPro, html => html.replace('"name":"Home"', '"name":"Invented home"'), 1, 'BreadcrumbList JSON-LD');
   check('invalid JSON-LD', enPro, html => html.replace('"@context":', 'BROKEN:'), 1, 'Некорректный JSON-LD');
   check('missing meta CSP', enHome, html => html.replace(/<meta http-equiv="Content-Security-Policy"[^>]+>/, ''), 1, 'Отсутствует мета-тег Content-Security-Policy');
-  for (const [directive, replacement] of [["script-src 'self'", "script-src 'self' 'unsafe-inline' https:"], ["connect-src 'none'", "connect-src 'self'"], ['upgrade-insecure-requests', '']]) {
+  for (const [directive, replacement] of [["script-src 'self'", "script-src 'self' 'unsafe-inline' https:"], ["connect-src 'self'", "connect-src 'self' https:"], ['upgrade-insecure-requests', '']]) {
     check(`strict meta CSP ${directive}`, enHome, html => html.replace(directive, replacement), 1, 'meta CSP');
     check(`strict header CSP ${directive}`, headers, text => text.replace(directive, replacement), 1, 'Content-Security-Policy');
   }

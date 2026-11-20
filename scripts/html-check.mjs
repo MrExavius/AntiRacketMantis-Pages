@@ -63,7 +63,7 @@ export function cspErrors(policy, header = false) {
   const expected = {
     'default-src': "'self'", 'base-uri': "'none'", 'script-src': "'self'", 'style-src': "'self'",
     'img-src': "'self'", 'font-src': "'self'", 'object-src': "'none'", 'frame-src': "'none'",
-    'connect-src': "'none'", 'form-action': "'none'", 'manifest-src': "'self'",
+    'connect-src': "'self'", 'form-action': "'none'", 'manifest-src': "'self'",
     'worker-src': "'none'", 'media-src': "'none'", 'upgrade-insecure-requests': ''
   };
   if (header) expected['frame-ancestors'] = "'none'";

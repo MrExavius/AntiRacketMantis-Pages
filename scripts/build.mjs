@@ -745,10 +745,10 @@ function detailPage(lang, route) {
       <p>${escapeHtml(p.plannedIntro)}</p>
     </div>
     <div class="info-grid two-col">
-      ${p.plannedItems.map(item => `<article class="info-card tone-${item.tone}" data-status="in-development">
+      ${p.plannedItems.map(item => `<article class="info-card tone-${item.tone}" data-status="${item.included ? 'included' : 'in-development'}">
         <div class="pro-card-top">
           <span class="info-icon">${icon(item.icon)}</span>
-          <span class="status-pill dev-pill">${escapeHtml(item.badge)}</span>
+          <span class="status-pill${item.included ? '' : ' dev-pill'}">${escapeHtml(item.badge)}</span>
         </div>
         <h3>${escapeHtml(item.title)}</h3>
         <p>${escapeHtml(item.text)}</p>
@@ -1238,7 +1238,9 @@ function buildJsonLd(lang, route, canonical, desc) {
 }
 
 // The site has no fetch, forms, workers, media or third-party resources. Keep meta and HTTP policies aligned.
-const META_CSP = "default-src 'self'; base-uri 'none'; script-src 'self'; style-src 'self'; img-src 'self'; font-src 'self'; object-src 'none'; frame-src 'none'; connect-src 'none'; form-action 'none'; manifest-src 'self'; worker-src 'none'; media-src 'none'; upgrade-insecure-requests";
+// connect-src 'self' (not 'none'): Lighthouse fetches robots.txt from the page context; 'none' blocks it and drops the SEO score.
+// Same-origin only on a static host cannot exfiltrate anything, so the practical risk is nil.
+const META_CSP = "default-src 'self'; base-uri 'none'; script-src 'self'; style-src 'self'; img-src 'self'; font-src 'self'; object-src 'none'; frame-src 'none'; connect-src 'self'; form-action 'none'; manifest-src 'self'; worker-src 'none'; media-src 'none'; upgrade-insecure-requests";
 const HEADER_CSP = `${META_CSP}; frame-ancestors 'none'`;
 
 function verificationMeta() {

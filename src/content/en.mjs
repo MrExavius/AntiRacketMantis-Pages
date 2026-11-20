@@ -111,7 +111,7 @@ export default {
     pro: {
       title: 'AntiRacketMantis PRO (In Development) — $39/mo Planned',
       desc: 'AntiRacketMantis PRO is in development ($39/month planned price): local neural models, AI-assisted CAPTCHA help and automation inside the same extension.',
-      breadcrumb: 'PRO (in development)'
+      breadcrumb: 'PRO'
     },
     'how-it-works': {
       title: 'How Protection & 5 Levels Work — AntiRacketMantis',
@@ -645,7 +645,7 @@ export default {
   },
 
   proPage: {
-    eyebrow: 'Roadmap · In development',
+    eyebrow: 'Roadmap',
     title: 'AntiRacketMantis PRO',
     lead: 'One browser extension—with an upcoming optional PRO subscription inside it for people who later want local neural networks, AI-assisted CAPTCHA recognition and advanced browser automation.',
     mascotAlt: 'Minty the mantis wearing a translucent visor with a glowing local-AI chip emblem for planned PRO features',
@@ -663,12 +663,13 @@ export default {
       secondaryCta: 'Follow launch progress'
     },
     plannedTitle: 'What is planned for AntiRacketMantis PRO',
-    plannedIntro: 'None of these PRO tools is released yet. Here is what is being developed:',
+    plannedIntro: 'PRO will include everything in the free version. The new PRO tools are not released yet; here is what is being developed:',
     plannedItems: [
       {
         icon: 'shield',
         tone: 'lime',
-        badge: 'In development',
+        included: true,
+        badge: 'Included in Free',
         title: 'Everything in the free version',
         text: 'Full core protection: 5 levels of ad and tracker filtering, cookie-banner opt-out, pop-up control, fingerprint controls and site exceptions.'
       },
