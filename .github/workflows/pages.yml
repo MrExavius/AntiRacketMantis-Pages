@@ -31,7 +31,7 @@ jobs:
 
       - name: Check JavaScript syntax
         run: |
-          for file in src/*.js scripts/*.mjs; do
+          for file in src/*.js src/content/*.mjs scripts/*.mjs; do
             node --check "$file"
           done
 
@@ -74,6 +74,7 @@ jobs:
           test -f dist/index.html
           test -f dist/robots.txt
           test -f dist/sitemap.xml
+          test -f dist/.well-known/security.txt
           echo "index_sha=$(sha256sum dist/index.html | cut -d' ' -f1)" >> "$GITHUB_OUTPUT"
 
       - name: Upload site
