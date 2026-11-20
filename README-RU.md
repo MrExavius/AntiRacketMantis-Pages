@@ -37,6 +37,8 @@ export const STORES = {
 - PNG-иконки веб-манифеста и `apple-touch-icon` сгенерированы из `src/mark.svg` в `src/icons/`.
 - Снимки интерфейса расширения лежат в `src/screenshots/` (RU и EN версии WebP + PNG только разделов защиты версии `0.11.0`, без разделов CAPTCHA/OCR/облака/API-ключей). На турецких страницах используются EN-снимки с явной подписью, что интерфейс показан на английском.
 
+Проверка смешения языков учитывает вложенные `lang`, числовые HTML-сущности и доступные имена элементов. Для TR используется эвристика: отдельные английские служебные слова из `TR_LEFTOVER_EN_RE` в `scripts/check.mjs` вне `lang="en"` вызывают ошибку. Например, остаток `HTTP-only site` нужно перевести. Эвристика не заменяет редакторскую проверку смысла и естественности перевода.
+
 ## Индексация, `llms.txt`, `languages.json`, `security.txt` и `_headers`
 
 - `dist/sitemap.xml`: канонические URL всех индексируемых страниц на всех языках, `lastmod` из `scripts/sitemap-lastmod.json`, взаимные `xhtml:link` (`ru`, `en`, `tr`, `x-default` → EN) и `image:image`.
@@ -45,6 +47,8 @@ export const STORES = {
 - `dist/languages.json`: машиночитаемая карта языков (`schemaVersion: 1`, `code`, `hreflang`, `name`, `direction`, `home`, `llms`).
 - `dist/manifest.webmanifest` и `dist/.well-known/security.txt` (контакт студии `https://willowinworlds.com/#contact`).
 - `dist/_headers`: заголовки безопасности и кеширования для **Cloudflare Pages / Netlify** (`CSP` с `base-uri 'none'`, `frame-src 'none'`, `connect-src 'none'`, `manifest-src 'self'`, `worker-src 'none'`, `media-src 'none'`, `frame-ancestors 'none'`, `upgrade-insecure-requests`; `Strict-Transport-Security`, `X-Frame-Options: DENY`, `X-Content-Type-Options: nosniff`, `Referrer-Policy: no-referrer`, `Cross-Origin-Opener-Policy`, `Cross-Origin-Resource-Policy`, `X-Permitted-Cross-Domain-Policies`, `Origin-Agent-Cluster`). **GitHub Pages игнорирует `_headers`**, поэтому строгий `<meta http-equiv="Content-Security-Policy">` и `<meta name="referrer" content="no-referrer">` сохраняются в HTML.
+
+В meta CSP также действует `connect-src 'none'`: сайт не выполняет сетевых API-запросов. Lighthouse 13.6.0 может сообщать `CSP violation` при собственной загрузке `robots.txt` и `llms.txt` через DevTools. Доступность этих файлов проверяйте отдельным HTTP-запросом и `check.mjs`; ослаблять CSP ради оценки аудитора не требуется. Политика ботов повторяет WiW без его `/private/`, `/admin/`, `/api/`: по handoff эти отсутствующие здесь пути не добавляются.
 
 ## Аналитика (только заготовки)
 

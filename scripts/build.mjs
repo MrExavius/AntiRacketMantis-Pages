@@ -67,6 +67,9 @@ function linkHref(lang, target) {
   return routeUrl(lang, target);
 }
 
+const isProText = value => /(\bPRO\b|\$39|CAPTCHA|капч|автоматиз|automation|otomasyon)/i.test(JSON.stringify(value));
+const devBadge = lang => `<span class="status-pill dev-pill">${escapeHtml(CONTENT[lang].ui.devBadge)}</span>`;
+
 function langSwitcher(currentLang, route, extraClass = '') {
   if (LANGS.length <= 1) return '';
   const c = CONTENT[currentLang];
@@ -93,7 +96,7 @@ function header(lang, route) {
     <nav class="main-nav" id="main-nav" aria-label="${escapeAttr(c.ui.mainNavAria)}">
       ${c.nav.map(item => {
         const active = route === item.route || (item.route === 'features' && route.startsWith('features/'));
-        return `<a href="${routeUrl(lang, item.route)}"${active ? ' aria-current="page"' : ''}${item.route === 'pro' ? ' data-event="pro_interest"' : ''}>${escapeHtml(item.label)}</a>`;
+        return `<a href="${routeUrl(lang, item.route)}"${active ? ' aria-current="page"' : ''}${item.route === 'pro' ? ' data-event="pro_interest" data-status="in-development"' : ''}>${escapeHtml(item.label)}${item.route === 'pro' ? devBadge(lang) : ''}</a>`;
       }).join('')}
       <div class="mobile-nav-tools">
         ${langSwitcher(lang, route, 'lang-switch-mobile')}
@@ -139,7 +142,7 @@ function footer(lang, route) {
     <nav aria-label="${escapeAttr(c.ui.footerAboutAria)}">
       <span class="footer-nav-heading">${escapeHtml(c.ui.footerAboutHeading)}</span>
       <div class="footer-nav-list">
-        ${c.footerProductLinks.map(([r, label]) => `<a href="${routeUrl(lang, r)}"${r === 'pro' ? ' data-event="pro_interest"' : ''}>${escapeHtml(label)}</a>`).join('')}
+        ${c.footerProductLinks.map(([r, label]) => `<a href="${routeUrl(lang, r)}"${r === 'pro' ? ' data-event="pro_interest" data-status="in-development"' : ''}>${escapeHtml(label)}${r === 'pro' ? devBadge(lang) : ''}</a>`).join('')}
       </div>
     </nav>
     <nav aria-label="${escapeAttr(c.ui.footerTrustAria)}">
@@ -158,10 +161,10 @@ function footer(lang, route) {
 
 function breadcrumbs(lang, trail) {
   const c = CONTENT[lang];
-  return `<nav class="breadcrumbs container" aria-label="${escapeAttr(c.ui.breadcrumbsAria)}">
+  return `<nav class="breadcrumbs container" aria-label="${escapeAttr(c.ui.breadcrumbsAria)}"${isProText(trail) ? ' data-status="in-development"' : ''}>
   <ol>
     ${trail.map((item, idx) => {
-      if (idx === trail.length - 1) return `<li aria-current="page">${escapeHtml(item.label)}</li>`;
+      if (idx === trail.length - 1) return `<li aria-current="page">${escapeHtml(item.label)}${isProText(trail) ? devBadge(lang) : ''}</li>`;
       return `<li><a href="${item.href}">${escapeHtml(item.label)}</a></li>`;
     }).join('')}
   </ol>
@@ -216,17 +219,17 @@ function levelsStrip(lang, withReveal = true) {
 </div>`;
 }
 
-function faqAccordion(items, openFirst = true) {
+function faqAccordion(lang, items, openFirst = true) {
   return `<div class="faq-list">
-  ${items.map(({ q, a }, i) => `<details class="faq-item"${openFirst && i === 0 ? ' open' : ''}>
-    <summary>${escapeHtml(q)}<span class="faq-plus" aria-hidden="true"></span></summary>
+  ${items.map(({ q, a }, i) => `<details class="faq-item"${isProText({q, a}) ? ' data-status="in-development"' : ''}${openFirst && i === 0 ? ' open' : ''}>
+    <summary><span class="faq-question">${escapeHtml(q)}</span>${isProText({q, a}) ? devBadge(lang) : ''}<span class="faq-plus" aria-hidden="true"></span></summary>
     <p>${escapeHtml(a)}</p>
   </details>`).join('')}
 </div>`;
 }
 
 function pageHero(eyebrow, title, lead, mascotSrc, mascotAlt, isLazy = false, statusBadge = '') {
-  return `<section class="page-hero container page-hero-split">
+  return `<section class="page-hero container page-hero-split"${statusBadge ? ' data-status="in-development"' : ''}>
   <div>
     <span class="eyebrow">${escapeHtml(eyebrow)}</span>
     ${statusBadge ? `<div class="hero-status-row"><span class="status-pill dev-pill">${escapeHtml(statusBadge)}</span></div>` : ''}
@@ -242,6 +245,7 @@ function pageNudge(lang, nudge) {
   return `<section class="container">
   <div class="info-nudge"${mentionsPro ? ' data-status="in-development"' : ''}>
     <div class="info-nudge-copy">
+      ${mentionsPro ? devBadge(lang) : ''}
       <h2>${escapeHtml(nudge.title)}</h2>
       <p>${escapeHtml(nudge.text)}</p>
     </div>
@@ -272,10 +276,10 @@ function homePage(lang) {
         <h1>${escapeHtml(h.heroA)} <br><span class="hero-highlight">${escapeHtml(h.heroB)}</span></h1>
         <p>${escapeHtml(h.heroText)}</p>
         ${storeButtons(lang)}
-        <div class="hero-links">
+        <div class="hero-links" data-status="in-development">
           <a class="text-link" href="#features">${escapeHtml(c.ui.exploreFeatures)}<span class="text-link-dot" aria-hidden="true">✳</span></a>
           <a class="text-link" href="${routeUrl(lang, 'install')}" data-event="install_click">${escapeHtml(c.ui.installGuideLink)} →</a>
-          <a class="text-link" href="${routeUrl(lang, 'pro')}" data-event="pro_interest">${escapeHtml(c.ui.proNavLabel)} (${escapeHtml(c.ui.devBadge)}) →</a>
+          <a class="text-link" href="${routeUrl(lang, 'pro')}" data-event="pro_interest">${escapeHtml(c.ui.proNavLabel)} ${devBadge(lang)} →</a>
         </div>
       </div>
       <div class="hero-art">
@@ -408,6 +412,7 @@ function homePage(lang) {
 
   <section class="section pro-teaser-section" id="pro-plans" data-status="in-development">
     <div class="container">
+      ${devBadge(lang)}
       <div class="section-title centered reveal">
         <span class="eyebrow">${escapeHtml(h.proTeaser.tag)}</span>
         <h2>${escapeHtml(h.proTeaser.title)}</h2>
@@ -539,7 +544,7 @@ function homePage(lang) {
         </div>
         <img class="faq-mini-mantis mascot-reactive" src="/assets/mascot-thinking.svg" alt="${escapeAttr(h.faq.mascotAlt)}" width="140" height="168" loading="lazy">
       </div>
-      ${faqAccordion(c.faqPage.items.slice(0, 5), true)}
+      ${faqAccordion(lang, c.faqPage.items.slice(0, 5), true)}
     </div>
   </section>
 
@@ -651,7 +656,7 @@ function featureSubPage(lang, route) {
 
     <article class="doc-card">
       <h2>${escapeHtml(fp.faqTitle)}</h2>
-      ${faqAccordion(fp.faqs, true)}
+      ${faqAccordion(lang, fp.faqs, true)}
     </article>
   </section>
 
@@ -752,12 +757,14 @@ function detailPage(lang, route) {
   </section>
 
   <section class="container doc-stack" data-status="in-development">
-    <article class="doc-card">
+    <article class="doc-card" data-status="in-development">
+      ${devBadge(lang)}
       <h2>${escapeHtml(p.captchaHonesty.title)}</h2>
       ${p.captchaHonesty.paragraphs.map(par => `<p>${escapeHtml(par)}</p>`).join('')}
     </article>
 
-    <article class="doc-card" id="compare">
+    <article class="doc-card" id="compare" data-status="in-development">
+      ${devBadge(lang)}
       <h2>${escapeHtml(p.compareTitle)}</h2>
       <div class="data-table-wrap">
         <table class="data-table compare-table">
@@ -780,9 +787,10 @@ function detailPage(lang, route) {
       </div>
     </article>
 
-    <article class="doc-card" id="pro-faq">
+    <article class="doc-card" id="pro-faq" data-status="in-development">
+      ${devBadge(lang)}
       <h2>${escapeHtml(p.faqTitle)}</h2>
-      ${faqAccordion(p.faqs, true)}
+      ${faqAccordion(lang, p.faqs, true)}
     </article>
   </section>
 
@@ -1041,18 +1049,20 @@ function detailPage(lang, route) {
     </div>
   </section>
   <section class="container doc-stack">
-    ${tm.sections.map(sec => `<article class="doc-card">
+    ${tm.sections.map(sec => `<article class="doc-card"${isProText(sec) ? ' data-status="in-development"' : ''}>
+      ${isProText(sec) ? devBadge(lang) : ''}
       <h2>${escapeHtml(sec.title)}</h2>
       ${sec.paragraphs ? sec.paragraphs.map(p => `<p>${escapeHtml(p)}</p>`).join('') : ''}
       ${sec.items ? `<ul>${sec.items.map(it => `<li>${escapeHtml(it)}</li>`).join('')}</ul>` : ''}
     </article>`).join('')}
-    <div class="notice-box" id="open-questions">
+    <article class="notice-box" id="open-questions" data-status="in-development">
+      ${devBadge(lang)}
       <h2>${escapeHtml(tm.openTitle)}</h2>
       <p>${escapeHtml(tm.openIntro)}</p>
       <ul>
         ${tm.openItems.map(([strong, text]) => `<li><strong>${escapeHtml(strong)}</strong> ${escapeHtml(text)}</li>`).join('')}
       </ul>
-    </div>
+    </article>
   </section>
   ${pageNudge(lang, tm.nudge)}
 </main>`;
@@ -1062,9 +1072,9 @@ function detailPage(lang, route) {
     const fq = c.faqPage;
     return `<main id="main" class="inner-page" data-status="in-development">
   ${breadcrumbs(lang, [{ label: c.ui.homeLabel, href: routeUrl(lang, 'home') }, { label: c.meta.faq.breadcrumb }])}
-  ${pageHero(fq.eyebrow, fq.title, fq.lead, HERO_MASCOT_BY_ROUTE.faq, fq.mascotAlt)}
+  ${pageHero(fq.eyebrow, fq.title, fq.lead, HERO_MASCOT_BY_ROUTE.faq, fq.mascotAlt, false, c.ui.devBadge)}
   <section class="container faq-standalone">
-    ${faqAccordion(fq.items, true)}
+    ${faqAccordion(lang, fq.items, true)}
   </section>
   ${pageNudge(lang, fq.nudge)}
 </main>`;
@@ -1227,11 +1237,9 @@ function buildJsonLd(lang, route, canonical, desc) {
   return { '@context': 'https://schema.org', ...breadcrumb };
 }
 
-// Strict CSP: base-uri 'none', frame-src 'none', manifest-src 'self', worker-src 'none', media-src 'none'.
-// Meta CSP uses connect-src 'self' (forbids external origins while allowing same-origin DevTools/Lighthouse robots.txt checks);
-// _headers enforces connect-src 'none' + frame-ancestors 'none' + upgrade-insecure-requests on HTTPS hosts.
-const META_CSP = "default-src 'self'; base-uri 'none'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; object-src 'none'; frame-src 'none'; connect-src 'self'; form-action 'none'; manifest-src 'self'; worker-src 'none'; media-src 'none'";
-const HEADER_CSP = "default-src 'self'; base-uri 'none'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; object-src 'none'; frame-src 'none'; connect-src 'none'; form-action 'none'; manifest-src 'self'; worker-src 'none'; media-src 'none'; frame-ancestors 'none'; upgrade-insecure-requests";
+// The site has no fetch, forms, workers, media or third-party resources. Keep meta and HTTP policies aligned.
+const META_CSP = "default-src 'self'; base-uri 'none'; script-src 'self'; style-src 'self'; img-src 'self'; font-src 'self'; object-src 'none'; frame-src 'none'; connect-src 'none'; form-action 'none'; manifest-src 'self'; worker-src 'none'; media-src 'none'; upgrade-insecure-requests";
+const HEADER_CSP = `${META_CSP}; frame-ancestors 'none'`;
 
 function verificationMeta() {
   const tags = [];
@@ -1312,8 +1320,8 @@ function notFoundPage() {
   <meta http-equiv="Content-Security-Policy" content="${META_CSP}">
   <meta name="referrer" content="no-referrer">
   <meta name="robots" content="noindex">
-  <title>404 — AntiRacketMantis</title>
-  <meta name="description" content="Page not found / Страница не найдена / Sayfa bulunamadı — AntiRacketMantis (RU, EN, TR).">
+  <title>${escapeHtml(CONTENT.en.notFound.metaTitle)}</title>
+  <meta name="description" content="${escapeAttr(CONTENT.en.notFound.metaDescription)}">
   <link rel="canonical" href="${canonical}">
   <link rel="manifest" href="/manifest.webmanifest">
   <link rel="icon" href="/assets/mark.svg" type="image/svg+xml">
@@ -1330,7 +1338,7 @@ ${header('en', '404')}
 <main id="main" class="inner-page not-found">
   <div class="container">
     <span class="eyebrow">404</span>
-    <h1>AntiRacketMantis — 404</h1>
+    <h1>${escapeHtml(CONTENT.en.notFound.heading)}</h1>
     <img src="/assets/mascot-lost.svg" class="mascot-reactive not-found-mascot" alt="${escapeAttr(CONTENT.en.notFound.mascotAlt)}" width="240" height="288" fetchpriority="high">
     <div class="not-found-langs">
       ${ALL_LANGS.map(l => {
@@ -1451,7 +1459,7 @@ ${indexable.map(html => sitemapUrl(html, lastmods[lastmodKey(html)].lastmod)).jo
 // Curated English llms.txt covering product scope, status, browsers, Free, planned PRO and every page in RU/EN/TR.
 const llmsSections = LANGS.map(l => {
   const heading = l === 'ru' ? 'Russian pages (root /)' : l === 'en' ? 'English pages (/en/)' : 'Turkish pages (/tr/)';
-  const lines = ROUTES.map(r => `- [${CONTENT[l].meta[r].title}](${SITE}${routeUrl(l, r)}): ${CONTENT[l].meta[r].desc}`);
+  const lines = ROUTES.map(r => `- [${CONTENT.en.meta[r].title}](${SITE}${routeUrl(l, r)}): ${CONTENT.en.meta[r].desc}`);
   return `## ${heading}\n\n${lines.join('\n')}`;
 }).join('\n\n');
 
@@ -1463,7 +1471,7 @@ write('llms.txt', `# AntiRacketMantis
 - Supported browsers: Google Chrome / Chromium (110+, Manifest V3) and Mozilla Firefox (128+, Manifest V3). Safari and mobile browsers are not supported.
 - Core protection (Free): network and cosmetic ad blocking (bundled uBlock Origin Lite 2026.1116.1650 lists), tracker and badware filtering (EasyPrivacy, RU AdList: Counters, uBO Badware, Peter Lowe, EasyList, RU AdList, AdGuard Turkish), URL tracking-parameter cleanup, Sec-GPC/DNT headers, cookie-banner opt-out (DuckDuckGo autoconsent 18.6.0), level 3+ pop-up/pop-under control, level 5 fingerprint protection, up to 100 domain exceptions and JSON settings export/import.
 - AntiRacketMantis PRO (In development): planned optional subscription inside the same extension at a planned price of $39/month. Planned capabilities: everything in Free, AI-assisted CAPTCHA recognition using models planned to run locally, local neural networks, image analysis, advanced browser automation for a user's own routine actions and extra controls. PRO is not available yet, no payment flow exists, no launch date is set, and passing any CAPTCHA on any site is never promised.
-- Privacy & transparency: This static website sets no cookies, uses no trackers or analytics and collects no personal data. Extension permissions, local storage and network-module audit status are disclosed on the Privacy and Known Limits pages. No rating, review score or user numbers are claimed.
+- Privacy & transparency: This static website sets no cookies, uses no trackers or analytics and has no personal-data collection forms. Extension permissions, local storage and network-module audit status are disclosed on the Privacy and Known Limits pages. No rating, review score or user numbers are claimed.
 - Languages: Russian (root \`/\`), English (\`/en/\`, \`x-default\`) and Turkish (\`/tr/\`). Latest source update: ${todayUtc}.
 
 ${llmsSections}
@@ -1555,14 +1563,14 @@ const serverHeaders = `# Security & cache headers for static hosting (Cloudflare
 `;
 write('_headers', serverHeaders);
 
-function minifyCss(css) {
+export function minifyCss(css) {
   return css
     .replace(/\/\*[\s\S]*?\*\//g, '')
     .split('\n')
     .map(line => line.trim())
     .filter(Boolean)
     .join('')
-    .replace(/\s*([{}:;,])\s*/g, '$1')
+    .replace(/\s*([{};,])\s*/g, '$1')
     .replace(/;}/g, '}')
     .replace(/@media\s*\(/g, '@media(')
     .replace(/\band\(/g, 'and (');

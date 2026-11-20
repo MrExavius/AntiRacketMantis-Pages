@@ -1,12 +1,16 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { cspErrors, decodeHtml, hasClass, textByLanguage, proBlock, readHtml, textOf } from './html-check.mjs';
+import { SECURITY_CONTACT } from '../src/content/config.mjs';
 import {
   ALL_LANGS,
   LANG_META,
   ROUTES,
   SITE,
   STORES,
+  STUDIO,
+  VERSION,
   X_DEFAULT_LANG,
   routeUrl
 } from '../src/content/config.mjs';
@@ -122,31 +126,14 @@ function collectKeyShape(obj, prefix = '') {
   return keys;
 }
 
-// Strip <script>, <style>, and any element carrying a foreign lang="..." attribute (e.g. lang="ru" switcher link)
-// so visible text can be checked cleanly for accidental language mixing.
-function stripForeignLangText(html, pageLang) {
-  const titleText = html.match(/<title>([^<]*)<\/title>/i)?.[1] || '';
-  const descText = html.match(/<meta\s+name="description"\s+content="([^"]*)"/i)?.[1] || '';
-  let body = (html.match(/<body\b[^>]*>([\s\S]*)<\/body>/i)?.[1] || html)
-    .replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi, ' ')
-    .replace(/<style\b[^>]*>[\s\S]*?<\/style>/gi, ' ');
-  // Remove elements carrying a foreign lang="..." attribute (e.g. language switcher links).
-  body = body.replace(/<([a-z0-9]+)\b[^>]*\blang="([^"]+)"[^>]*>[\s\S]*?<\/\1>/gi, (match, _tag, attrLang) => {
-    if (attrLang.toLowerCase() !== pageLang.toLowerCase()) return ' ';
-    return match;
-  });
-  const alts = [...body.matchAll(/\balt="([^"]*)"/gi)].map(m => m[1]).join(' ');
-  const visible = body.replace(/<[^>]+>/g, ' ');
-  return `${titleText} ${descText} ${alts} ${visible}`.replace(/\s+/g, ' ').trim();
-}
-
 // Pragmatic heuristic for leftover English sentences on Turkish pages outside lang="en":
 // flags unambiguous English function words (articles/pronouns/conjunctions/auxiliaries not used in Turkish or technical product names).
 const TR_LEFTOVER_EN_RE = /\b(the|with|your|without|because|before|after|which|their|should|would|these|those|cannot|does|from|have|that|this|when|where|what|into|only|some|every|other|you|are|our|your|will|not|for)\b/gi;
 
 // PRO / CAPTCHA compliance regexes
-const PRO_TOPIC_RE = /(\bPRO\b|\$39|CAPTCHA|капч|автоматизац|automation|otomasyon)/i;
+const PRO_TOPIC_RE = /(\bPRO\b|\$39|CAPTCHA|капч|автоматиз|automation|otomasyon)/i;
 const FORBIDDEN_PURCHASE_RE = /(\bcheckout\b|купить|оформить подписку|\bbuy now\b|\bsubscribe now\b|satın al|abone ol|stripe\.com|paypal\.com|paddle\.com|lemonsqueezy\.com)/i;
+const FORBIDDEN_BYPASS_RE = /(\bbypass\b|обход(?:а|ить)?\s+(?:защит|CAPTCHA)|CAPTCHA\s+(?:atlat|aşma))/i;
 const FORBIDDEN_SOLVERS_RE = /(nopecha|2captcha|rucaptcha|anti-captcha|capmonster)/i;
 const CAPTCHA_TERM_RE = /(CAPTCHA|капч)/i;
 const GUARANTEE_TERM_RE = /(гарантир|guarantee|garanti)/i;
@@ -218,18 +205,9 @@ export function checkDist() {
         errors.push(`[dist/_headers] Отсутствует заголовок ${requiredHeader}`);
       }
     }
-    for (const cspPart of [
-      "base-uri 'none'",
-      "frame-src 'none'",
-      "connect-src 'none'",
-      "manifest-src 'self'",
-      "worker-src 'none'",
-      "media-src 'none'",
-      'upgrade-insecure-requests'
-    ]) {
-      if (!headersText.includes(cspPart)) {
-        errors.push(`[dist/_headers] В Content-Security-Policy отсутствует директива ${cspPart}`);
-      }
+    const policy = headersText.match(/^\s*Content-Security-Policy:\s*(.+)$/mi)?.[1] || '';
+    for (const cspPart of cspErrors(policy, true)) {
+      errors.push(`[dist/_headers] В Content-Security-Policy отсутствует или ослаблена директива ${cspPart}`);
     }
     if (!/Referrer-Policy:\s*no-referrer/i.test(headersText)) {
       errors.push('[dist/_headers] Referrer-Policy должен быть no-referrer');
@@ -250,6 +228,9 @@ export function checkDist() {
   }));
   const sitemapProblem = sitemapXml ? xmlError(sitemapXml) : null;
   if (sitemapProblem) errors.push(`[sitemap.xml] Некорректный XML: ${sitemapProblem}`);
+  for (const [prefix, uri] of [['xmlns', 'http://www.sitemaps.org/schemas/sitemap/0.9'], ['xmlns:image', 'http://www.google.com/schemas/sitemap-image/1.1'], ['xmlns:xhtml', 'http://www.w3.org/1999/xhtml']]) {
+    if (!sitemapXml.includes(`${prefix}="${uri}"`)) errors.push(`[sitemap.xml] Неверное пространство имён ${prefix}`);
+  }
   if (/<image:/.test(sitemapXml) && !/xmlns:image="/.test(sitemapXml)) errors.push('[sitemap.xml] Не объявлено пространство имён xmlns:image');
   if (/<xhtml:/.test(sitemapXml) && !/xmlns:xhtml="/.test(sitemapXml)) errors.push('[sitemap.xml] Не объявлено пространство имён xmlns:xhtml');
   if (sitemapEntries.length !== sitemapLocs.size) errors.push('[sitemap.xml] Есть повторяющиеся или пустые <loc>');
@@ -277,6 +258,7 @@ export function checkDist() {
     const expectedOwnUrl = `${SITE}/${rel.replace(/index\.html$/, '')}`;
     const pageUrl = new URL(expectedOwnUrl);
     const is404 = rel === '404.html';
+    if (is404 !== isNoindex(html)) errors.push(`[${rel}] Только 404.html должна быть noindex`);
     const pageLang = html.match(/<html\b[^>]*\blang="([^"]+)"/i)?.[1]?.toLowerCase() || '';
 
     // 4. PRO, purchase, solver & CAPTCHA guarantee checks
@@ -288,9 +270,44 @@ export function checkDist() {
     if (solverMatch) {
       errors.push(`[${rel}] Найдено запрещённое название стороннего сервиса решения CAPTCHA: «${solverMatch[0]}»`);
     }
-    const mainHtml = html.match(/<main\b[^>]*>[\s\S]*?<\/main>/i)?.[0] || html;
-    if (PRO_TOPIC_RE.test(mainHtml) && !mainHtml.includes('data-status="in-development"')) {
-      errors.push(`[${rel}] Страница упоминает PRO/$39/CAPTCHA/автоматизацию без атрибута data-status="in-development"`);
+    const tree = readHtml(html);
+    const body = tree.nodes.find(n => n.tag === 'body');
+    if (is404) {
+      for (const language of ALL_LANGS) {
+        const blocks = tree.nodes.filter(n => n.tag === 'section' && n.attrs.lang === language);
+        if (blocks.length !== 1 || !tree.nodes.some(n => n.tag === 'a' && n.attrs.href === routeUrl(language, 'home') && n.parent?.parent === blocks[0])) {
+          errors.push(`[404.html] Нужен отдельный блок lang="${language}" со ссылкой на главную этого языка`);
+        }
+      }
+    }
+    const bypassMatch = decodeHtml(html).match(FORBIDDEN_BYPASS_RE);
+    if (bypassMatch) errors.push(`[${rel}] Запрещённая формулировка bypass/обхода: ${bypassMatch[0]}`);
+    const badge = { ru: ruContent, en: enContent, tr: trContent }[pageLang]?.ui.devBadge;
+    const blocks = new Set();
+    for (const node of tree.nodes) {
+      if (node.tag === 'head' || !node.parent) continue;
+      const ownText = node.children.filter(child => typeof child === 'string').join(' ');
+      if (PRO_TOPIC_RE.test(ownText) && node !== body && node.tag !== 'title') blocks.add(proBlock(node));
+      for (const match of ownText.matchAll(/\p{Sc}\s*\d+(?:[.,]\d+)?/gu)) {
+        let scope = node;
+        while (scope.parent && !hasClass(scope, 'plan-price-block') && !hasClass(scope, 'pro-price-figure') &&
+               !['p', 'th', 'li', 'h3', 'article'].includes(scope.tag)) scope = scope.parent;
+        const priceText = textOf(scope);
+        if (match[0] !== '$39' || !/планируемая цена|planned price|planlanan fiyat/i.test(priceText) ||
+            !/month|\/\s*mo\b|\/\s*мес|в месяц|\/\s*ay\b/i.test(priceText)) {
+          errors.push(`[${rel}] Цена PRO должна быть $39/месяц с локальной подписью «planned price / планируемая цена / planlanan fiyat»`);
+        }
+      }
+    }
+    for (const block of blocks) {
+      const descendants = tree.nodes.filter(n => {
+        for (let p = n; p; p = p.parent) if (p === block) return true;
+        return false;
+      });
+      if (block.attrs['data-status'] !== 'in-development' ||
+          !descendants.some(n => hasClass(n, 'dev-pill') && textOf(n).startsWith(badge) && n.attrs['aria-hidden'] !== 'true' && !('hidden' in n.attrs))) {
+        errors.push(`[${rel}] Блок «${textOf(block).slice(0, 65)}» должен иметь data-status="in-development" и видимый бейдж «${badge}»`);
+      }
     }
 
     // Check same-sentence CAPTCHA + guarantee prohibition on visible text
@@ -310,18 +327,21 @@ export function checkDist() {
       if (!ALL_LANGS.includes(pageLang)) {
         errors.push(`[${rel}] Некорректный атрибут <html lang="${pageLang}">`);
       } else {
-        const cleaned = stripForeignLangText(html, pageLang);
-        if ((pageLang === 'en' || pageLang === 'tr') && /[А-Яа-яЁё]/.test(cleaned)) {
-          const sample = cleaned.match(/[А-Яа-яЁё]+/)?.[0];
+        const metadata = `${decodeHtml(html.match(/<title>([^<]*)<\/title>/i)?.[1] || '')} ${decodeHtml(html.match(/<meta\s+name="description"\s+content="([^"]*)"/i)?.[1] || '')}`;
+        const outside = exempt => `${metadata} ${textByLanguage(body, lang => lang !== exempt, pageLang)}`;
+        const routeLang = rel.startsWith('en/') ? 'en' : rel.startsWith('tr/') ? 'tr' : 'ru';
+        if (pageLang !== routeLang) errors.push(`[${rel}] html lang должен совпадать с языком маршрута ${routeLang}`);
+        if ((pageLang === 'en' || pageLang === 'tr') && /[А-Яа-яЁё]/.test(outside('ru'))) {
+          const sample = outside('ru').match(/[А-Яа-яЁё]+/)?.[0];
           errors.push(`[${rel}] Смешение языков: найдена кириллица «${sample}» на странице lang="${pageLang}"`);
         }
-        if ((pageLang === 'ru' || pageLang === 'en') && /[ğĞşŞİı]/.test(cleaned)) {
-          const sample = cleaned.match(/\S*[ğĞşŞİı]\S*/)?.[0];
+        if ((pageLang === 'ru' || pageLang === 'en') && /[ğĞşŞİı]/.test(outside('tr'))) {
+          const sample = outside('tr').match(/\S*[ğĞşŞİı]\S*/)?.[0];
           errors.push(`[${rel}] Смешение языков: найдены турецкие буквы «${sample}» на странице lang="${pageLang}"`);
         }
         if (pageLang === 'tr') {
-          const matches = cleaned.match(TR_LEFTOVER_EN_RE) || [];
-          if (matches.length >= 2) {
+          const matches = outside('en').match(TR_LEFTOVER_EN_RE) || [];
+          if (matches.length >= 1) {
             errors.push(`[${rel}] Смешение языков: обнаружены английские слова на турецкой странице: ${[...new Set(matches.map(w => w.toLowerCase()))].slice(0, 8).join(', ')}`);
           }
         }
@@ -331,7 +351,7 @@ export function checkDist() {
     // 6. Title check (non-empty, unique, length warning > 60 chars)
     const titleMatch = html.match(/<title>([^<]*)<\/title>/i);
     const title = titleMatch ? titleMatch[1].trim() : '';
-    const decodedTitle = title.replace(/&amp;/g, '&').replace(/&quot;/g, '"').replace(/&#39;/g, "'");
+    const decodedTitle = decodeHtml(title);
     if (!title) {
       errors.push(`[${rel}] Отсутствует или пустой тег <title>`);
     } else if (titles.has(title)) {
@@ -376,6 +396,14 @@ export function checkDist() {
         [...html.matchAll(/<link\s+rel="alternate"\s+hreflang="([^"]+)"\s+href="([^"]+)"/gi)].map(m => [m[1], m[2]])
       );
       hreflangsByCanonical.set(canonical, alts);
+      const route = ROUTES.find(r => routeUrl(pageLang, r) === pageUrl.pathname);
+      for (const code of [...LANGS, 'x-default']) {
+        const expected = SITE + routeUrl(code === 'x-default' ? X_DEFAULT_LANG : code, route || 'home');
+        if (alts.get(code) !== expected) errors.push(`[${rel}] hreflang="${code}" должен вести на тот же маршрут: ${expected}`);
+      }
+      if ([...html.matchAll(/<link\s+rel="alternate"\s+hreflang=/gi)].length !== LANGS.length + 1) {
+        errors.push(`[${rel}] Набор hreflang содержит лишние или повторяющиеся языки`);
+      }
       for (const l of LANGS) {
         if (!alts.has(l)) {
           errors.push(`[${rel}] Отсутствует hreflang="${l}"`);
@@ -412,10 +440,8 @@ export function checkDist() {
     if (!metaCsp) {
       errors.push(`[${rel}] Отсутствует мета-тег Content-Security-Policy`);
     } else {
-      for (const reqDir of ["base-uri 'none'", "frame-src 'none'", "connect-src 'self'", "manifest-src 'self'", "worker-src 'none'", "media-src 'none'"]) {
-        if (!metaCsp.includes(reqDir)) {
-          errors.push(`[${rel}] В meta CSP отсутствует директива ${reqDir}`);
-        }
+      for (const reqDir of cspErrors(metaCsp)) {
+        errors.push(`[${rel}] В meta CSP отсутствует или ослаблена директива ${reqDir}`);
       }
     }
     if (!/<meta\s+name="referrer"\s+content="no-referrer"/i.test(html)) {
@@ -433,7 +459,7 @@ export function checkDist() {
     if (/\sstyle="/i.test(html)) {
       errors.push(`[${rel}] Обнаружен inline-атрибут style="...", несовместимый со строгим CSP style-src 'self'`);
     }
-    if (/\bon(click|load|error|mouseover|keydown|submit|change|input|focus|blur)\s*=/i.test(html)) {
+    if (tree.nodes.some(node => Object.keys(node.attrs).some(attr => /^on[a-z]+$/i.test(attr)))) {
       errors.push(`[${rel}] Обнаружен inline-обработчик событий в HTML`);
     }
 
@@ -473,6 +499,29 @@ export function checkDist() {
       try {
         const parsed = JSON.parse(ldMatch[1]);
         const raw = JSON.stringify(parsed);
+        const entities = parsed['@graph'] || [parsed];
+        for (const entity of entities) {
+          if (!['FAQPage', 'BreadcrumbList', 'SoftwareApplication', 'Organization'].includes(entity['@type'])) errors.push(`[${rel}] Неподдерживаемый тип JSON-LD`);
+          if (entity['@type'] === 'SoftwareApplication' && (pageUrl.pathname !== routeUrl(pageLang, 'home') || entity.name !== 'AntiRacketMantis' || entity.softwareVersion !== VERSION || entity.url !== canonical || entity.inLanguage !== pageLang || entity.applicationCategory !== 'BrowserApplication' || entity.operatingSystem !== 'Chrome 110+, Firefox 128+')) errors.push(`[${rel}] SoftwareApplication JSON-LD содержит неподтверждённые данные`);
+          if (entity['@type'] === 'Organization' && (entity.name !== 'WillowinWorlds' || entity.url !== STUDIO || !html.includes(`href="${STUDIO}"`))) errors.push(`[${rel}] Organization JSON-LD не совпадает с видимым разработчиком`);
+          if (entity['@type'] === 'FAQPage') {
+            const visibleFaqs = tree.nodes.filter(n => n.tag === 'details' && hasClass(n, 'faq-item')).map(n => ({
+              q: textOf(tree.nodes.find(c => hasClass(c, 'faq-question') && c.parent?.parent === n)),
+              a: textOf(n.children.find(c => typeof c !== 'string' && c.tag === 'p'))
+            }));
+            const structuredFaqs = (entity.mainEntity || []).map(q => ({ q: q.name, a: q.acceptedAnswer?.text }));
+            if (JSON.stringify(visibleFaqs) !== JSON.stringify(structuredFaqs)) errors.push(`[${rel}] FAQPage JSON-LD не совпадает с видимыми вопросами и ответами`);
+          }
+          if (entity['@type'] === 'BreadcrumbList') {
+            const crumbs = tree.nodes.filter(n => n.tag === 'nav' && hasClass(n, 'breadcrumbs'));
+            const visible = crumbs.flatMap(n => tree.nodes.filter(c => c.tag === 'li' && c.parent?.parent === n)).map(n => ({
+              name: textOf(n.children.find(c => typeof c !== 'string' && c.tag === 'a') || n).replace(/\s+(?:В разработке|In development|Geliştiriliyor)$/, ''),
+              item: SITE + (n.children.find(c => typeof c !== 'string' && c.tag === 'a')?.attrs.href || pageUrl.pathname)
+            }));
+            const structured = (entity.itemListElement || []).map((item, idx) => ({ name: item.name, item: item.item, position: item.position, expected: idx + 1 }));
+            if (structured.some(item => item.position !== item.expected) || JSON.stringify(visible) !== JSON.stringify(structured.map(({name, item}) => ({name, item})))) errors.push(`[${rel}] BreadcrumbList JSON-LD не совпадает с видимым путём`);
+          }
+        }
         if (/"(aggregateRating|review|offers|Offer|price|interactionStatistic|downloadCount|datePublished|dateModified)"/.test(raw)) {
           errors.push(`[${rel}] В JSON-LD присутствуют неподтверждённые поля (рейтинги, отзывы, Offer/цены или даты)`);
         }
@@ -504,6 +553,11 @@ export function checkDist() {
       if (!['http:', 'https:'].includes(targetUrl.protocol)) continue;
 
       if (targetUrl.origin !== SITE_ORIGIN) {
+        const tagStart = html.lastIndexOf('<', attrMatch.index);
+        const tag = html.slice(tagStart, html.indexOf('>', attrMatch.index) + 1);
+        if (attr === 'src' || /^<link\b/i.test(tag) && /rel="(?:stylesheet|preload|manifest|icon)"/i.test(tag)) {
+          errors.push(`[${rel}] Внешний загружаемый ресурс запрещён: ${target}`);
+        }
         if (attr === 'href') {
           if (UNCONFIGURED_STORE_RE.test(target) && !Object.values(STORES).includes(target)) {
             errors.push(`[${rel}] Ссылка на магазин ${target} не задана в STORES`);
@@ -534,6 +588,18 @@ export function checkDist() {
         }
       } catch {
         errors.push(`[${rel}] Некорректный путь или якорь: ${target}`);
+      }
+    }
+  }
+
+  // Check picture sources too: a valid PNG fallback must not hide a broken/external WebP.
+  for (const [file, html] of htmlByFile) {
+    for (const match of html.matchAll(/\bsrcset="([^"]+)"/g)) {
+      for (const candidate of match[1].split(',')) {
+        const target = candidate.trim().split(/\s+/)[0];
+        const url = new URL(target, SITE + '/' + path.relative(DEST, file));
+        if (url.origin !== SITE_ORIGIN) errors.push(`[${path.relative(DEST, file)}] Внешний загружаемый ресурс запрещён: ${target}`);
+        else if (!fs.existsSync(resolveInternalPath(url.pathname))) errors.push(`[${path.relative(DEST, file)}] Битая внутренняя ссылка в srcset: ${target}`);
       }
     }
   }
@@ -578,7 +644,7 @@ export function checkDist() {
     if (html && isNoindex(html)) {
       errors.push(`[sitemap.xml] В sitemap указана noindex-страница: ${loc}`);
     }
-    if (lastmods.length !== 1 || !isW3cDate(lastmods[0])) {
+    if (lastmods.length !== 1 || !isW3cDate(lastmods[0]) || lastmods[0] > new Date().toISOString().slice(0, 10)) {
       errors.push(`[sitemap.xml] У ${loc} должен быть ровно один <lastmod> в формате ГГГГ-ММ-ДД, найдено: ${lastmods.join(', ') || 'нет'}`);
     }
     for (const image of images) {
@@ -607,11 +673,14 @@ export function checkDist() {
   }
   for (const cssFile of cssFiles) {
     const css = fs.readFileSync(path.join(assetsDir, cssFile), 'utf8');
+    if (/@import\b/i.test(css)) errors.push(`[assets/${cssFile}] CSS @import запрещён: стили подключаются локально из HTML`);
     for (const m of css.matchAll(/url\((['"]?)([^)'"]+)\1\)/g)) {
       const ref = m[2].trim();
-      if (ref.startsWith('data:') || ref.startsWith('http')) continue;
       const assetUrl = new URL(ref, `${SITE}/assets/${cssFile}`);
-      if (assetUrl.origin !== SITE_ORIGIN) continue;
+      if (assetUrl.origin !== SITE_ORIGIN) {
+        errors.push(`[assets/${cssFile}] Внешний загружаемый ресурс запрещён: ${ref}`);
+        continue;
+      }
       const assetPath = path.join(DEST, decodeURIComponent(assetUrl.pathname));
       if (!fs.existsSync(assetPath)) {
         errors.push(`[assets/${cssFile}] Битая ссылка на ресурс в CSS: ${ref}`);
@@ -630,21 +699,12 @@ export function checkDist() {
       errors.push('[robots.txt] Отсутствуют комментарии со ссылками на /llms.txt и /languages.json');
     }
     const groups = robotsGroups(robotsText);
-    const groupOf = agent => groups.find(g => g.agents.some(a => a.toLowerCase() === agent.toLowerCase()));
-    for (const agent of ROBOTS_ALLOWED_AGENTS) {
-      const group = groupOf(agent);
-      if (!group) errors.push(`[robots.txt] Нет группы User-agent: ${agent}`);
-      else if (!group.rules.includes('allow: /') || group.rules.includes('disallow: /')) errors.push(`[robots.txt] Группа ${agent} должна разрешать сайт (Allow: /) и не запрещать его целиком`);
-    }
-    for (const agent of ROBOTS_TRAINING_AGENTS) {
-      const group = groupOf(agent);
-      if (!group) errors.push(`[robots.txt] Нет группы User-agent: ${agent}`);
-      else if (!group.rules.includes('disallow: /assets/')) errors.push(`[robots.txt] Группа ${agent} (обучение ИИ) должна запрещать /assets/`);
-    }
-    for (const agent of groups.flatMap(g => g.agents)) {
-      if (![...ROBOTS_ALLOWED_AGENTS, ...ROBOTS_TRAINING_AGENTS].some(a => a.toLowerCase() === agent.toLowerCase())) {
-        errors.push(`[robots.txt] Неожиданный User-agent: ${agent} (список ботов повторяет политику willowinworlds.com)`);
-      }
+    // WiW bot policy, without its /private/, /admin/, /api/ restrictions: these routes do not exist here (handoff).
+    const expectedGroups = [...ROBOTS_ALLOWED_AGENTS.map(agent => ({ agents: [agent], rules: ['allow: /'] })),
+      { agents: ROBOTS_TRAINING_AGENTS, rules: ['disallow: /assets/'] }];
+    const normalize = list => list.map(g => JSON.stringify({ agents: [...g.agents].map(a => a.toLowerCase()).sort(), rules: [...g.rules].sort() })).sort();
+    if (JSON.stringify(normalize(groups)) !== JSON.stringify(normalize(expectedGroups))) {
+      errors.push('[robots.txt] Группы и правила должны точно повторять политику ботов WiW: нет лишних, повторных или отсутствующих User-agent/Allow/Disallow');
     }
   }
 
@@ -654,7 +714,7 @@ export function checkDist() {
     const llmsText = fs.readFileSync(llmsPath, 'utf8');
     if (!llmsText.includes('# AntiRacketMantis')) errors.push('[llms.txt] Отсутствует заголовок # AntiRacketMantis');
     const urls = [...llmsText.matchAll(/https?:\/\/[^\s)>\]]+/g)].map(m => m[0]);
-    let ownCount = 0;
+    const ownUrls = new Set();
     for (const rawUrl of urls) {
       const u = parseUrl(rawUrl);
       if (!u) {
@@ -662,15 +722,18 @@ export function checkDist() {
         continue;
       }
       if (u.origin === SITE_ORIGIN) {
-        ownCount++;
+        ownUrls.add(u.href);
         const resolved = resolveInternalPath(u.pathname);
         if (!fs.existsSync(resolved)) {
           errors.push(`[llms.txt] URL не найден в dist/: ${rawUrl}`);
+        } else if (u.hash && !idsByFile.get(resolved)?.has(decodeURIComponent(u.hash.slice(1)))) {
+          errors.push(`[llms.txt] Отсутствующий якорь: ${rawUrl}`);
         }
       }
     }
-    if (ownCount < ROUTES.length * LANGS.length) {
-      errors.push(`[llms.txt] Недостаточно ссылок на страницы сайта (${ownCount} < ${ROUTES.length * LANGS.length})`);
+    for (const l of LANGS) for (const route of ROUTES) {
+      const expected = SITE + routeUrl(l, route);
+      if (!ownUrls.has(expected)) errors.push(`[llms.txt] Отсутствует ссылка на маршрут: ${expected}`);
     }
   }
 
@@ -682,11 +745,16 @@ export function checkDist() {
       if (data.schemaVersion !== 1 || !Array.isArray(data.languages)) {
         errors.push('[languages.json] Некорректная схема (ожидались schemaVersion: 1 и массив languages)');
       } else {
+        if (data.defaultLanguage !== X_DEFAULT_LANG || !isW3cDate(data.lastModified)) errors.push('[languages.json] Некорректные defaultLanguage/lastModified');
         const codes = new Set(data.languages.map(x => x.code));
+        if (data.languages.length !== LANGS.length || codes.size !== data.languages.length) errors.push('[languages.json] Лишние или повторяющиеся языки');
         for (const l of LANGS) {
           if (!codes.has(l)) errors.push(`[languages.json] Отсутствует язык ${l}`);
         }
         for (const item of data.languages) {
+          const meta = LANG_META[item.code];
+          if (!meta || item.hreflang !== meta.hreflang || item.name !== meta.name || item.direction !== meta.direction ||
+              item.home !== SITE + routeUrl(item.code, 'home') || item.llms !== SITE + '/llms.txt') errors.push(`[languages.json] Неверные метаданные языка ${item.code}`);
           for (const field of ['code', 'hreflang', 'name', 'direction', 'home', 'llms']) {
             if (!item[field]) errors.push(`[languages.json] У языка ${item.code || '?'} пустое поле ${field}`);
           }
@@ -711,13 +779,20 @@ export function checkDist() {
       for (const field of ['name', 'short_name', 'description', 'start_url', 'theme_color', 'background_color']) {
         if (!mf[field]) errors.push(`[manifest.webmanifest] Отсутствует поле ${field}`);
       }
-      if (!Array.isArray(mf.icons) || mf.icons.length < 2) {
+      if (mf.start_url !== '/' || mf.scope !== '/' || !fs.existsSync(resolveInternalPath(mf.start_url || '/missing/')) ||
+          !/^#[0-9a-f]{6}$/i.test(mf.theme_color || '') || !/^#[0-9a-f]{6}$/i.test(mf.background_color || '')) errors.push('[manifest.webmanifest] Некорректный start_url/scope или цвет');
+      if (!Array.isArray(mf.icons) || mf.icons.length < 3 || !['192x192 any', '512x512 any', '512x512 maskable'].every(pair => mf.icons.some(ic => `${ic.sizes} ${ic.purpose}` === pair))) {
         errors.push('[manifest.webmanifest] Должны быть заданы PNG-иконки (192/512/maskable)');
       } else {
         for (const ic of mf.icons) {
           const resolved = resolveInternalPath(ic.src);
           if (!fs.existsSync(resolved)) {
             errors.push(`[manifest.webmanifest] Иконка ${ic.src} не найдена в dist/`);
+          } else {
+            const png = fs.readFileSync(resolved);
+            const size = Number(ic.sizes?.split('x')[0]);
+            if (ic.type !== 'image/png' || png.length < 24 || png.subarray(0, 8).toString('hex') !== '89504e470d0a1a0a' ||
+                png.readUInt32BE(16) !== size || png.readUInt32BE(20) !== size) errors.push(`[manifest.webmanifest] Неверный формат/размер PNG: ${ic.src}`);
           }
         }
       }
@@ -733,10 +808,15 @@ export function checkDist() {
     for (const prefix of ['Contact:', 'Expires:', 'Preferred-Languages:', 'Canonical:']) {
       if (!secText.includes(prefix)) errors.push(`[security.txt] Отсутствует поле ${prefix}`);
     }
+    for (const [key, expected] of [['Contact', SECURITY_CONTACT], ['Canonical', `${SITE}/.well-known/security.txt`], ['Preferred-Languages', 'ru, en']]) {
+      const lines = [...secText.matchAll(new RegExp(`^${key}:\\s*(.*)$`, 'gm'))].map(m => m[1].trim());
+      if (lines.length !== 1 || lines[0] !== expected) errors.push(`[security.txt] Некорректное поле ${key}`);
+    }
     const expMatch = secText.match(/^Expires:\s*(.+)$/m);
+    if ([...secText.matchAll(/^Expires:/gm)].length !== 1) errors.push('[security.txt] Должно быть ровно одно поле Expires');
     if (expMatch) {
       const expDate = new Date(expMatch[1].trim());
-      if (Number.isNaN(expDate.getTime()) || expDate.getTime() <= Date.now()) {
+      if (!/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?Z$/.test(expMatch[1].trim()) || Number.isNaN(expDate.getTime()) || expDate.getTime() <= Date.now() || expDate.getTime() > Date.now() + 366 * 86400000) {
         errors.push(`[security.txt] Некорректная или истёкшая дата Expires: ${expMatch[1].trim()}`);
       }
     }

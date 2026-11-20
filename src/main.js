@@ -90,7 +90,7 @@
       }
     });
     window.addEventListener('resize', () => {
-      if (nav.classList.contains('open') && window.innerWidth > 1080) setMenuState(false);
+      if (nav.classList.contains('open') && window.innerWidth > 1300) setMenuState(false);
     });
   }
 

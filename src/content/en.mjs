@@ -61,7 +61,7 @@ export default {
     ['features/tracker-blocker', 'Tracker blocker'],
     ['features/cookie-banners', 'Cookie banners'],
     ['features/popup-blocker', 'Pop-up blocker'],
-    ['pro', 'AntiRacketMantis PRO (in development)'],
+    ['pro', 'AntiRacketMantis PRO'],
     ['how-it-works', 'How it works'],
     ['install', 'Install'],
     ['uninstall', 'Uninstall'],
@@ -80,7 +80,7 @@ export default {
   meta: {
     home: {
       title: 'AntiRacketMantis — Ad & Tracker Blocker (Chrome, Firefox)',
-      desc: 'AntiRacketMantis browser extension for Chrome and Firefox: block ads, limit trackers, reject non-essential cookie banners and stop unwanted pop-ups.',
+      desc: 'AntiRacketMantis browser extension for Chrome and Firefox: block ads, limit trackers, reject non-essential cookies and stop unwanted pop-ups.',
       breadcrumb: 'Home'
     },
     features: {
@@ -90,7 +90,7 @@ export default {
     },
     'features/ad-blocker': {
       title: 'Ad Blocker for Chrome and Firefox — AntiRacketMantis',
-      desc: 'Manifest V3 network rules and cosmetic filters for Chrome and Firefox: fewer banners and empty ad boxes, honest limits and a one-click site toggle.',
+      desc: 'Manifest V3 network rules and cosmetic filters for Chrome and Firefox: fewer banners and empty ad boxes, clear limits and a one-click site toggle.',
       breadcrumb: 'Ad blocker'
     },
     'features/tracker-blocker': {
@@ -618,7 +618,7 @@ export default {
         afterItems: ['Unsolicited windows without a real click are stopped', 'Background pop-under tabs do not hijack focus', 'You stay on your page while sign-in and payment flows keep working']
       },
       exampleTitle: 'Everyday example',
-      exampleText: 'You visit an unfamiliar file mirror or recipe blog in Chrome or Firefox. On level 3 (Balanced), scripts cannot silently launch background ad tabs on your first click. If a web portal needs a custom popup report window, add that domain to your exceptions in seconds.',
+      exampleText: 'You visit an unfamiliar file mirror or recipe blog in Chrome or Firefox. Level 3 (Balanced) limits windows opened without a user action and some attempts to move newly opened windows into the background. It cannot identify every ad window opened by your own click. If a web portal needs a custom popup report window, add that domain to your exceptions in seconds.',
       settingsTitle: 'Related settings and levels',
       settingsText: 'Pop-up and pop-under protection activates automatically at level 3 (Balanced) and stays on at levels 4 and 5. Levels 1 and 2 leave window scripts untouched for maximum compatibility.',
       settingsLinkText: 'Compare all 5 protection levels',
@@ -764,7 +764,7 @@ export default {
     optionsLists: {
       alt: 'Expanded built-in filter lists table in AntiRacketMantis settings: EasyPrivacy (9,162 rules), RU AdList: Counters (1,086), uBlock filters – Badware risks (435) and Peter Lowe set to on',
       title: 'Transparent built-in filter lists',
-      desc: 'Inspect every bundled rule list (from uBlock Origin Lite 2026.1116.1650), rule count and active status—nothing downloads while you browse.',
+      desc: 'Inspect every bundled rule list (from uBlock Origin Lite 2026.1116.1650), rule count and active status—filter lists need no downloads while you browse.',
       caption: `Screenshot of version ${VERSION} · built-in filter lists`
     },
     welcomeProtections: {
@@ -810,7 +810,7 @@ export default {
     levelsIntro: 'Change levels anytime from the popup or settings page. Network and page-script changes take effect on new loads after reloading the tab.',
     builtinsTitle: 'Bundled lists and account-free transfer',
     builtinsItems: [
-      ['Lists live inside the extension package:', 'filter rules (from uBlock Origin Lite 2026.1116.1650) and the cookie-banner engine (DuckDuckGo autoconsent 18.6.0) ship inside the extension and update with new releases—nothing is downloaded while you browse.'],
+      ['Lists live inside the extension package:', 'filter rules (from uBlock Origin Lite 2026.1116.1650) and the cookie-banner engine (DuckDuckGo autoconsent 18.6.0) ship inside the extension and update with new releases—filter lists are not downloaded while you browse.'],
       ['Move settings without an account:', 'no sign-in or cloud sync is required—export and import your protection level, cookie-banner mode and site exceptions as a plain JSON file.'],
       ['No local CDN library proxying:', 'legacy LocalCDN-style substitution is not duplicated; CDN tracking is filtered by EasyPrivacy network rules.'],
       ['No unpredictable heuristic learning:', 'filtering stays predictable and follows your chosen level plus explicit site exceptions.']
@@ -1007,7 +1007,7 @@ export default {
     s2Lead: 'The extension uses storage.local in your browser profile and temporary session memory in storage.session. Local storage does not rule out network requests from optional modules described below:',
     s2Items: [
       ['Protection preferences:', 'selected level (1–5), cookie-banner mode and interface theme.'],
-      ['Site lists:', 'your excluded domains where protection is paused, plus canvas-masking sites (up to 100 hostnames per list).'],
+      ['Site lists:', 'your excluded domains where protection is paused, plus canvas-masking sites (up to 100 entries per list).'],
       ['Diagnostic log:', 'local entries containing timestamps, domains, event types and errors (up to 200 entries, retained for 14 days). You can disable or clear it in settings.'],
       ['Additional modules:', 'their preferences, consent flags, access keys for chosen external services and usage counters are stored locally. While a module runs, session memory may temporarily hold the source tab URL and the image being processed.'],
       ['Settings export:', 'manual JSON export includes only preferences and site lists—diagnostic logs and access keys are excluded.']
@@ -1143,7 +1143,7 @@ export default {
       },
       {
         q: 'Does AntiRacketMantis slow down my browser?',
-        a: 'Network filtering runs inside the browser’s native declarativeNetRequest engine with bundled lists—nothing is fetched in the background while browsing. Cosmetic scripts and pop-up control activate from level 3 (Balanced). We do not claim invented speed percentages because real impact depends on the page and level.'
+        a: 'Network filtering runs inside the browser’s native declarativeNetRequest engine with bundled lists—filter lists are not fetched in the background while browsing. Cosmetic scripts and pop-up control activate from level 3 (Balanced). We do not claim invented speed percentages because real impact depends on the page and level.'
       },
       {
         q: 'Why do some ads still appear on certain sites?',
@@ -1293,6 +1293,9 @@ export default {
   },
 
   notFound: {
+    metaTitle: '404 — AntiRacketMantis',
+    metaDescription: 'Page not found. Return to the AntiRacketMantis home page, features, installation guide or frequently asked questions.',
+    heading: 'AntiRacketMantis — 404',
     eyebrow: 'Error 404',
     title: 'Looks like we wandered off.',
     text: 'That page does not exist here—even a careful guardian misplaces a tab sometimes.',

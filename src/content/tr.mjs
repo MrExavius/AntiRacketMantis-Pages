@@ -3,16 +3,16 @@ import { SITE, STUDIO, VERSION } from './config.mjs';
 export default {
   ui: {
     langName: 'Türkçe',
-    skipToContent: 'İçeriğe geç',
+    skipToContent: 'İçeriğe geçin',
     brandHomeAria: 'AntiRacketMantis — ana sayfa',
     mainNavAria: 'Ana gezinme menüsü',
     langSwitcherAria: 'Dil seçimi',
     breadcrumbsAria: 'Sayfa yolu',
     homeLabel: 'Ana sayfa',
-    openMenu: 'Menüyü aç',
-    closeMenu: 'Menüyü kapat',
-    motionOff: 'Animasyonları durdur',
-    motionOn: 'Animasyonları oynat',
+    openMenu: 'Menüyü açın',
+    closeMenu: 'Menüyü kapatın',
+    motionOff: 'Animasyonları durdurun',
+    motionOn: 'Animasyonları oynatın',
     footerAboutAria: 'Uzantı hakkında',
     footerAboutHeading: 'Uzantı',
     footerTrustAria: 'Belgeler ve yardım',
@@ -28,7 +28,7 @@ export default {
     allFeatures: 'Tüm özellikler',
     howItWorksLink: 'Nasıl çalışır',
     installCta: 'Kurulum',
-    freeVersionCta: 'Ücretsiz sürümü yükle',
+    freeVersionCta: 'Ücretsiz sürümü yükleyin',
     proNavLabel: 'PRO',
     soonBadge: 'yakında',
     devBadge: 'Geliştiriliyor',
@@ -42,7 +42,7 @@ export default {
     chromeSoonText: 'yakında',
     firefoxSoonText: 'yakında',
     levelPrefix: 'Seviye',
-    exploreFeatures: 'Özellikleri incele',
+    exploreFeatures: 'Özellikleri inceleyin',
     installGuideLink: 'Kurulum rehberi'
   },
 
@@ -61,7 +61,7 @@ export default {
     ['features/tracker-blocker', 'İzleyici koruması'],
     ['features/cookie-banners', 'Çerez bildirimleri'],
     ['features/popup-blocker', 'Açılır pencereler'],
-    ['pro', 'AntiRacketMantis PRO (geliştiriliyor)'],
+    ['pro', 'AntiRacketMantis PRO'],
     ['how-it-works', 'Nasıl çalışır'],
     ['install', 'Kurulum'],
     ['uninstall', 'Kaldırma'],
@@ -229,8 +229,8 @@ export default {
         'Gelişmiş tarayıcı otomasyonu ve ek araçlar'
       ],
       disclaimer: 'PRO şu anda geliştiriliyor ve henüz kullanıma sunulmadı. Ödeme ekranı yoktur, çıkış tarihi belirlenmemiştir ve hiçbir sitede doğrulamanın geçileceği vadedilmez.',
-      primaryCta: 'PRO planlarını incele',
-      secondaryCta: 'Yayın durumunu takip et'
+      primaryCta: 'PRO planlarını inceleyin',
+      secondaryCta: 'Yayın durumunu takip edin'
     },
 
     interface: {
@@ -278,7 +278,7 @@ export default {
       perms: [
         ['Sitelerdeki verileri okuma ve değiştirme (http/https + scripting)', 'Reklam kutularını gizlemek, desteklenen çerez bildirimlerini reddetmek, istenmeyen açılır pencereleri durdurmak ve parmak izi kurallarını uygulamak için kullanılır.'],
         ['Ağ isteklerini engelleme ve düzenleme (declarativeNetRequest)', 'Tarayıcı motorunun kendisi, yerleşik kural listeleriyle reklam ve izleyici isteklerini keser ve bağlantılardaki takip etiketlerini temizler.'],
-        ['Etkin sekmeyi ve sekmeleri görme (tabs, activeTab)', 'Açık sitenin koruma durumunu göstermek, o site için istisna eklemek ve sekmeyi yenilemek için kullanılır.'],
+        ['Etkin sekmeyi ve sekmeleri görme (tabs, activeTab)', 'Açık sitenin koruma durumunu göstermek, o site için istisna olarak eklemek ve sekmeyi yenilemek için kullanılır.'],
         ['Ayarları yerel depolama (storage)', 'Koruma seviyenizi, çerez bildirimi tercihinizi, istisna listesini ve yerel olay günlüğünü tarayıcı profilinizde saklar.']
       ],
       note: 'Kesin veri akışı açıklamaları ve nihai Gizlilik Politikası, yayın öncesi paket denetimi tamamlandığında kesinleşecektir.'
@@ -322,7 +322,7 @@ export default {
         details: 'Yerleşik uBlock filters, EasyList, RU AdList, Peter Lowe ve AdGuard Turkish listelerine dayanan ağ kuralları, bilinen reklam alan adlarına giden istekleri yüklenmeden durdurur. Seviye 3 (Dengeli) ve üzerinde kozmetik filtreler sayfa içinde kalan reklam bloklarını da gizler.',
         limit: 'Sınır: İçerikle aynı alan adından sunulan birinci taraf reklamlar veya yeni sayfa yapıları, yerleşik listeler güncellenene kadar görünebilir.',
         tags: ['Ağ kuralları', 'Kozmetik filtreler', 'Seviye 2–3’ten itibaren'],
-        ctaLabel: 'Reklam engellemeyi incele'
+        ctaLabel: 'Reklam engellemeyi inceleyin'
       },
       {
         id: 'tracking',
@@ -336,7 +336,7 @@ export default {
         details: 'Seviye 2’den itibaren EasyPrivacy, RU AdList: Counters ve uBO Badware listeleri tarayıcı motorunda çalışır. Seviye 3’ten itibaren bağlantılardaki utm_* ve fbclid gibi takip parametreleri temizlenir, Sec-GPC ve DNT sinyalleri gönderilir.',
         limit: 'Sınır: Hiçbir tarayıcı uzantısı tam anonimlik sağlamaz; internet sağlayıcınız ve ziyaret ettiğiniz site IP adresinizi ve ziyaretinizi görmeye devam eder.',
         tags: ['EasyPrivacy', 'URL temizleme', 'Sec-GPC ve DNT'],
-        ctaLabel: 'İzleyici korumasını incele'
+        ctaLabel: 'İzleyici korumasını inceleyin'
       },
       {
         id: 'cookies',
@@ -350,7 +350,7 @@ export default {
         details: 'Çerez bildirimleri ayarı 1–5 koruma seviyelerinden bağımsızdır: varsayılan olarak uyumlu onay pencerelerinde isteğe bağlı çerezleri reddeder. Seviye 4 ve üzerinde üçüncü taraf çerez bildirimi betikleri ve üçüncü taraf çerezler de engellenir.',
         limit: 'Sınır: Bir site reddetme seçeneği sunmuyorsa yalnızca bildirimi gizlemek teknik reddetme anlamına gelmez; siteler gerekli güvenlik çerezlerini ayarlayabilir.',
         tags: ['Bağımsız ayar', 'Önce reddet', 'Dürüst sınırlar'],
-        ctaLabel: 'Çerez bildirimlerini incele'
+        ctaLabel: 'Çerez bildirimlerini inceleyin'
       },
       {
         id: 'popups',
@@ -364,7 +364,7 @@ export default {
         details: 'Seviye 3 (Dengeli) ile birlikte etkinleşen hafif koruma, sayfa betiklerinin kendiliğinden reklam penceresi açmasını sınırlar; giriş ve ödeme akışlarını korumaya çalışır.',
         limit: 'Sınır: OAuth giriş, banka onayı ve ödeme pencereleri normal çalışmalıdır; bir pencere engellenirse ilgili sitede korumayı tek tıkla kapatabilirsiniz.',
         tags: ['Pop-up koruması', 'Pop-under koruması', 'Giriş ve ödeme dostu'],
-        ctaLabel: 'Açılır pencere kontrolünü incele'
+        ctaLabel: 'Açılır pencere kontrolünü inceleyin'
       },
       {
         id: 'privacy',
@@ -378,7 +378,7 @@ export default {
         details: 'Uzantı penceresinde deneysel Canvas maskeleme anahtarı yer alır. Seviye 5 (Maksimum) ise kapsamlı parmak izi koruması (canvas, WebGL, ses ve genel işlemci çekirdek sayısı), üçüncü taraf ping/CSP rapor engelleme ve özel yerel ağlar hariç HTTPS geçişi ekler.',
         limit: 'Sınır: Parmak izi gürültüsü her sayfa yüklemesinde değiştiğinden bazı siteler daha sık doğrulama isteyebilir.',
         tags: ['Canvas / WebGL', 'Ping engelleme', 'Seviye 5 HTTPS'],
-        ctaLabel: 'Nasıl çalışır bölümüne git'
+        ctaLabel: 'Nasıl çalışır bölümüne gidin'
       },
       {
         id: 'filters',
@@ -388,11 +388,11 @@ export default {
         cardTitle: 'Sizin seviyeleriniz ve istisnalarınız',
         cardText: 'Beş hazır koruma seviyesi ve her site için tek tıkla duraklatma.',
         title: 'Koruma seviyeleri ve site istisnaları',
-        summary: 'Beş seviye arasında istediğiniz an geçiş yapın, 100’e kadar alan adını istisna ekleyin ve ayarları JSON olarak aktarın.',
+        summary: 'Beş seviye arasında istediğiniz an geçiş yapın, 100’e kadar alan adını istisna olarak ekleyin ve ayarları JSON olarak aktarın.',
         details: 'Uyumluluk (1) ile Maksimum (5) arasında rahatça geçiş yapabilir, bozulan siteleri alt alan adlarıyla birlikte istisna listesine ekleyebilir ve hesap açmadan JSON dışa/içe aktarma yapabilirsiniz.',
         limit: 'Sınır: Seviye veya istisna değişiklikleri sekmeyi yeniledikten sonra yeni yüklemelerde geçerli olur; uzantı bunun için bir yenileme düğmesi gösterir.',
         tags: ['5 seviye', 'Alan adı istisnaları', 'JSON aktarımı'],
-        ctaLabel: '5 seviyeyi incele'
+        ctaLabel: '5 seviyeyi inceleyin'
       }
     ],
     nudge: {
@@ -444,7 +444,7 @@ export default {
       exampleText: 'Chrome veya Firefox’ta uzun bir makale ya da rehber açtınız. Varsayılan Seviye 2’de Peter Lowe listesindeki reklam alan adları zaten durdurulur; Seviye 3 (Dengeli) seçeneğine geçip sekmeyi yenilediğinizde kozmetik bannerlar da temizlenir. Desteklemek istediğiniz bir siteyi ise tek tıkla istisnalara ekleyebilirsiniz.',
       settingsTitle: 'İlgili ayarlar ve seviyeler',
       settingsText: 'Seviye 1 (Uyumluluk) reklam filtrelerini kapatır. Seviye 2 (Hafif, varsayılan) kozmetik olmadan Peter Lowe listesini açar. Seviye 3 (Dengeli) tam uBlock filters, EasyList, RU AdList, AdGuard Turkish listelerini ve kozmetik gizlemeyi etkinleştirir.',
-      settingsLinkText: 'Tüm 5 koruma seviyesini karşılaştırın',
+      settingsLinkText: 'Beş koruma seviyesinin tümünü karşılaştırın',
       limitsTitle: 'Dürüst sınırlar',
       limitsText: 'Sitenin kendi alan adından sunduğu birinci taraf reklamlar, yazı içi sponsorlu bölümler ve hızla değişen sayfa yapıları görünmeye devam edebilir. Tüm sınırları Bilinen Sınırlar sayfasında bulabilirsiniz.',
       limitsLinkText: 'Tüm bilinen sınırları okuyun',
@@ -452,7 +452,7 @@ export default {
       faqs: [
         { q: 'Kurulumdan hemen sonra bazı reklamlar neden hâlâ görünüyor?', a: 'Sitelerin bozulmasını önlemek için varsayılan seviye 2 (Hafif koruma) olarak gelir ve bu seviyede kozmetik gizleme kapalıdır. Tam reklam engelleme için Seviye 3 (Dengeli) seçip sekmeyi yenileyin.' },
         { q: 'Reklam engelleyici Chrome ve Firefox’ta aynı mı çalışır?', a: 'Temel ağ ve kozmetik kuralları Chrome 110+ ve Firefox 128+ sürümlerinde birlikte çalışır. Tek arayüz farkı, Chrome’un etkin sekmedeki eşleşen kural sayacını gösterebilmesi, Firefox’un ise bu sayacı uzantılara vermemesidir.' },
-        { q: 'Desteklemek istediğim tek bir sitede reklamlara izin verebilir miyim?', a: 'Evet. O sitedeyken AntiRacketMantis penceresini açın, site koruma anahtarını kapatın ve sayfayı yenileyin. Alt alan adları dâhil 100’e kadar alan adını istisna ekleyebilirsiniz.' },
+        { q: 'Desteklemek istediğim tek bir sitede reklamlara izin verebilir miyim?', a: 'Evet. O sitedeyken AntiRacketMantis penceresini açın, site koruma anahtarını kapatın ve sayfayı yenileyin. Alt alan adları dâhil 100’e kadar alan adını istisna olarak ekleyebilirsiniz.' },
         { q: 'İnternetteki her reklamı eksiksiz engeller mi?', a: 'Hayır. İçerikle aynı alan adından gelen birinci taraf reklamlar ve yeni sayfa düzenleri, yerleşik listeler güncellenene kadar görünmeye devam edebilir.' }
       ],
       relatedTitle: 'Diğer koruma araçları',
@@ -500,10 +500,10 @@ export default {
         afterItems: ['Bilinen takip parametreleri bağlantıdan temizlenir', 'Bilinen EasyPrivacy izleyici istekleri yerel olarak durdurulur', 'Sec-GPC sinyali gönderilir; Seviye 4 üçüncü taraf bileşenleri keser']
       },
       exampleTitle: 'Günlük kullanım örneği',
-      exampleText: 'Chrome veya Firefox’ta bir bültenden gelen bağlantıya tıkladınız. Seviye 3’te AntiRacketMantis takip etiketlerini adresten temizler ve bilinen EasyPrivacy sayaçlarını yerel olarak durdurur. Sıkı Seviye 4–5’te üçüncü taraf hesapla giriş düğmesi çalışmazsa Seviye 3’e dönmeniz veya siteyi istisna eklemeniz yeterlidir.',
+      exampleText: 'Chrome veya Firefox’ta bir bültenden gelen bağlantıya tıkladınız. Seviye 3’te AntiRacketMantis takip etiketlerini adresten temizler ve bilinen EasyPrivacy sayaçlarını yerel olarak durdurur. Sıkı Seviye 4–5’te üçüncü taraf hesapla giriş düğmesi çalışmazsa Seviye 3’e dönmeniz veya siteyi istisna olarak eklemeniz yeterlidir.',
       settingsTitle: 'İlgili ayarlar ve seviyeler',
       settingsText: 'Seviye 2 EasyPrivacy, RU AdList: Counters ve uBO Badware listelerini açar. Seviye 3 bağlantı temizleme ve Sec-GPC/DNT ekler. Seviye 4 üçüncü taraf çerez ve sosyal bileşenleri sınırlar. Seviye 5 parmak izi koruması, ping engelleme ve HTTPS yönlendirmesi ekler.',
-      settingsLinkText: 'Tüm 5 koruma seviyesini görün',
+      settingsLinkText: 'Beş koruma seviyesinin tümünü görün',
       limitsTitle: 'Dürüst sınırlar',
       limitsText: 'Hiçbir tarayıcı uzantısı tam anonimlik sağlamaz: internet sağlayıcınız ve açtığınız site IP adresinizi ve o sitedeki işlemlerinizi görmeye devam eder. Gizli mod tek başına oturum sırasındaki izleyicileri engellemez.',
       limitsLinkText: 'Gizlilik sınırlarını okuyun',
@@ -559,7 +559,7 @@ export default {
         afterItems: ['Uyumlu onay penceresi otomatik olarak tanınır', '“Tümünü kabul et” tıklanmadan isteğe bağlı çerezler reddedilir', 'Sayfa hemen okunabilir olur; giriş ve güvenlik çerezleri çalışır']
       },
       exampleTitle: 'Günlük kullanım örneği',
-      exampleText: 'Chrome veya Firefox’ta bir haber sitesi veya yazılım belgesi açtınız. Üç ayrı onay menüsüyle uğraşmak yerine AntiRacketMantis reddetme adımını otomatik uygular. Bir sitede tercihlerinizi elle seçmek isterseniz o siteyi istisna eklemeniz veya ayarı “Dokunma” yapmanız yeterlidir.',
+      exampleText: 'Chrome veya Firefox’ta bir haber sitesi veya yazılım belgesi açtınız. Üç ayrı onay menüsüyle uğraşmak yerine AntiRacketMantis reddetme adımını otomatik uygular. Bir sitede tercihlerinizi elle seçmek isterseniz o siteyi istisna olarak eklemeniz veya ayarı “Dokunma” yapmanız yeterlidir.',
       settingsTitle: 'İlgili ayarlar ve seviyeler',
       settingsText: 'Ayarlar → Gizlilik ve koruma bölümünde Çerez bildirimleri için “İsteğe bağlı çerezleri reddet” (varsayılan) veya “Dokunma” seçebilirsiniz. Seviye 4–5 üçüncü taraf bildirim betiklerini de engeller.',
       settingsLinkText: 'Nasıl Çalışır sayfasındaki ayar görüntüsünü görün',
@@ -618,10 +618,10 @@ export default {
         afterItems: ['Gerçek tıklama olmadan açılan pencereler durdurulur', 'Arka plan reklam sekmeleri odak çalmaz', 'Kendi sayfanızda kalırsınız; giriş ve ödeme akışları çalışır']
       },
       exampleTitle: 'Günlük kullanım örneği',
-      exampleText: 'Chrome veya Firefox’ta tanımadığınız bir dosya veya tarif sitesini açtınız. Seviye 3 (Dengeli) açıkken sayfa betikleri ilk tıklamanızda sessizce arka plan reklam sekmesi açamaz. Kurumsal bir portalda özel bir rapor penceresi açılmazsa o alan adını saniyeler içinde istisna listesine ekleyebilirsiniz.',
+      exampleText: 'Chrome veya Firefox’ta tanımadığınız bir dosya veya tarif sitesini açtınız. Seviye 3 (Dengeli), kullanıcı eylemi olmadan açılan pencereleri ve odağı değiştirmeye çalışan bazı arka plan pencerelerini sınırlar. Kendi tıklamanızla açılan tüm reklam pencerelerinin durdurulacağı söylenemez. Kurumsal bir portalda özel bir rapor penceresi açılmazsa o alan adını saniyeler içinde istisna listesine ekleyebilirsiniz.',
       settingsTitle: 'İlgili ayarlar ve seviyeler',
       settingsText: 'Pop-up ve pop-under koruması Seviye 3 (Dengeli) ile otomatik olarak açılır ve Seviye 4 ile 5’te de etkin kalır. Seviye 1 ve 2 maksimum uyumluluk için pencere betiklerine dokunmaz.',
-      settingsLinkText: 'Tüm 5 koruma seviyesini karşılaştırın',
+      settingsLinkText: 'Beş koruma seviyesinin tümünü karşılaştırın',
       limitsTitle: 'Dürüst sınırlar',
       limitsText: 'Ayrı tarayıcı penceresi olmayıp doğrudan sayfa DOM yapısında açılan katmanlar veya kullanıcı tıklamasını taklit eden betikler farklı davranabilir. Bir OAuth ya da ödeme penceresi açılmazsa o site için korumayı duraklatın.',
       limitsLinkText: 'Tüm bilinen sınırları okuyun',
@@ -659,8 +659,8 @@ export default {
       period: '/ ay',
       priceLabel: 'planlanan fiyat',
       summary: 'Tek uzantı: ücretsiz temel koruma abonelik olmadan çalışır; PRO araçları geliştirme ve denetim tamamlandığında aynı uzantı içinde açılacaktır.',
-      primaryCta: 'Ücretsiz sürümü yükle',
-      secondaryCta: 'Yayın durumunu takip et'
+      primaryCta: 'Ücretsiz sürümü yükleyin',
+      secondaryCta: 'Yayın durumunu takip edin'
     },
     plannedTitle: 'AntiRacketMantis PRO için planlananlar',
     plannedIntro: 'Bu PRO özelliklerinin hiçbiri henüz yayınlanmadı; üzerinde çalışılan alanlar aşağıdadır:',
@@ -728,8 +728,8 @@ export default {
       title: 'Ücretsiz temel korumayla başlayın',
       text: 'Kurulum rehberini inceleyin veya yol haritasından geliştirme aşamalarını takip edin.',
       actions: [
-        ['install', 'Ücretsiz sürümü yükle', 'btn-primary'],
-        ['changelog#roadmap', 'Yayın durumunu takip et', 'btn-secondary']
+        ['install', 'Ücretsiz sürümü yükleyin', 'btn-primary'],
+        ['changelog#roadmap', 'Yayın durumunu takip edin', 'btn-secondary']
       ]
     }
   },
@@ -971,7 +971,7 @@ export default {
       ['Safari, mobil tarayıcılar ve eski sürümler', '—', 'Desteklenmiyor', 'Ayrı uyarlama ve test yapılmadan destek vadedilmez.']
     ],
     calloutTitle: 'Teknik izin kapsamı ve gerçek davranış:',
-    calloutText: 'tarayıcının “Tüm web sitelerindeki verilerinizi okuyabilir ve değiştirebilir” standart uyarısı, reklam kutularını gizlemek ve çerez bildirimlerini yönetmek için gereken teknik sayfa erişimini ifade eder. Temel filtreleme parolalarınızı, yazışmalarınızı veya kapalı formları okumaz ve gezinme geçmişinizi geliştiriciye göndermez.',
+    calloutText: 'tarayıcının “Tüm web sitelerindeki verilerinizi okuyabilir ve değiştirebilir” standart uyarısı, reklam kutularını gizlemek ve çerez bildirimlerini yönetmek için gereken teknik sayfa erişimini ifade eder. Temel filtreleme parolalarınızı, yazışmalarınızı veya formlarınızdaki özel bilgileri okumaz ve gezinme geçmişinizi geliştiriciye göndermez.',
     engineTitle: 'Tarayıcı motorunun teknik sınırları',
     engineItems: [
       ['Etkin filtre listesi kotaları:', 'Chrome ve Firefox aynı anda etkin olabilecek declarativeNetRequest kural sayısına sistem sınırı koyar. Tarayıcı ek bir kümeyi uygulamazsa uzantı bunu “kısmen etkin” durumuyla açıkça gösterir.'],
@@ -1001,13 +1001,13 @@ export default {
       'Site çerez yerleştirmez ve izleyici kullanmaz.',
       'Web analitiği, reklam pikseli, üçüncü taraf yazı tipi veya dış betik bulunmaz.',
       'Kayıt, yorum veya kişisel veri toplayan herhangi bir form yoktur.',
-      'Sitenin tek tercihi (“Animasyonları durdur”) yalnızca tarayıcınızın localStorage alanında arm-motion-off anahtarıyla saklanır ve dışarı gönderilmez.'
+      'Sitenin tek tercihi (“Animasyonları durdurun”) yalnızca tarayıcınızın localStorage alanında arm-motion-off anahtarıyla saklanır ve dışarı gönderilmez.'
     ],
     s2Title: '2. Uzantının tarayıcıda yerel sakladığı veriler',
     s2Lead: 'Uzantı, tarayıcı profilinizde storage.local alanını ve geçici oturum belleği olarak storage.session alanını kullanır. Yerel depolama, aşağıda belirtilen ek modüllerin ağ isteklerini dışlamaz:',
     s2Items: [
       ['Koruma tercihleri:', 'seçili seviye (1–5), çerez bildirimi modu ve arayüz teması.'],
-      ['Site listeleri:', 'korumanın kapatıldığı istisna alan adlarınız ve canvas maskeleme siteleri (liste başına en fazla 100 alan adı).'],
+      ['Site listeleri:', 'korumanın kapatıldığı istisna alan adlarınız ve canvas maskeleme siteleri (liste başına en fazla 100 adres).'],
       ['Tanılama günlüğü:', 'zaman, alan adı, olay türü ve hata kayıtları (en fazla 200 kayıt, 14 gün saklama). Ayarlardan kapatılabilir veya temizlenebilir.'],
       ['Ek modüller:', 'tercihleri, onay bayrakları, seçilen harici servis erişim anahtarları ve sayaçlar yerel saklanır. Modül çalışırken geçici bellekte kaynak sekme adresi ve işlenen görsel bulunabilir.'],
       ['Ayar dışa aktarımı:', 'elle JSON dışa aktarmada yalnızca tercihler ve site listeleri kaydedilir; günlükler ve gizli anahtarlar dâhil edilmez.']
@@ -1023,7 +1023,7 @@ export default {
       ['Tüm sitelere erişim (http://*/*, https://*/*)', 'İstisna listeniz dışındaki tüm ziyaret edilen sitelerde ağ ve sayfa kurallarını uygulamak için gereklidir.']
     ],
     s3CalloutTitle: 'Teknik izin kapsamı ve gerçek davranış:',
-    s3CalloutText: 'tarayıcının “Tüm web sitelerindeki verilerinizi okuyabilir ve değiştirebilir” uyarısı yalnızca reklam kutularını gizlemek ve çerez bildirimleriyle etkileşmek için gereken teknik izni gösterir. Temel filtreleme parolalarınızı, özel mesajlarınızı veya kapalı form içeriklerini okumaz ve gezinme geçmişinizi geliştiriciye göndermez.',
+    s3CalloutText: 'tarayıcının “Tüm web sitelerindeki verilerinizi okuyabilir ve değiştirebilir” uyarısı yalnızca reklam kutularını gizlemek ve çerez bildirimleriyle etkileşmek için gereken teknik izni gösterir. Temel filtreleme parolalarınızı, özel mesajlarınızı veya formlarınızdaki özel bilgileri okumaz ve gezinme geçmişinizi geliştiriciye göndermez.',
     s4Title: '4. Ağ istekleri ve harici servisler',
     s4Paragraphs: [
       'Temel koruma — reklam, izleyici, bağlantı etiketi, açılır pencere engelleme ve çerez bildirimi yönetimi — yerleşik listelerle tarayıcınızda yerel çalışır ve gezinme geçmişinizi geliştiriciye veya üçüncü taraflara göndermez.',
@@ -1171,7 +1171,7 @@ export default {
       },
       {
         q: 'Bir site bozulursa veya giriş yapamazsam ne yapmalıyım?',
-        a: 'Önce uzantı penceresinden o site için korumayı kapatıp sekmeyi yenileyin. Sorun yalnızca Seviye 4–5’te (üçüncü taraf giriş veya HTTP-only site) yaşanıyorsa Seviye 3 (Dengeli) seçin ya da alan adını istisnalara ekleyin.'
+        a: 'Önce uzantı penceresinden o site için korumayı kapatıp sekmeyi yenileyin. Sorun yalnızca Seviye 4–5’te (üçüncü taraf giriş veya yalnızca HTTP kullanan site) yaşanıyorsa Seviye 3 (Dengeli) seçin ya da alan adını istisnalara ekleyin.'
       },
       {
         q: 'Uzantıyı nasıl kaldırırım ve ayarlarıma ne olur?',
@@ -1293,6 +1293,9 @@ export default {
   },
 
   notFound: {
+    metaTitle: '404 — AntiRacketMantis',
+    metaDescription: 'Sayfa bulunamadı. AntiRacketMantis ana sayfasına, özelliklere, kurulum rehberine veya sık sorulan sorulara dönebilirsiniz.',
+    heading: 'AntiRacketMantis — 404',
     eyebrow: 'Hata 404',
     title: 'Sanırım yolumuzu biraz kaybettik.',
     text: 'Aradığınız sayfa burada yok — en dikkatli koruyucu bile bazen bir sekmesini kaybedebilir.',

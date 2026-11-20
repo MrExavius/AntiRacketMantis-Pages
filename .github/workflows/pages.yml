@@ -96,7 +96,7 @@ jobs:
             served="$(curl -s --max-time 20 "$base/" | sha256sum | cut -d' ' -f1 || true)"
             if [ "$served" = "$EXPECTED_INDEX_SHA" ]; then
               echo "OK: $base/ serves the new build"
-              for path in robots.txt sitemap.xml; do
+              for path in robots.txt sitemap.xml .well-known/security.txt; do
                 code="$(curl -s -o /dev/null -w '%{http_code}' --max-time 20 "$base/$path")"
                 test "$code" = "200" || { echo "FAIL: /$path returned $code"; exit 1; }
               done
