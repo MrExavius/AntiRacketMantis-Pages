@@ -1,0 +1,50 @@
+{
+  "/": {
+    "hash": "39b2761962f674d5d57696e6c46d9eaa43fc8d6aa34ba3f0b9ea0305553cee21",
+    "lastmod": "2026-11-20"
+  },
+  "/features/": {
+    "hash": "1957e7e9c5d8bbe41e3d41951fa3cc82aa7a4bb0b84e4a33d434087abd62b205",
+    "lastmod": "2026-11-20"
+  },
+  "/how-it-works/": {
+    "hash": "391ef602fe7b9e672e4f2bc95171f2ad43234d48fa5949dd4cc6e0b6268ce27d",
+    "lastmod": "2026-11-20"
+  },
+  "/install/": {
+    "hash": "08c8c85d63c044efb55b0e5ae97fa5d92140d10fd34f20446cbeb877464bfae6",
+    "lastmod": "2026-11-20"
+  },
+  "/uninstall/": {
+    "hash": "344b74c4038df6a4a70ca0285b340e7e1d4e3d0f2f0fc03914aba55406707aa9",
+    "lastmod": "2026-11-20"
+  },
+  "/limits/": {
+    "hash": "5071d8beb677d1739dd8a5da6d64b6874455564508dbe87381b74533b6cd70e9",
+    "lastmod": "2026-11-20"
+  },
+  "/compatibility/": {
+    "hash": "351c0adb0dc920fde5ea09cf4d010e818849f54c6e72af73aed4baffe8280098",
+    "lastmod": "2026-11-20"
+  },
+  "/privacy/": {
+    "hash": "d63f31feb2727cc860a1e91acfd272ba0477c12ac4a0271bfbb40cb9fb264653",
+    "lastmod": "2026-11-20"
+  },
+  "/terms/": {
+    "hash": "2b8bb1a92351683f22e9bd93a70d9b7431165a71a13f472a0299ebf05bcd6ef1",
+    "lastmod": "2026-11-20"
+  },
+  "/faq/": {
+    "hash": "14804e66cd94f8d3a24999181f5af409feb34bbe4e7b60bf4457f74052cdcda9",
+    "lastmod": "2026-11-20"
+  },
+  "/support/": {
+    "hash": "2107909ac8997e18678b5389439e4f4ce8294342215dc699bfe075552ede6c37",
+    "lastmod": "2026-11-20"
+  },
+  "/changelog/": {
+    "hash": "ac7067e8921a931dd00ac16d53641e935b15994d0de6d97895701ccaa5719cec",
+    "lastmod": "2026-11-20"
+  }
+}

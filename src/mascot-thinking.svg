@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 440 530" role="img" aria-labelledby="title description">
+ <title id="title">Богомол Минти задумчиво ищет ответ</title>
+ <desc id="description">Задумчивый мятно-зелёный богомол AntiRacketMantis приложил лапку к подбородку и смотрит на облачко с вопросом.</desc>
+ <defs>
+  <linearGradient id="body" x1=".1" y1="0" x2=".9" y2="1"><stop stop-color="#c3f48d"/><stop offset=".46" stop-color="#86db78"/><stop offset="1" stop-color="#45ad70"/></linearGradient>
+  <linearGradient id="face" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#d5fb9d"/><stop offset=".53" stop-color="#9eeb87"/><stop offset="1" stop-color="#62c987"/></linearGradient>
+  <linearGradient id="wing" x1="0" y1="0" x2=".9" y2="1"><stop stop-color="#a5e3c7"/><stop offset="1" stop-color="#5eb9a0"/></linearGradient>
+  <linearGradient id="eye" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#2b6554"/><stop offset="1" stop-color="#17443f"/></linearGradient>
+  <radialGradient id="shine"><stop stop-color="#fff" stop-opacity=".68"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></radialGradient>
+  <filter id="shadow" x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="9"/></filter>
+ </defs>
+ <ellipse cx="218" cy="495" rx="121" ry="19" fill="#2a7754" opacity=".2" filter="url(#shadow)"/>
+ <!-- thought bubble with question mark -->
+ <circle cx="348" cy="116" r="8" fill="#fffefa" stroke="#285f4d" stroke-width="5"/>
+ <circle cx="368" cy="96" r="12" fill="#fffefa" stroke="#285f4d" stroke-width="5"/>
+ <rect x="352" y="22" width="72" height="58" rx="24" fill="#fffefa" stroke="#285f4d" stroke-width="6"/>
+ <path d="M380 41a9 8 0 1 1 13 7c-4 3-5 5-5 9m0 9v1" fill="none" stroke="#2a8c5c" stroke-width="6" stroke-linecap="round"/>
+ <g fill="none" stroke="#275e4c" stroke-width="10" stroke-linecap="round">
+  <path d="M172 124 Q140 58 102 56"/><path d="M256 122 Q268 50 304 28"/>
+ </g>
+ <path d="M98 52 Q56 36 58 76 Q94 88 118 58Z" fill="#68c778" stroke="#285f4d" stroke-width="7" stroke-linejoin="round"/>
+ <path d="M300 28 Q322 0 347 15 Q346 56 303 44Z" fill="#a4e58d" stroke="#285f4d" stroke-width="7" stroke-linejoin="round"/>
+ <path d="M144 283 Q51 271 58 355 Q74 416 163 398Z" fill="url(#wing)" stroke="#285c50" stroke-width="10" stroke-linejoin="round"/>
+ <path d="M281 283 Q370 264 384 343 Q362 423 272 403Z" fill="url(#wing)" stroke="#285c50" stroke-width="10" stroke-linejoin="round"/>
+ <g fill="none" stroke="#245a49" stroke-width="28" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M180 420 Q160 452 141 478"/><path d="M259 418 Q282 452 304 475"/>
+ </g>
+ <g fill="none" stroke="#82d477" stroke-width="17" stroke-linecap="round"><path d="M180 420 Q161 452 142 477"/><path d="M259 420 Q279 451 303 475"/></g>
+ <path d="M107 477q30-20 55-6 17 20-16 24h-35q-21-4-4-18Z" fill="#75c779" stroke="#245a49" stroke-width="9"/>
+ <path d="M331 478q-30-20-55-6-17 20 16 24h35q20-4 4-18Z" fill="#75c779" stroke="#245a49" stroke-width="9"/>
+ <path d="M171 268 Q137 279 138 355 Q145 432 218 444 Q295 428 302 354 Q306 281 267 269Z" fill="url(#body)" stroke="#245a49" stroke-width="11" stroke-linejoin="round"/>
+ <!-- left folded foreleg -->
+ <path d="M151 309 Q110 295 90 337 Q79 363 107 384" fill="none" stroke="#245a49" stroke-width="35" stroke-linecap="round" stroke-linejoin="round"/>
+ <path d="M151 308 Q112 297 95 338 Q88 362 108 378" fill="none" stroke="#8bdd83" stroke-width="24" stroke-linecap="round"/>
+ <path d="M93 367 Q71 376 79 400 Q93 419 116 404 Q131 386 107 369Z" fill="#c9f69a" stroke="#245a49" stroke-width="9"/>
+ <path d="M190 254 188 291 Q215 318 252 288 L252 252" fill="#73ca7e" stroke="#245a49" stroke-width="10" stroke-linejoin="round"/>
+ <path d="M83 175 Q82 91 210 97 Q348 94 354 181 Q363 262 273 285 Q206 305 138 274 Q78 244 83 175Z" fill="url(#face)" stroke="#245a49" stroke-width="12" stroke-linejoin="round"/>
+ <ellipse cx="158" cy="139" rx="48" ry="23" transform="rotate(-17 158 139)" fill="#e5ffbc" opacity=".45"/>
+ <ellipse cx="125" cy="222" rx="24" ry="15" fill="#faab98" opacity=".6"/>
+ <ellipse cx="306" cy="221" rx="24" ry="15" fill="#faab98" opacity=".6"/>
+ <ellipse cx="158" cy="189" rx="46" ry="52" transform="rotate(9 158 189)" fill="#fdfdf0" stroke="#285a4a" stroke-width="9"/>
+ <ellipse cx="274" cy="185" rx="47" ry="53" transform="rotate(-10 274 185)" fill="#fdfdf0" stroke="#285a4a" stroke-width="9"/>
+ <!-- pupils looking up and right thoughtfully -->
+ <ellipse cx="177" cy="181" rx="24" ry="31" fill="url(#eye)"/>
+ <ellipse cx="272" cy="179" rx="24" ry="31" fill="url(#eye)"/>
+ <ellipse cx="183" cy="169" rx="10" ry="14" fill="#fff"/>
+ <ellipse cx="277" cy="167" rx="10" ry="14" fill="#fff"/>
+ <circle cx="165" cy="196" r="5" fill="#fff" opacity=".86"/>
+ <circle cx="261" cy="194" r="5" fill="#fff" opacity=".86"/>
+ <!-- curious asymmetric eyebrows and thoughtful mouth -->
+ <path d="M127 139 Q152 132 179 141" fill="none" stroke="#2a6650" stroke-width="7" stroke-linecap="round"/>
+ <path d="M245 126 Q275 106 304 126" fill="none" stroke="#2a6650" stroke-width="7" stroke-linecap="round"/>
+ <path d="M202 242 Q217 236 233 243" fill="none" stroke="#24604c" stroke-width="7" stroke-linecap="round"/>
+ <!-- right foreleg raised to chin -->
+ <path d="M292 312 Q338 300 312 262 Q284 248 252 256" fill="none" stroke="#245a49" stroke-width="32" stroke-linecap="round" stroke-linejoin="round"/>
+ <path d="M292 312 Q335 300 310 263 Q284 250 254 257" fill="none" stroke="#8bdd83" stroke-width="21" stroke-linecap="round"/>
+ <path d="M236 248 Q254 236 266 254 Q264 274 242 270 Q226 262 236 248Z" fill="#c9f69a" stroke="#245a49" stroke-width="8"/>
+ <path d="M219 334 250 346V370Q250 395 219 411Q188 395 188 370V346Z" fill="#fff9db" stroke="#255e4d" stroke-width="9" stroke-linejoin="round"/>
+ <path d="m201 371 13 13 23-26" fill="none" stroke="#4bb77a" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+ <ellipse cx="130" cy="160" rx="30" ry="8" transform="rotate(-30 130 160)" fill="url(#shine)"/>
+</svg>
