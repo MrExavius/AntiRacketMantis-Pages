@@ -847,16 +847,13 @@ function home(lang) {
         <div class="hero-hill" aria-hidden="true"></div>
         <div class="floating-chip chip-top"><span class="chip-icon green">${icon('shield')}</span>${t.adBlock}</div>
         <div class="floating-chip chip-bottom"><span class="chip-icon purple">${icon('check')}</span>${t.trackers}</div>
-        <div class="hero-browser" aria-hidden="true">
-          <div class="browser-dots"><i></i><i></i><i></i><span>your-favorite-page.example</span></div>
-          <div class="browser-contents">
-            <div class="browser-sky"></div>
-            <div class="browser-headline"></div>
-            <div class="browser-para"></div>
-            <div class="browser-para short"></div>
-            <div class="browser-tiles"><b></b><b></b><b></b></div>
-          </div>
-        </div>
+        <figure class="hero-browser hero-popup">
+          <div class="browser-dots" aria-hidden="true"><i></i><i></i><i></i><span>Окно AntiRacketMantis</span></div>
+          <picture>
+            <source srcset="/assets/screenshots/popup-shield.webp" type="image/webp">
+            <img src="/assets/screenshots/popup-shield.png" alt="Настоящее окно AntiRacketMantis: защита включена на странице example.org, уровень 2 из 5" width="728" height="750" decoding="async">
+          </picture>
+        </figure>
         <img class="hero-mantis mascot-reactive" src="/assets/mascot.svg" alt="Богомол Минти — талисман AntiRacketMantis, который приветственно машет лапкой" width="440" height="530" fetchpriority="high">
         <span class="hero-star star-one" aria-hidden="true">✦</span>
         <span class="hero-star star-two" aria-hidden="true">✧</span>
@@ -865,7 +862,7 @@ function home(lang) {
     </div>
     <div class="hero-bottom container">
       <span>${t.online}</span>
-      <span class="demo-note">✧ ${t.illustration}</span>
+      <span class="demo-note">✧ Окно расширения — настоящий снимок версии 0.11.0</span>
     </div>
   </section>
 
