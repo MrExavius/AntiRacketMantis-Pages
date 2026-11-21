@@ -20,6 +20,7 @@ import ruContent from '../src/content/ru.mjs';
 import enContent from '../src/content/en.mjs';
 import trContent from '../src/content/tr.mjs';
 import { checkDist } from './check.mjs';
+import { sceneMarkup } from './scene.mjs';
 
 const ROOT = path.resolve(import.meta.dirname, '..');
 const DEST = path.join(ROOT, 'dist');
@@ -111,6 +112,12 @@ function header(lang, route) {
           <path class="mi-play" d="M8 5.6v12.8a1 1 0 0 0 1.5.86l10.2-6.4a1 1 0 0 0 0-1.72L9.5 4.74A1 1 0 0 0 8 5.6z"/>
         </svg>
       </button>
+      <button class="theme-toggle" type="button" data-theme-toggle data-label-dark="${escapeAttr(c.ui.themeDark)}" data-label-light="${escapeAttr(c.ui.themeLight)}" aria-label="${escapeAttr(c.ui.themeDark)}" aria-pressed="false" title="${escapeAttr(c.ui.themeDark)}">
+        <svg class="theme-icon" viewBox="0 0 24 24" aria-hidden="true">
+          <g class="ti-moon"><path d="M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5z"/></g>
+          <g class="ti-sun"><circle cx="12" cy="12" r="4"/><path fill="none" d="M12 2.5v2.4M12 19.1v2.4M2.5 12h2.4M19.1 12h2.4M5.3 5.3 7 7M17 17l1.7 1.7M5.3 18.7 7 17M17 7l1.7-1.7"/></g>
+        </svg>
+      </button>
       <a class="nav-cta" href="${routeUrl(lang, 'install')}" data-event="install_click"${route === 'install' ? ' aria-current="page"' : ''}>${escapeHtml(c.ui.installCta)}</a>
       <button class="menu-toggle" type="button" data-label-open="${escapeAttr(c.ui.openMenu)}" data-label-close="${escapeAttr(c.ui.closeMenu)}" aria-label="${escapeAttr(c.ui.openMenu)}" aria-expanded="false" aria-controls="main-nav"><span></span><span></span><span></span></button>
     </div>
@@ -128,6 +135,7 @@ function footer(lang, route) {
         <img src="/assets/mark.svg" alt="" aria-hidden="true" width="43" height="43">
         <span>AntiRacket<span class="brand-mantis">Mantis</span></span>
       </a>
+      <a class="studio-sign" href="${STUDIO}" rel="noopener"><img src="/assets/wiw-logo.webp" alt="" aria-hidden="true" width="28" height="28" loading="lazy" decoding="async"><span>${escapeHtml(c.ui.studioSign)}</span></a>
       <p>${escapeHtml(c.home.heroText)}</p>
       <p class="footer-studio">${escapeHtml(c.ui.company)} <a href="${STUDIO}" rel="noopener">WillowinWorlds</a> · ${escapeHtml(c.ui.versionLine)} ${VERSION}, ${escapeHtml(c.ui.statusLine)}</p>
       <nav class="footer-langs" aria-label="${escapeAttr(c.ui.footerLangAria)}">
@@ -154,7 +162,7 @@ function footer(lang, route) {
   </div>
   <div class="container footer-bottom">
     <span>© ${new Date().getUTCFullYear()} AntiRacketMantis · WillowinWorlds</span>
-    <span>${escapeHtml(c.ui.madeFor)} ✦</span>
+    <span>${escapeHtml(c.ui.madeFor)}</span>
   </div>
 </footer>`;
 }
@@ -171,18 +179,21 @@ function breadcrumbs(lang, trail) {
 </nav>`;
 }
 
-function storeButtons(lang) {
+// With no store URLs yet the buttons point to the install guide and to the features block (on the home page itself, or on the home page from elsewhere).
+function storeButtons(lang, onHome = false) {
   const c = CONTENT[lang];
-  const makeBtn = (storeKey, variant, iconHtml, label, soonText) => {
-    const externalUrl = STORES[storeKey];
-    if (externalUrl) {
-      return `<a class="btn ${variant} store-btn" href="${escapeAttr(externalUrl)}" rel="noopener" data-event="store_click" data-store="${storeKey}">${iconHtml}<span>${escapeHtml(label)}</span></a>`;
-    }
-    return `<a class="btn ${variant} store-btn" href="${routeUrl(lang, 'install')}#${storeKey}" data-event="store_click" data-store="${storeKey}">${iconHtml}<span>${escapeHtml(label)}</span><span class="soon-badge">${escapeHtml(soonText)}</span></a>`;
-  };
+  const stores = [
+    ['chrome', 'btn-primary', '<span class="chrome-icon" aria-hidden="true"></span>', c.ui.chromeBtnLabel],
+    ['firefox', 'btn-secondary', '<span class="firefox-icon" aria-hidden="true">◉</span>', c.ui.firefoxBtnLabel]
+  ].filter(([key]) => STORES[key]);
+  if (stores.length) {
+    return `<div class="store-actions">
+    ${stores.map(([key, variant, iconHtml, label]) => `<a class="btn ${variant} store-btn" href="${escapeAttr(STORES[key])}" rel="noopener" data-event="store_click" data-store="${key}">${iconHtml}<span>${escapeHtml(label)}</span></a>`).join('\n    ')}
+  </div>`;
+  }
   return `<div class="store-actions">
-    ${makeBtn('chrome', 'btn-primary', '<span class="chrome-icon" aria-hidden="true"></span>', c.ui.chromeBtnLabel, c.ui.chromeSoonText)}
-    ${makeBtn('firefox', 'btn-secondary', '<span class="firefox-icon" aria-hidden="true">◉</span>', c.ui.firefoxBtnLabel, c.ui.firefoxSoonText)}
+    <a class="btn btn-primary" href="${routeUrl(lang, 'install')}" data-event="install_click">${escapeHtml(c.ui.installGuideLink)}</a>
+    <a class="btn btn-secondary" href="${onHome ? '' : routeUrl(lang, 'home')}#features">${escapeHtml(c.ui.exploreFeatures)}</a>
   </div>`;
 }
 
@@ -229,14 +240,17 @@ function faqAccordion(lang, items, openFirst = true) {
 }
 
 function pageHero(eyebrow, title, lead, mascotSrc, mascotAlt, isLazy = false, statusBadge = '') {
-  return `<section class="page-hero container page-hero-split"${statusBadge ? ' data-status="in-development"' : ''}>
-  <div>
-    <span class="eyebrow">${escapeHtml(eyebrow)}</span>
-    ${statusBadge ? `<div class="hero-status-row"><span class="status-pill dev-pill">${escapeHtml(statusBadge)}</span></div>` : ''}
-    <h1>${escapeHtml(title)}</h1>
-    <p>${escapeHtml(lead)}</p>
+  return `<section class="page-hero-band"${statusBadge ? ' data-status="in-development"' : ''}>
+  ${sceneMarkup('page')}
+  <div class="container page-hero page-hero-split">
+    <div>
+      <span class="eyebrow">${escapeHtml(eyebrow)}</span>
+      ${statusBadge ? `<div class="hero-status-row"><span class="status-pill dev-pill">${escapeHtml(statusBadge)}</span></div>` : ''}
+      <h1>${escapeHtml(title)}</h1>
+      <p>${escapeHtml(lead)}</p>
+    </div>
+    <img class="page-hero-mascot mascot-reactive" src="${mascotSrc}" alt="${escapeAttr(mascotAlt)}" width="220" height="265"${isLazy ? ' loading="lazy"' : ' fetchpriority="high"'}>
   </div>
-  <img class="page-hero-mascot mascot-reactive" src="${mascotSrc}" alt="${escapeAttr(mascotAlt)}" width="220" height="265"${isLazy ? ' loading="lazy"' : ' fetchpriority="high"'}>
 </section>`;
 }
 
@@ -267,54 +281,69 @@ function homePage(lang) {
   const c = CONTENT[lang];
   const h = c.home;
   const popupAsset = screenshotSet(lang).popupShield;
+  const [majorFeatures, minorFeatures] = [c.featuresHub.items.slice(0, 2), c.featuresHub.items.slice(2)];
+  const featureHref = f => f.route ? routeUrl(lang, f.route) : `${routeUrl(lang, 'how-it-works')}#levels`;
+  const majorShots = { ads: 'optionsLists', tracking: 'welcomeProtections' };
+  const featureTint = { ads: 'ads', tracking: 'trackers', cookies: 'cookies', popups: 'popups', privacy: 'mint', filters: 'cookies' };
+  // "Name (permission ids)" -> name + ids in a monospace chip
+  const permParts = text => text.match(/^(.*?)\s*\(([^()]+)\)\s*$/) || [text, text, ''];
   return `<main id="main">
   <section class="hero">
-    <div class="hero-wash" aria-hidden="true"></div>
+    ${sceneMarkup('hero')}
     <div class="container hero-grid">
-      <div class="hero-copy reveal">
-        <span class="pill badge"><span class="badge-spark" aria-hidden="true">✦</span>${escapeHtml(h.badge)}</span>
+      <div class="hero-copy">
+        <span class="eyebrow">${escapeHtml(h.badge)}</span>
         <h1>${escapeHtml(h.heroA)} <br><span class="hero-highlight">${escapeHtml(h.heroB)}</span></h1>
-        <p>${escapeHtml(h.heroText)}</p>
-        ${storeButtons(lang)}
-        <div class="hero-links" data-status="in-development">
-          <a class="text-link" href="#features">${escapeHtml(c.ui.exploreFeatures)}<span class="text-link-dot" aria-hidden="true">✳</span></a>
-          <a class="text-link" href="${routeUrl(lang, 'install')}" data-event="install_click">${escapeHtml(c.ui.installGuideLink)} →</a>
-          <a class="text-link" href="${routeUrl(lang, 'pro')}" data-event="pro_interest">${escapeHtml(c.ui.proNavLabel)} ${devBadge(lang)} →</a>
+        <p class="hero-lead">${escapeHtml(h.heroText)}</p>
+        ${storeButtons(lang, true)}
+        <div class="hero-support">
+          <span class="hero-support-label">${escapeHtml(h.heroSupport.label)}</span>
+          <ul class="chip-list">
+            <li class="chip">Chrome 110+</li>
+            <li class="chip">Firefox 128+</li>
+          </ul>
+          <span class="hero-support-status">${escapeHtml(h.heroSupport.status)}</span>
+          <a class="studio-sign" href="${STUDIO}" rel="noopener"><img src="/assets/wiw-logo.webp" alt="" aria-hidden="true" width="28" height="28" loading="lazy" decoding="async"><span>${escapeHtml(c.ui.studioSign)}</span></a>
         </div>
       </div>
-      <div class="hero-art">
-        <div class="orbit orbit-one" aria-hidden="true"></div>
-        <div class="orbit orbit-two" aria-hidden="true"></div>
-        <div class="hero-hill" aria-hidden="true"></div>
-        <div class="floating-chip chip-top"><span class="chip-icon green">${icon('shield')}</span>${escapeHtml(h.adBlockChip)}</div>
-        <div class="floating-chip chip-bottom"><span class="chip-icon purple">${icon('check')}</span>${escapeHtml(h.trackersChip)}</div>
-        <figure class="hero-browser hero-popup">
-          <div class="browser-dots" aria-hidden="true"><i></i><i></i><i></i><span>${escapeHtml(c.ui.browserWindowTitle)}</span></div>
-          <picture>
-            <source srcset="/assets/screenshots/${popupAsset.base}.webp" type="image/webp">
-            <img src="/assets/screenshots/${popupAsset.base}.png" alt="${escapeAttr(h.heroPopupAlt)}" width="${popupAsset.width}" height="${popupAsset.height}" decoding="async">
-          </picture>
-        </figure>
-        <img class="hero-mantis mascot-reactive" src="/assets/mascot.svg" alt="${escapeAttr(h.heroMascotAlt)}" width="440" height="530" fetchpriority="high">
-        <span class="hero-star star-one" aria-hidden="true">✦</span>
-        <span class="hero-star star-two" aria-hidden="true">✧</span>
-        <span class="hero-star star-three" aria-hidden="true">✳</span>
+      <div class="stage">
+        <div class="stage-browser">
+          <div class="browser-bar" aria-hidden="true">
+            <span class="browser-dots"><i></i><i></i><i></i></span>
+            <span class="browser-url">example.org</span>
+            <span class="browser-ext"><img src="/assets/mark.svg" alt="" aria-hidden="true" width="24" height="24"></span>
+          </div>
+          <div class="browser-page">
+            <div class="stage-popup">
+              <div class="popup-frame">
+                <picture>
+                  <source srcset="/assets/screenshots/${popupAsset.base}.webp" type="image/webp">
+                  <img src="/assets/screenshots/${popupAsset.base}.png" alt="${escapeAttr(h.heroPopupAlt)}" width="${popupAsset.width}" height="${popupAsset.height}" decoding="async" fetchpriority="high">
+                </picture>
+              </div>
+              <ul class="hero-notes">
+                ${h.heroNotes.map((note, i) => `<li class="hero-note hero-note-${i + 1}">${escapeHtml(note)}</li>`).join('\n                ')}
+              </ul>
+            </div>
+          </div>
+        </div>
+        <img class="stage-mantis mascot-reactive" src="/assets/mascot.svg" alt="${escapeAttr(h.heroMascotAlt)}" width="440" height="530">
+        <p class="stage-caption">${escapeHtml(h.demoNote)}</p>
       </div>
-    </div>
-    <div class="hero-bottom container">
-      <span>${escapeHtml(h.online)}</span>
-      <span class="demo-note">${escapeHtml(h.demoNote)}</span>
     </div>
   </section>
 
-  <section class="section intro-section" id="demo">
+  <section class="section demo-section" id="demo">
     <div class="container split-section">
       <div class="section-title reveal">
         <span class="eyebrow">${escapeHtml(h.compare.tag)}</span>
         <h2>${escapeHtml(h.compare.title)}</h2>
         <p>${escapeHtml(h.compare.text)}</p>
+        <ul class="point-list">
+          ${h.compare.points.map((point, i) => `<li><span class="point-icon tint-${['ads', 'cookies', 'popups'][i]}">${icon(['ad', 'cookie', 'popup'][i])}</span><span>${escapeHtml(point)}</span></li>`).join('\n          ')}
+        </ul>
         <div class="page-links-row">
-          <a class="text-link" href="${routeUrl(lang, 'limits')}">${escapeHtml(h.compare.limitsLink)} →</a>
+          <a class="text-link" href="${routeUrl(lang, 'limits')}">${escapeHtml(h.compare.limitsLink)}&nbsp;→</a>
         </div>
       </div>
       <div class="comparison reveal" data-comparison>
@@ -335,14 +364,14 @@ function homePage(lang) {
           <div class="mock-web mock-clean">
             <div class="mock-top"><i></i><i></i><i></i><span>magazine.example</span></div>
             <div class="mock-content">
-              <span class="mock-banner clean-banner">✦ ${escapeHtml(h.compare.with)}</span>
+              <span class="mock-banner clean-banner">${escapeHtml(h.compare.with)}</span>
               <p class="mock-title">${escapeHtml(h.compare.sampleTitle)}</p>
               <p>${escapeHtml(h.compare.sampleCopy)}</p>
               <div class="mock-img"></div>
               <div class="mock-article-lines"></div>
             </div>
           </div>
-          <div class="comparison-line" aria-hidden="true"><span>◀ ▶</span></div>
+          <div class="comparison-line" aria-hidden="true"><span></span></div>
         </div>
         <input class="comparison-range" type="range" min="0" max="100" value="50" aria-label="${escapeAttr(h.compare.title)}">
         <p class="compare-caption">${escapeHtml(h.compare.caption)}</p>
@@ -352,26 +381,45 @@ function homePage(lang) {
 
   <section class="section features-section" id="features">
     <div class="container">
-      <div class="section-title centered reveal">
+      <div class="section-title reveal">
         <span class="eyebrow">${escapeHtml(h.features.tag)}</span>
         <h2>${escapeHtml(h.features.title)}</h2>
         <p>${escapeHtml(h.features.intro)}</p>
       </div>
-      <div class="features-grid">
-        ${c.featuresHub.items.map((f, i) => {
-          const href = f.route ? routeUrl(lang, f.route) : `${routeUrl(lang, 'features')}#${f.id}`;
-          return `<a class="feature-card tone-${f.tone} feature-${f.id} reveal" href="${href}">
-            <span class="feature-icon">${icon(f.icon)}</span>
-            <span class="feature-ornament" aria-hidden="true">${['✦', '✧', '✿', '✳', '✦', '✳'][i]}</span>
-            <strong>${escapeHtml(f.cardTitle)}</strong>
-            <p>${escapeHtml(f.cardText)}</p>
-            <span class="feature-more">${escapeHtml(c.ui.more)}<span aria-hidden="true"> →</span></span>
-          </a>`;
-        }).join('')}
+      <div class="feature-majors">
+        ${majorFeatures.map((f, i) => {
+          const asset = screenshotSet(lang)[majorShots[f.id]];
+          const shot = c.screenshots[majorShots[f.id]];
+          return `<article class="feature-major feature-${f.id}${i % 2 ? ' is-flip' : ''} reveal">
+          <div class="feature-media tint-${featureTint[f.id]}">
+            <picture>
+              <source srcset="/assets/screenshots/${asset.base}.webp" type="image/webp">
+              <img src="/assets/screenshots/${asset.base}.png" alt="${escapeAttr(shot.alt)}" width="${asset.width}" height="${asset.height}" loading="lazy" decoding="async">
+            </picture>
+            ${f.id === 'ads' ? '<img class="feature-mantis" src="/assets/mascot-block.svg" alt="" aria-hidden="true" width="120" height="145" loading="lazy">' : ''}
+          </div>
+          <div class="feature-body">
+            <h3>${escapeHtml(f.cardTitle)}</h3>
+            <p>${escapeHtml(f.summary)}</p>
+            <ul class="tag-list">${f.tags.map(tag => `<li class="tech">${escapeHtml(tag)}</li>`).join('')}</ul>
+            <a class="text-link" href="${featureHref(f)}">${escapeHtml(f.ctaLabel)}&nbsp;→</a>
+          </div>
+        </article>`;
+        }).join('\n        ')}
       </div>
-      <div class="center-action">
-        <a class="text-link" href="${routeUrl(lang, 'features')}">${escapeHtml(c.ui.allFeatures)} <span aria-hidden="true">✳</span></a>
-        <a class="text-link" href="${routeUrl(lang, 'how-it-works')}">${escapeHtml(h.features.howLink)} →</a>
+      <ul class="feature-minors reveal">
+        ${minorFeatures.map(f => `<li class="feature-minor">
+          <span class="feature-icon tint-${featureTint[f.id]}">${icon(f.icon)}</span>
+          <div>
+            <h3>${escapeHtml(f.cardTitle)}</h3>
+            <p>${escapeHtml(f.cardText)}</p>
+            <a class="minor-link" href="${featureHref(f)}">${escapeHtml(f.ctaLabel)}&nbsp;→</a>
+          </div>
+        </li>`).join('\n        ')}
+      </ul>
+      <div class="page-links-row">
+        <a class="text-link" href="${routeUrl(lang, 'features')}">${escapeHtml(c.ui.allFeatures)}&nbsp;→</a>
+        <a class="text-link" href="${routeUrl(lang, 'how-it-works')}">${escapeHtml(h.features.howLink)}&nbsp;→</a>
       </div>
     </div>
   </section>
@@ -383,153 +431,106 @@ function homePage(lang) {
         <h2>${escapeHtml(h.levels.title)}</h2>
         <p>${escapeHtml(h.levels.intro)}</p>
       </div>
-      ${levelsStrip(lang, true)}
+      <fieldset class="level-picker reveal">
+        <legend>${escapeHtml(h.levels.pickerLegend)}</legend>
+        ${c.levels.map(lv => `<input class="sr-only-input" type="radio" name="level" id="lv-${lv.n}"${lv.isDefault ? ' checked' : ''}>
+        <label class="level-stop" for="lv-${lv.n}"><span class="stop-dot"></span><span class="stop-num"><span class="sr-only">${escapeHtml(c.ui.levelPrefix)} </span>${lv.n}</span><span class="stop-name">${escapeHtml(lv.name)}</span>${lv.isDefault ? `<span class="stop-tag">${escapeHtml(lv.badge)}</span>` : ''}</label>`).join('\n        ')}
+        <div class="level-panels">
+          ${c.levels.map(lv => `<article class="level-panel level-panel-${lv.n}${lv.isDefault ? ' level-default' : ''}">
+            <span class="level-badge"><span>${escapeHtml(c.ui.levelPrefix)} ${lv.n}</span><span>${escapeHtml(lv.badge)}</span></span>
+            <h3>${escapeHtml(lv.name)}</h3>
+            <p>${escapeHtml(lv.summary)}</p>
+          </article>`).join('\n          ')}
+        </div>
+      </fieldset>
       <div class="center-action">
-        <a class="text-link" href="${routeUrl(lang, 'how-it-works')}#levels">${escapeHtml(h.levels.detailLink)} →</a>
+        <a class="text-link" href="${routeUrl(lang, 'how-it-works')}#levels">${escapeHtml(h.levels.detailLink)}&nbsp;→</a>
       </div>
     </div>
   </section>
 
   <section class="section interface-section" id="interface">
     <div class="container">
-      <div class="section-title centered reveal">
-        <span class="eyebrow">${escapeHtml(h.interface.tag)}</span>
-        <h2>${escapeHtml(h.interface.title)}</h2>
-        <p>${escapeHtml(h.interface.text)}</p>
-      </div>
-      <div class="shots-grid shots-home">
-        ${shotCard(lang, 'popupShield', 'shot-popup', true)}
-        <div class="shots-home-stack">
-          ${shotCard(lang, 'optionsLevels', '', true)}
-          ${shotCard(lang, 'optionsExceptionsCookies', '', true)}
+      <div class="gallery-head">
+        <div class="section-title reveal">
+          <span class="eyebrow">${escapeHtml(h.interface.tag)}</span>
+          <h2>${escapeHtml(h.interface.title)}</h2>
+          <p>${escapeHtml(h.interface.text)}</p>
+          <div class="page-links-row">
+            <a class="text-link" href="${routeUrl(lang, 'how-it-works')}#interface">${escapeHtml(h.interface.allLink)}&nbsp;→</a>
+          </div>
+        </div>
+        <div class="gallery-nav">
+          <button class="gallery-btn" type="button" data-gallery-prev aria-label="${escapeAttr(h.interface.prev)}" title="${escapeAttr(h.interface.prev)}"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 5-7 7 7 7"/></svg></button>
+          <button class="gallery-btn" type="button" data-gallery-next aria-label="${escapeAttr(h.interface.next)}" title="${escapeAttr(h.interface.next)}"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg></button>
         </div>
       </div>
-      <div class="center-action">
-        <a class="text-link" href="${routeUrl(lang, 'how-it-works')}#interface">${escapeHtml(h.interface.allLink)} →</a>
+      <div class="gallery-strip" data-gallery tabindex="0" role="region" aria-label="${escapeAttr(h.interface.title)}">
+        ${['popupShield', 'optionsLevels', 'optionsExceptionsCookies', 'optionsLists'].map(key => shotCard(lang, key, key === 'popupShield' ? 'shot-popup' : '', false)).join('\n        ')}
       </div>
     </div>
   </section>
 
-  <section class="section pro-teaser-section" id="pro-plans" data-status="in-development">
-    <div class="container">
-      ${devBadge(lang)}
-      <div class="section-title centered reveal">
-        <span class="eyebrow">${escapeHtml(h.proTeaser.tag)}</span>
-        <h2>${escapeHtml(h.proTeaser.title)}</h2>
-        <p>${escapeHtml(h.proTeaser.text)}</p>
-      </div>
-      <div class="pro-teaser-grid">
-        <article class="plan-card plan-free reveal">
-          <div class="plan-head">
-            <h3>${escapeHtml(h.proTeaser.freeTitle)}</h3>
-            <span class="plan-price">${escapeHtml(h.proTeaser.freePrice)}</span>
-          </div>
-          <ul class="plan-list">
-            ${h.proTeaser.freePoints.map(pt => `<li>${icon('check')}<span>${escapeHtml(pt)}</span></li>`).join('')}
-          </ul>
-          <a class="btn btn-primary" href="${routeUrl(lang, 'install')}" data-event="install_click">${escapeHtml(c.ui.freeVersionCta)}</a>
-        </article>
-        <article class="plan-card plan-pro reveal" data-status="in-development">
-          <div class="plan-head">
-            <div>
-              <span class="status-pill dev-pill">${escapeHtml(h.proTeaser.badge)}</span>
-              <h3>${escapeHtml(h.proTeaser.proTitle)}</h3>
-            </div>
-            <div class="plan-price-block">
-              <span class="plan-price">${escapeHtml(h.proTeaser.proPrice)}<small> ${escapeHtml(c.ui.perMonth)}</small></span>
-              <span class="plan-price-note">${escapeHtml(h.proTeaser.proPriceLabel)}</span>
-            </div>
-          </div>
-          <ul class="plan-list">
-            ${h.proTeaser.proPoints.map(pt => `<li>${icon('sparkle')}<span>${escapeHtml(pt)}</span></li>`).join('')}
-          </ul>
-          <p class="plan-disclaimer">${escapeHtml(h.proTeaser.disclaimer)}</p>
-          <div class="plan-actions">
-            <a class="btn btn-secondary" href="${routeUrl(lang, 'pro')}" data-event="pro_interest">${escapeHtml(h.proTeaser.primaryCta)}</a>
-            <a class="text-link" href="${routeUrl(lang, 'changelog')}#roadmap" data-event="pro_interest">${escapeHtml(h.proTeaser.secondaryCta)} →</a>
-          </div>
-        </article>
-      </div>
-    </div>
-  </section>
-
-  <section class="section how-section" id="how">
-    <div class="container">
-      <div class="section-title centered reveal">
-        <span class="eyebrow">${escapeHtml(h.steps.tag)}</span>
-        <h2>${escapeHtml(h.steps.title)}</h2>
-      </div>
-      <div class="steps-grid">
-        ${h.steps.items.map((s, i) => `<div class="step reveal">
-          <div class="step-number step-${i + 1}" aria-hidden="true">${['✦', '✓', '✿'][i]}</div>
-          <span class="step-kicker">0${i + 1}</span>
-          <h3>${escapeHtml(s[0])}</h3>
-          <p>${escapeHtml(s[1])}</p>
-        </div>`).join('')}
-      </div>
-    </div>
-  </section>
-
-  <section class="trust-section section" id="privacy">
-    <div class="container trust-grid">
-      <div class="trust-art reveal">
-        <div class="trust-glow" aria-hidden="true"></div>
-        <div class="trust-shield">${icon('shield')}</div>
-        <div class="trust-leaf leaf-a" aria-hidden="true">✳</div>
-        <div class="trust-leaf leaf-b" aria-hidden="true">✦</div>
-        <div class="trust-panel">
-          <span>AntiRacketMantis</span>
-          <strong>✦ ${escapeHtml(h.online)}</strong>
-          <i></i><i></i><i></i>
-        </div>
-      </div>
-      <div class="trust-copy reveal">
+  <section class="section privacy-band" id="privacy">
+    <div class="container privacy-grid">
+      <div class="privacy-copy reveal">
         <span class="eyebrow">${escapeHtml(h.trust.tag)}</span>
         <h2>${escapeHtml(h.trust.title)}</h2>
         <p>${escapeHtml(h.trust.text)}</p>
-        <ul>${h.trust.bullets.map(x => `<li>${icon('check')}<span>${escapeHtml(x)}</span></li>`).join('')}</ul>
+        <ul class="check-list">${h.trust.bullets.map(x => `<li>${icon('check')}<span>${escapeHtml(x)}</span></li>`).join('')}</ul>
+        <h3>${escapeHtml(h.permissions.helpTitle)}</h3>
+        <p>${escapeHtml(h.permissions.helpText)}</p>
         <div class="trust-actions">
           <a class="btn btn-cream" href="${routeUrl(lang, 'privacy')}">${escapeHtml(h.trust.privacyBtn)}</a>
           <a class="btn btn-secondary" href="${routeUrl(lang, 'limits')}">${escapeHtml(h.trust.limitsBtn)}</a>
         </div>
+        <div class="page-links-row">
+          <a class="text-link" href="${routeUrl(lang, 'privacy')}#permissions">${escapeHtml(h.permissions.detailsLink)}&nbsp;→</a>
+          <a class="text-link" href="${routeUrl(lang, 'uninstall')}">${escapeHtml(h.permissions.uninstallLink)}&nbsp;→</a>
+        </div>
+      </div>
+      <div class="perm-col reveal">
+        <h3>${escapeHtml(h.permissions.title)}</h3>
+        <p>${escapeHtml(h.permissions.intro)}</p>
+        <figure class="perm-dialog" id="permissions">
+          <figcaption class="perm-head">
+            <img src="/assets/mark.svg" alt="" aria-hidden="true" width="40" height="40">
+            <span><strong>AntiRacketMantis</strong><small>${escapeHtml(h.permissions.dialogSub)}</small></span>
+          </figcaption>
+          <ol class="perm-list">
+            ${h.permissions.perms.map(([a, b], i) => {
+              const [, name, ids] = permParts(a);
+              return `<li>
+              <span class="perm-icon" aria-hidden="true">${icon(['popup', 'shield', 'eye', 'sliders'][i])}</span>
+              <span><strong>${escapeHtml(name)}</strong>${ids ? ` <code class="tech">${escapeHtml(ids)}</code>` : ''}<span>${escapeHtml(b)}</span></span>
+            </li>`;
+            }).join('')}
+          </ol>
+          <p class="perm-note">${escapeHtml(h.permissions.note)}</p>
+        </figure>
       </div>
     </div>
   </section>
 
-  <section class="section perm-section" id="permissions">
-    <div class="container perm-grid">
-      <div class="section-title reveal">
-        <span class="eyebrow">${escapeHtml(h.permissions.tag)}</span>
-        <h2>${escapeHtml(h.permissions.title)}</h2>
-        <p>${escapeHtml(h.permissions.intro)}</p>
-        <div class="perm-facts">
-          <div class="perm-fact">
-            <h3>${escapeHtml(h.permissions.devTitle)}</h3>
-            <p>${escapeHtml(h.permissions.devText)} <a class="inline-link" href="${STUDIO}" rel="noopener">${escapeHtml(h.permissions.devLink)}</a></p>
-          </div>
-          <div class="perm-fact">
-            <h3>${escapeHtml(h.permissions.helpTitle)}</h3>
-            <p>${escapeHtml(h.permissions.helpText)}</p>
+  <section class="section pro-strip-section" id="pro-plans" data-status="in-development">
+    <div class="container">
+      <div class="pro-strip reveal">
+        <div class="pro-strip-copy">
+          ${devBadge(lang)}
+          <h2>${escapeHtml(h.proTeaser.title)}</h2>
+          <p>${escapeHtml(h.proTeaser.text)}</p>
+          <p class="pro-disclaimer">${escapeHtml(h.proTeaser.disclaimer)}</p>
+          <div class="pro-strip-actions">
+            <a class="btn btn-secondary" href="${routeUrl(lang, 'pro')}" data-event="pro_interest">${escapeHtml(h.proTeaser.primaryCta)}</a>
+            <a class="text-link" href="${routeUrl(lang, 'changelog')}#roadmap" data-event="pro_interest">${escapeHtml(h.proTeaser.secondaryCta)}&nbsp;→</a>
           </div>
         </div>
-        <div class="page-links-row">
-          <a class="text-link" href="${routeUrl(lang, 'privacy')}#permissions">${escapeHtml(h.permissions.detailsLink)} →</a>
-          <a class="text-link" href="${routeUrl(lang, 'uninstall')}">${escapeHtml(h.permissions.uninstallLink)} →</a>
+        <div class="plan-price-block">
+          <span class="plan-price-note">${escapeHtml(h.proTeaser.proPriceLabel)}</span>
+          <span class="plan-price">${escapeHtml(h.proTeaser.proPrice)}<small> ${escapeHtml(c.ui.perMonth)}</small></span>
         </div>
+        <img class="pro-strip-mantis" src="/assets/mascot-pro.svg" alt="" aria-hidden="true" width="110" height="132" loading="lazy">
       </div>
-      <figure class="perm-dialog reveal">
-        <figcaption class="perm-head">
-          <img src="/assets/mark.svg" alt="" aria-hidden="true" width="40" height="40">
-          <span><strong>AntiRacketMantis</strong><small>${escapeHtml(h.permissions.dialogSub)}</small></span>
-        </figcaption>
-        <ol class="perm-list">
-          ${h.permissions.perms.map(([a, b], i) => `<li>
-            <span class="perm-icon" aria-hidden="true">${icon(['popup', 'shield', 'eye', 'sliders'][i])}</span>
-            <span><strong>${escapeHtml(a)}</strong><span>${escapeHtml(b)}</span></span>
-          </li>`).join('')}
-        </ol>
-        <p class="perm-note">${escapeHtml(h.permissions.note)}</p>
-      </figure>
     </div>
   </section>
 
@@ -539,8 +540,8 @@ function homePage(lang) {
         <span class="eyebrow">${escapeHtml(h.faq.tag)}</span>
         <h2>${escapeHtml(h.faq.title)}</h2>
         <div class="page-links-row">
-          <a class="text-link" href="${routeUrl(lang, 'faq')}">${escapeHtml(h.faq.allLink)} →</a>
-          <a class="text-link" href="${routeUrl(lang, 'support')}">${escapeHtml(h.faq.supportLink)} →</a>
+          <a class="text-link" href="${routeUrl(lang, 'faq')}">${escapeHtml(h.faq.allLink)}&nbsp;→</a>
+          <a class="text-link" href="${routeUrl(lang, 'support')}">${escapeHtml(h.faq.supportLink)}&nbsp;→</a>
         </div>
         <img class="faq-mini-mantis mascot-reactive" src="/assets/mascot-thinking.svg" alt="${escapeAttr(h.faq.mascotAlt)}" width="140" height="168" loading="lazy">
       </div>
@@ -549,17 +550,29 @@ function homePage(lang) {
   </section>
 
   <section class="final-section" id="download">
-    <div class="container final-card">
-      <div class="final-copy reveal">
+    <div class="container final-card reveal">
+      <div class="final-main">
         <span class="eyebrow">${escapeHtml(h.final.tag)}</span>
         <h2>${escapeHtml(h.final.title)}</h2>
         <p>${escapeHtml(h.final.text)}</p>
-        ${storeButtons(lang)}
+        <h3 class="steps-title">${escapeHtml(h.steps.title)}</h3>
+        <ol class="steps-list">
+          ${h.steps.items.map((s, i) => `<li><span class="step-num" aria-hidden="true">${i + 1}</span><span class="step-text"><strong>${escapeHtml(s[0])}</strong><span>${escapeHtml(s[1])}</span></span></li>`).join('\n          ')}
+        </ol>
+        ${storeButtons(lang, true)}
         <p class="compat-note">${escapeHtml(h.final.compatNote)} <a class="inline-link" href="${routeUrl(lang, 'compatibility')}">${escapeHtml(h.final.compatLink)}</a> · <a class="inline-link" href="${routeUrl(lang, 'install')}" data-event="install_click">${escapeHtml(h.final.installLink)}</a></p>
       </div>
-      <img src="/assets/mascot-celebrate.svg" alt="${escapeAttr(h.final.mascotAlt)}" class="final-mantis mascot-reactive" loading="lazy" width="320" height="390">
-      <span class="final-spark fsp-one" aria-hidden="true">✦</span>
-      <span class="final-spark fsp-two" aria-hidden="true">✳</span>
+      <div class="final-side">
+        <img class="final-mantis mascot-reactive" src="/assets/mascot-celebrate.svg" alt="${escapeAttr(h.final.mascotAlt)}" loading="lazy" width="320" height="390">
+        <div class="studio-box">
+          <img src="/assets/wiw-logo.webp" alt="" aria-hidden="true" width="40" height="40" loading="lazy" decoding="async">
+          <div>
+            <h3>${escapeHtml(h.studio.title)}</h3>
+            <p>${escapeHtml(h.studio.text)} <a class="inline-link" href="${STUDIO}" rel="noopener">${escapeHtml(h.studio.link)}</a></p>
+            <p class="studio-meta"><span>${escapeHtml(c.ui.versionLine)} ${VERSION}</span> · <a class="inline-link" href="${routeUrl(lang, 'changelog')}">${escapeHtml(h.studio.changelogLink)}</a> · <a class="inline-link" href="${routeUrl(lang, 'support')}">${escapeHtml(h.studio.bugLink)}</a></p>
+          </div>
+        </div>
+      </div>
     </div>
   </section>
 </main>`;
@@ -690,7 +703,7 @@ function detailPage(lang, route) {
   ${pageHero(f.eyebrow, f.title, f.lead, HERO_MASCOT_BY_ROUTE.features, f.mascotAlt)}
   <section class="container detail-features">
     ${f.items.map((item, i) => `<article class="detail-feature tone-${item.tone}" id="${item.id}">
-      <div class="detail-symbol">${icon(item.icon)}<span aria-hidden="true">✦</span></div>
+      <div class="detail-symbol">${icon(item.icon)}</div>
       <div>
         <span class="detail-kicker">${String(i + 1).padStart(2, '0')}</span>
         <h2>${escapeHtml(item.title)}</h2>
@@ -1256,7 +1269,9 @@ function htmlPage(lang, route) {
   const meta = c.meta[route];
   const canonical = SITE + routeUrl(lang, route);
   const ld = buildJsonLd(lang, route, canonical, meta.desc);
-  const preloadMascot = HERO_MASCOT_BY_ROUTE[route] || '/assets/mascot.svg';
+  const preloadImage = route === 'home'
+    ? `<link rel="preload" href="/assets/screenshots/${screenshotSet(lang).popupShield.base}.webp" as="image" type="image/webp" fetchpriority="high">`
+    : `<link rel="preload" href="${HERO_MASCOT_BY_ROUTE[route] || '/assets/mascot.svg'}" as="image" type="image/svg+xml" fetchpriority="high">`;
   const altLocales = LANGS.filter(l => l !== lang).map(l => LANG_META[l].ogLocale);
   const hreflangTags = LANGS.length > 1
     ? [
@@ -1271,8 +1286,9 @@ function htmlPage(lang, route) {
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="color-scheme" content="light">
-  <meta name="theme-color" content="#d9f3dc">
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" media="(prefers-color-scheme: light)" content="#fffaf1">
+  <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#0f2420">
   <meta http-equiv="Content-Security-Policy" content="${META_CSP}">
   <meta name="referrer" content="no-referrer">
   ${verify ? `${verify}\n  ` : ''}<title>${escapeHtml(meta.title)}</title>
@@ -1282,7 +1298,8 @@ function htmlPage(lang, route) {
   <link rel="icon" href="/assets/mark.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" sizes="180x180" href="/assets/icons/apple-touch-icon.png">
   <link rel="preload" href="${lm.fontPreload}" as="font" type="font/woff2" crossorigin>
-  <link rel="preload" href="${preloadMascot}" as="image" type="image/svg+xml" fetchpriority="high">
+  ${preloadImage}
+  <script src="/assets/theme-init.js"></script>
   <link rel="stylesheet" href="/assets/styles.css">
   <link rel="stylesheet" href="/assets/${route === 'home' ? 'home.css' : 'inner.css'}">
   <noscript><link rel="stylesheet" href="/assets/nojs.css"></noscript>
@@ -1317,8 +1334,9 @@ function notFoundPage() {
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="color-scheme" content="light">
-  <meta name="theme-color" content="#d9f3dc">
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" media="(prefers-color-scheme: light)" content="#fffaf1">
+  <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#0f2420">
   <meta http-equiv="Content-Security-Policy" content="${META_CSP}">
   <meta name="referrer" content="no-referrer">
   <meta name="robots" content="noindex">
@@ -1330,6 +1348,7 @@ function notFoundPage() {
   <link rel="apple-touch-icon" sizes="180x180" href="/assets/icons/apple-touch-icon.png">
   <link rel="preload" href="/assets/fonts/nunito-latin.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="/assets/mascot-lost.svg" as="image" type="image/svg+xml" fetchpriority="high">
+  <script src="/assets/theme-init.js"></script>
   <link rel="stylesheet" href="/assets/styles.css">
   <link rel="stylesheet" href="/assets/inner.css">
   <noscript><link rel="stylesheet" href="/assets/nojs.css"></noscript>
@@ -1483,7 +1502,7 @@ ${llmsSections}
 - [XML sitemap](${SITE}/sitemap.xml): Canonical indexable pages with hreflang alternates and lastmod dates.
 - [Language index](${SITE}/languages.json): Machine-readable map of localized homes and this guide.
 - [Security contact](${SITE}/.well-known/security.txt): Studio security reporting metadata.
-- [Developer studio — WillowinWorlds](${STUDIO}): Independent game and application studio behind AntiRacketMantis.
+- [Developer studio - WillowinWorlds](${STUDIO}): Independent game and application studio behind AntiRacketMantis.
 `);
 
 // languages.json matching the WillowinWorld schema
@@ -1509,7 +1528,7 @@ write('manifest.webmanifest', `${JSON.stringify({
   start_url: '/',
   scope: '/',
   display: 'standalone',
-  theme_color: '#d9f3dc',
+  theme_color: '#fffaf1',
   background_color: '#fffaf1',
   icons: [
     { src: '/assets/icons/icon-192.png', sizes: '192x192', type: 'image/png', purpose: 'any' },
@@ -1587,17 +1606,21 @@ function minifyJs(js) {
 }
 
 fs.mkdirSync(path.join(DEST, 'assets'), { recursive: true });
-for (const cssFile of ['styles.css', 'home.css', 'inner.css', 'nojs.css']) {
-  const srcPath = path.join(ROOT, 'src', cssFile);
-  if (fs.existsSync(srcPath)) {
-    fs.writeFileSync(path.join(DEST, 'assets', cssFile), minifyCss(fs.readFileSync(srcPath, 'utf8')));
+// Scene styles ride along with the shared stylesheet: the meadow is on every page.
+const cssSources = { 'styles.css': ['styles.css', 'scene.css'], 'home.css': ['home.css'], 'inner.css': ['inner.css'], 'nojs.css': ['nojs.css'] };
+for (const [out, parts] of Object.entries(cssSources)) {
+  const sources = parts.map(file => path.join(ROOT, 'src', file)).filter(file => fs.existsSync(file));
+  if (sources.length) {
+    fs.writeFileSync(path.join(DEST, 'assets', out), minifyCss(sources.map(file => fs.readFileSync(file, 'utf8')).join('\n')));
   }
 }
-const jsSrc = path.join(ROOT, 'src', 'main.js');
-if (fs.existsSync(jsSrc)) {
-  fs.writeFileSync(path.join(DEST, 'assets', 'main.js'), minifyJs(fs.readFileSync(jsSrc, 'utf8')));
+for (const jsFile of ['main.js', 'theme-init.js']) {
+  const jsSrc = path.join(ROOT, 'src', jsFile);
+  if (fs.existsSync(jsSrc)) {
+    fs.writeFileSync(path.join(DEST, 'assets', jsFile), minifyJs(fs.readFileSync(jsSrc, 'utf8')));
+  }
 }
-for (const file of ['mascot.svg', 'mascot-block.svg', 'mascot-celebrate.svg', 'mascot-thinking.svg', 'mascot-pro.svg', 'mascot-lost.svg', 'mark.svg', 'og.svg', 'og.png']) {
+for (const file of ['mascot.svg', 'mascot-block.svg', 'mascot-celebrate.svg', 'mascot-thinking.svg', 'mascot-pro.svg', 'mascot-lost.svg', 'mark.svg', 'og.svg', 'og.png', 'wiw-logo.webp']) {
   const srcPath = path.join(ROOT, 'src', file);
   if (fs.existsSync(srcPath)) {
     fs.copyFileSync(srcPath, path.join(DEST, 'assets', file));

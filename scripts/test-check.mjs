@@ -112,8 +112,8 @@ try {
 
   // Independently reproduced review escapes: each mutation must fail for its own rule.
   check('unmarked PRO next to marked PRO', enHome, html => html.replace('</main>', '<section><h2>PRO tools</h2><p>CAPTCHA recognition and automation.</p></section></main>'), 1, 'видимый бейдж');
-  check('PRO badge missing in one block', enPro, html => html.replace('<span class="status-pill dev-pill">In development</span>\n      <h2>Straight talk', '<h2>Straight talk'), 1, 'видимый бейдж');
-  check('PRO badge hidden', enPro, html => html.replace('<span class="status-pill dev-pill">In development</span>\n      <h2>Straight talk', '<span class="status-pill dev-pill" hidden>In development</span>\n      <h2>Straight talk'), 1, 'видимый бейдж');
+  check('PRO badge missing in one block', enPro, html => html.replace('<span class="status-pill dev-pill">In development</span>\n      <h2>CAPTCHA help', '<h2>CAPTCHA help'), 1, 'видимый бейдж');
+  check('PRO badge hidden', enPro, html => html.replace('<span class="status-pill dev-pill">In development</span>\n      <h2>CAPTCHA help', '<span class="status-pill dev-pill" hidden>In development</span>\n      <h2>CAPTCHA help'), 1, 'видимый бейдж');
   check('planned price label missing', enPro, html => html.replace('<span class="pro-price-label">planned price</span>', ''), 1, 'Цена PRO');
   check('wrong planned price', enPro, html => html.replace('$39', '$49'), 1, 'Цена PRO');
   check('wrong planned currency', enPro, html => html.replace('$39', '€39'), 1, 'Цена PRO');

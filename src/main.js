@@ -134,6 +134,60 @@
     reveals.forEach(node => node.classList.add('in-view'));
   }
 
+  const themeToggle = document.querySelector('[data-theme-toggle]');
+  if (themeToggle) {
+    const root = document.documentElement;
+    const darkQuery = window.matchMedia('(prefers-color-scheme: dark)');
+    const effectiveTheme = () => root.getAttribute('data-theme') || (darkQuery.matches ? 'dark' : 'light');
+    const syncTheme = () => {
+      const dark = effectiveTheme() === 'dark';
+      const label = dark ? themeToggle.dataset.labelLight : themeToggle.dataset.labelDark;
+      themeToggle.setAttribute('aria-pressed', String(dark));
+      themeToggle.setAttribute('aria-label', label);
+      themeToggle.title = label;
+    };
+    syncTheme();
+    themeToggle.addEventListener('click', () => {
+      const next = effectiveTheme() === 'dark' ? 'light' : 'dark';
+      root.setAttribute('data-theme', next);
+      try {
+        localStorage.setItem('arm-theme', next);
+      } catch (_error) {}
+      syncTheme();
+    });
+    darkQuery.addEventListener('change', syncTheme);
+  }
+
+  const galleryStrip = document.querySelector('[data-gallery]');
+  if (galleryStrip) {
+    const prev = document.querySelector('[data-gallery-prev]');
+    const next = document.querySelector('[data-gallery-next]');
+    const updateGallery = () => {
+      if (prev) prev.disabled = galleryStrip.scrollLeft <= 1;
+      if (next) next.disabled = galleryStrip.scrollLeft + galleryStrip.clientWidth >= galleryStrip.scrollWidth - 1;
+    };
+    const scrollGallery = dir => {
+      const card = galleryStrip.firstElementChild;
+      const gap = parseFloat(getComputedStyle(galleryStrip).columnGap) || 0;
+      const behavior = reducedMotion || document.body.classList.contains('motion-off') ? 'auto' : 'smooth';
+      galleryStrip.scrollBy({ left: dir * (card.getBoundingClientRect().width + gap), behavior });
+    };
+    prev?.addEventListener('click', () => scrollGallery(-1));
+    next?.addEventListener('click', () => scrollGallery(1));
+    galleryStrip.addEventListener('scroll', updateGallery, { passive: true });
+    window.addEventListener('resize', updateGallery);
+    updateGallery();
+  }
+
+  // The meadow background only animates while it is on screen.
+  const scenes = document.querySelectorAll('.scene');
+  if (scenes.length && 'IntersectionObserver' in window) {
+    const sceneObserver = new IntersectionObserver(entries => {
+      for (const entry of entries) entry.target.classList.toggle('is-paused', !entry.isIntersecting);
+    });
+    scenes.forEach(scene => sceneObserver.observe(scene));
+  }
+
   const compare = document.querySelector('[data-comparison]');
   if (compare) {
     const slider = compare.querySelector('input[type=range]');

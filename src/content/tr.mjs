@@ -4,7 +4,7 @@ export default {
   ui: {
     langName: 'Türkçe',
     skipToContent: 'İçeriğe geçin',
-    brandHomeAria: 'AntiRacketMantis — ana sayfa',
+    brandHomeAria: 'AntiRacketMantis - ana sayfa',
     mainNavAria: 'Ana gezinme menüsü',
     langSwitcherAria: 'Dil seçimi',
     breadcrumbsAria: 'Sayfa yolu',
@@ -19,31 +19,29 @@ export default {
     footerTrustHeading: 'Güven ve Yardım',
     footerLangAria: 'Site dilleri',
     footerLangHeading: 'Site dili',
-    madeFor: 'Daha sakin bir internet için tasarlandı',
+    madeFor: 'Chrome ve Firefox için hazırlandı',
     company: 'Geliştirici stüdyo:',
     versionLine: 'Sürüm',
     statusLine: 'ilk yayına hazırlanıyor',
-    ogImageAlt: 'AntiRacketMantis — reklam, izleyici ve açılır pencere azaltıcı tarayıcı uzantısı',
+    ogImageAlt: 'AntiRacketMantis - reklam, izleyici ve açılır pencere azaltıcı tarayıcı uzantısı',
     more: 'Ayrıntılar',
     allFeatures: 'Tüm özellikler',
     howItWorksLink: 'Nasıl çalışır',
     installCta: 'Kurulum',
-    freeVersionCta: 'Ücretsiz sürümü yükleyin',
-    proNavLabel: 'PRO',
     soonBadge: 'yakında',
     devBadge: 'Geliştiriliyor',
     plannedPriceLabel: 'planlanan fiyat',
     perMonth: '/ ay',
     illustrationLabel: 'Temsili görsel',
     screenshotBadgePrefix: `Sürüm ${VERSION} ekran görüntüsü (İngilizce arayüz)`,
-    browserWindowTitle: 'AntiRacketMantis penceresi',
     chromeBtnLabel: 'Chrome için',
     firefoxBtnLabel: 'Firefox için',
-    chromeSoonText: 'yakında',
-    firefoxSoonText: 'yakında',
     levelPrefix: 'Seviye',
     exploreFeatures: 'Özellikleri inceleyin',
-    installGuideLink: 'Kurulum rehberi'
+    installGuideLink: 'Kurulum rehberi',
+    studioSign: 'WillowinWorlds yapımı',
+    themeDark: 'Koyu temaya geçin',
+    themeLight: 'Açık temaya geçin'
   },
 
   nav: [
@@ -79,108 +77,118 @@ export default {
 
   meta: {
     home: {
-      title: 'AntiRacketMantis — Chrome ve Firefox Reklam Engelleyici',
-      desc: 'Chrome ve Firefox için ücretsiz AntiRacketMantis uzantısı: reklam engelleme, izleyici koruması, çerez bildirimi reddi, açılır pencere kontrolü ve 5 seviye.',
+      title: 'AntiRacketMantis - Chrome ve Firefox Reklam Engelleyici',
+      desc: 'Chrome ve Firefox için ücretsiz AntiRacketMantis uzantısı. Reklamları, izleyicileri, çerez bildirimlerini ve açılır pencereleri 5 seviyeyle azaltır.',
       breadcrumb: 'Ana sayfa'
     },
     features: {
-      title: 'Tarayıcı Koruma Özellikleri — AntiRacketMantis',
+      title: 'Tarayıcı Koruma Özellikleri - AntiRacketMantis',
       desc: 'AntiRacketMantis’in altı koruma aracı: reklam engelleme, izleyici koruması, çerez bildirimleri, açılır pencere kontrolü, parmak izi ayarları ve istisnalar.',
       breadcrumb: 'Özellikler'
     },
     'features/ad-blocker': {
-      title: 'Chrome ve Firefox Reklam Engelleyici — AntiRacketMantis',
-      desc: 'Chrome ve Firefox için Manifest V3 ağ kuralları ve kozmetik filtreler: daha az banner ve boş reklam alanı, dürüst sınırlar ve tek tıkla site istisnası.',
+      title: 'Chrome ve Firefox Reklam Engelleyici - AntiRacketMantis',
+      desc: 'Chrome ve Firefox için Manifest V3 ağ kuralları ve kozmetik filtreler: daha az banner ve boş reklam alanı, bilinen sınırlar ve tek tıkla site istisnası.',
       breadcrumb: 'Reklam engelleyici'
     },
     'features/tracker-blocker': {
-      title: 'İzleyici Engelleyici ve URL Temizleme — AntiRacketMantis',
+      title: 'İzleyici Engelleyici ve URL Temizleme - AntiRacketMantis',
       desc: 'Chrome ve Firefox’ta yerleşik EasyPrivacy listeleriyle izleyicileri engelleyin, UTM takip etiketlerini temizleyin ve Sec-GPC/DNT sinyali gönderin.',
       breadcrumb: 'İzleyici koruması'
     },
     'features/cookie-banners': {
-      title: 'Çerez Bildirimi Yönetimi — AntiRacketMantis',
-      desc: 'Chrome ve Firefox’ta desteklenen onay pencerelerinde isteğe bağlı çerezleri otomatik reddedin. Bağımsız ayar, dürüst sınırlar ve çalışan oturum çerezleri.',
+      title: 'Çerez Bildirimi Yönetimi - AntiRacketMantis',
+      desc: 'Chrome ve Firefox’ta desteklenen onay pencerelerinde isteğe bağlı çerezleri reddetmeye çalışır. Bağımsız ayar, bilinen sınırlar ve çalışan oturum çerezleri.',
       breadcrumb: 'Çerez bildirimleri'
     },
     'features/popup-blocker': {
-      title: 'Açılır Pencere (Pop-up) Engelleyici — AntiRacketMantis',
+      title: 'Açılır Pencere (Pop-up) Engelleyici - AntiRacketMantis',
       desc: 'Chrome ve Firefox’ta tıklamanız olmadan açılan pop-up ve arka plan sekmelerini durdururken giriş ve ödeme pencerelerini koruyun.',
       breadcrumb: 'Açılır pencereler'
     },
     pro: {
-      title: 'AntiRacketMantis PRO (Geliştiriliyor) — $39/ay Planlanan',
-      desc: 'Geliştirilmekte olan AntiRacketMantis PRO ($39/ay planlanan fiyat): aynı uzantıda yerel yapay zekâ, CAPTCHA yardımı ve otomasyon. Temel koruma ücretsizdir.',
+      title: 'AntiRacketMantis PRO (Geliştiriliyor) - $39/ay Planlanan',
+      desc: 'AntiRacketMantis PRO şu anda geliştiriliyor. Planlanan fiyat $39/ay; yerel yapay zekâ, CAPTCHA yardımı ve otomasyon planlanıyor. Temel koruma ücretsiz kalır.',
       breadcrumb: 'PRO'
     },
     'how-it-works': {
-      title: 'Koruma ve 5 Seviye Nasıl Çalışır? — AntiRacketMantis',
+      title: 'Koruma ve 5 Seviye Nasıl Çalışır? - AntiRacketMantis',
       desc: 'AntiRacketMantis’in çalışma düzeni: Manifest V3 declarativeNetRequest listeleri, kozmetik gizleme, çerez reddi, JSON aktarımı ve 5 koruma seviyesi.',
       breadcrumb: 'Nasıl çalışır'
     },
     install: {
-      title: 'Chrome ve Firefox Kurulum Rehberi — AntiRacketMantis',
+      title: 'Chrome ve Firefox Kurulum Rehberi - AntiRacketMantis',
       desc: 'Google Chrome ve Mozilla Firefox için adım adım AntiRacketMantis kurulum rehberi, mağaza yayın durumu ve kurulum sonrası kontrol listesi.',
       breadcrumb: 'Kurulum'
     },
     uninstall: {
-      title: 'Uzantı Nasıl Kaldırılır? — AntiRacketMantis',
-      desc: 'Chrome ve Firefox tarayıcılarından AntiRacketMantis’i saniyeler içinde kaldırma adımları ve yerel ayarlarınızla günlüğün nasıl silindiği.',
+      title: 'Uzantı Nasıl Kaldırılır? - AntiRacketMantis',
+      desc: 'Chrome ve Firefox’tan AntiRacketMantis’i kaldırma adımları. Yerel ayarların ve tanılama günlüğünün nasıl silindiğini de anlatıyoruz.',
       breadcrumb: 'Kaldırma'
     },
     limits: {
-      title: 'Bilinen Koruma Sınırları — AntiRacketMantis',
-      desc: 'Tarayıcı filtrelemesinin dürüst sınırları: birinci taraf reklamlar, çerez pencereleri, giriş ekranları, sıkı seviye yan etkileri ve sistem sayfaları.',
+      title: 'Bilinen Koruma Sınırları - AntiRacketMantis',
+      desc: 'Tarayıcı filtrelemesinin bilinen sınırları: birinci taraf reklamlar, çerez pencereleri, giriş ekranları, sıkı seviyelerin yan etkileri ve sistem sayfaları.',
       breadcrumb: 'Bilinen sınırlar'
     },
     compatibility: {
-      title: 'Tarayıcı Uyumluluğu — AntiRacketMantis',
+      title: 'Tarayıcı Uyumluluğu - AntiRacketMantis',
       desc: 'Desteklenen Google Chrome / Chromium (110+) ve Mozilla Firefox (128+) sürümleri, Manifest V3 kural sınırları ve yerel ağ istisnaları.',
       breadcrumb: 'Uyumluluk'
     },
     privacy: {
-      title: 'Gizlilik Politikası (Taslak) — AntiRacketMantis',
-      desc: 'İzleyici içermeyen web sitesi, yerel uzantı depolaması, tarayıcı izinlerinin açıklaması, ağ modülleri ve yayın öncesi denetim durumu.',
+      title: 'Gizlilik Politikası (Taslak) - AntiRacketMantis',
+      desc: 'Web sitesinin izleyici içermediğini, uzantının yerel depolamasını, tarayıcı izinlerini, ağ modüllerini ve yayın öncesi denetim durumunu açıklıyoruz.',
       breadcrumb: 'Gizlilik Politikası'
     },
     terms: {
-      title: 'Kullanım Koşulları (Taslak) — AntiRacketMantis',
+      title: 'Kullanım Koşulları (Taslak) - AntiRacketMantis',
       desc: 'AntiRacketMantis taslak Kullanım Koşulları: kişisel kullanım lisansı, kabul edilebilir kullanım, sorumluluk sınırları ve açık hukuki sorular.',
       breadcrumb: 'Kullanım Koşulları'
     },
     faq: {
-      title: 'Sıkça Sorulan Sorular (SSS) — AntiRacketMantis',
-      desc: 'AntiRacketMantis kurulumu, izinler, veri kullanımı, performans, tarayıcı uyumluluğu, planlanan PRO sürümü ve kaldırma hakkında net yanıtlar.',
+      title: 'Sıkça Sorulan Sorular (SSS) - AntiRacketMantis',
+      desc: 'AntiRacketMantis kurulumu, izinler, veri kullanımı, performans, tarayıcı uyumluluğu, planlanan PRO sürümü ve kaldırma hakkında kısa yanıtlar.',
       breadcrumb: 'SSS'
     },
     support: {
-      title: 'Destek ve Sorun Giderme — AntiRacketMantis',
+      title: 'Destek ve Sorun Giderme - AntiRacketMantis',
       desc: 'Bir site bozulduğunda, açılır pencere çıktığında veya reklam kaldığında yapabileceğiniz hızlı kontroller ve WillowinWorlds stüdyo iletişimi.',
       breadcrumb: 'Destek'
     },
     changelog: {
-      title: 'Sürüm Geçmişi ve Yol Haritası — AntiRacketMantis',
-      desc: 'Chrome ve Firefox için yayın öncesi 0.11.0 sürümünün doğrulanmış içeriği ile tamamlanan, süren ve planlanan çalışmaların yol haritası.',
+      title: 'Sürüm Geçmişi ve Yol Haritası - AntiRacketMantis',
+      desc: 'Chrome ve Firefox için yayın öncesi 0.11.0 sürümünün doğrulanmış içeriği, tamamlanan, süren ve planlanan işlerin yol haritası.',
       breadcrumb: 'Sürüm geçmişi'
     }
   },
 
   home: {
-    badge: 'Sakin dijital koruyucunuzla tanışın',
-    heroA: 'Daha az gürültü.',
-    heroB: 'Daha sakin internet.',
-    heroText: 'Chrome ve Firefox için ücretsiz tarayıcı uzantısı: rahatsız edici reklamları, izleyicileri, çerez bildirimlerini ve istenmeyen açılır pencereleri 5 anlaşılır seviyeyle azaltır.',
+    badge: 'Chrome ve Firefox için tarayıcı uzantısı',
+    heroA: 'Daha az reklam.',
+    heroB: 'Daha az izleme.',
+    heroText: 'Chrome ve Firefox için ücretsiz tarayıcı uzantısı. Rahatsız edici reklamları, izleyicileri, çerez bildirimlerini ve istenmeyen açılır pencereleri 5 seviyeyle azaltır.',
     heroPopupAlt: 'Gerçek AntiRacketMantis penceresi (İngilizce arayüz): example.org üzerinde koruma açık, seviye 2/5',
     heroMascotAlt: 'AntiRacketMantis maskotu peygamberdevesi Minty el sallayarak karşılıyor',
-    adBlockChip: 'Reklamlar azaltıldı',
-    trackersChip: 'İzleyiciler sınırlandı',
-    online: 'Daha temiz. Daha sakin. Sizin.',
-    demoNote: `✧ Uzantı penceresi — ${VERSION} sürümünün gerçek ekran görüntüsü (İngilizce arayüz)`,
+    heroNotes: [
+      'Tek tıkla yalnızca bir sitede korumayı kapatın',
+      'Beş seviye, varsayılan olarak Seviye 2 açık'
+    ],
+    heroSupport: {
+      label: 'Çalıştığı tarayıcılar',
+      status: `Henüz mağazalarda yok. Sürüm ${VERSION} yayına hazırlanıyor.`
+    },
+    demoNote: `Gerçek uzantı penceresi ekran görüntüsü, sürüm ${VERSION}`,
 
     compare: {
       tag: 'Farkı görün',
-      title: 'Kalabalık bir sayfanın nasıl sakinleştiğini görün',
-      text: 'Dikkat dağıtıcı öğelerle dolu örnek bir sayfayı daha düzenli okuma görünümüyle karşılaştırmak için kaydırıcıyı hareket ettirin.',
+      title: 'Kalabalık bir sayfanın korumayla nasıl değiştiğini görün',
+      text: 'Dikkat dağıtan öğelerle dolu örnek bir sayfada korumanın farkını görmek için kaydırıcıyı sürükleyin.',
+      points: [
+        'Reklam bannerları ve boş reklam kutuları 3. seviyeden itibaren gizlenir',
+        'Desteklenen çerez pencerelerinde “reddet” seçilir',
+        'Tıklamadığınız açılır pencereler 3. seviyeden itibaren durdurulur'
+      ],
       limitsLink: 'Uzantının neleri gizlemediğini ve nedenini okuyun',
       without: 'Korumasız',
       with: 'Korumalı',
@@ -189,74 +197,62 @@ export default {
       ad: 'REKLAM',
       cookie: 'Tüm çerezler kabul edilsin mi?',
       popup: 'Bültene hemen katılın!',
-      caption: 'Temsili görsel — gerçek bir site ölçümü değildir'
+      caption: 'Temsili görsel - gerçek bir site ölçümü değildir'
     },
 
     features: {
-      tag: 'Her şey bir arada',
-      title: 'Sakin gezinme için altı araç',
-      intro: 'Chrome ve Firefox için reklam filtreleri, izleyici koruması, çerez bildirimi yönetimi, açılır pencere kontrolü, gizlilik ayarları ve esnek istisnalar.',
+      tag: 'Araçlar',
+      title: 'Altı koruma aracı',
+      intro: 'Chrome ve Firefox için reklam filtreleri, izleyici koruması, çerez bildirimi yönetimi, açılır pencere kontrolü, gizlilik ayarları ve istisnalar.',
       howLink: 'Arka planda nasıl çalışır'
     },
 
     levels: {
       tag: 'Beş koruma seviyesi',
-      title: 'Hafif filtrelemeden sıkı gizliliğe',
-      intro: 'Sayfa sakinliği ile site uyumluluğu arasındaki dengeyi kendiniz seçersiniz. Varsayılan olarak Seviye 2 açıktır.',
-      detailLink: 'Her seviyeyi ayrıntılı inceleyin'
+      title: 'Uyumluluktan Maksimum seviyeye',
+      intro: 'Koruma ile sitelerin düzgün çalışması arasındaki dengeyi siz seçersiniz. Seviye 1 en hafif, Seviye 5 en sıkı seviyedir. Varsayılan olarak Seviye 2 açıktır.',
+      detailLink: 'Seviyelerin ayrıntılarını görün',
+      pickerLegend: 'Neyi değiştirdiğini görmek için bir seviye seçin'
     },
 
     proTeaser: {
-      tag: 'Tek uzantı · geliştirme planı',
       badge: 'Geliştiriliyor',
       title: 'Temel koruma ücretsizdir. PRO aynı uzantı içinde hazırlanıyor.',
-      text: 'Reklam, izleyici, çerez bildirimi ve açılır pencere koruması ücretsiz kalır. İleride yerel yapay zekâ modelleri ve rutin tarayıcı otomasyonu isteyenler için PRO aboneliği geliştirme aşamasındadır.',
-      freeTitle: 'Temel koruma',
-      freePrice: 'Ücretsiz',
-      freePoints: [
-        'Ağ ve sayfa düzeyinde reklam engelleme',
-        'İzleyici, bağlantı etiketi ve zararlı alan adı koruması',
-        'İsteğe bağlı çerez reddi ve açılır pencere kontrolü',
-        '5 koruma seviyesi, site istisnaları ve JSON aktarımı'
-      ],
+      text: 'Reklam, izleyici, çerez bildirimi ve açılır pencere koruması ücretsiz kalır. İleride yerel yapay zekâ modelleri ve rutin tarayıcı otomasyonu isteyenler için isteğe bağlı bir PRO aboneliği geliştiriliyor.',
       proTitle: 'AntiRacketMantis PRO',
       proPrice: '$39',
       proPriceLabel: 'planlanan fiyat',
-      proPoints: [
-        'Ücretsiz sürümdeki tüm koruma özellikleri',
-        'Yapay zekâ destekli CAPTCHA tanıma yardımı (yerel çalışma planlanır)',
-        'Yerel sinir ağları ve görüntü analizi',
-        'Gelişmiş tarayıcı otomasyonu ve ek araçlar'
-      ],
       disclaimer: 'PRO şu anda geliştiriliyor ve henüz kullanıma sunulmadı. Ödeme ekranı yoktur, çıkış tarihi belirlenmemiştir ve hiçbir sitede doğrulamanın geçileceği vadedilmez.',
       primaryCta: 'PRO planlarını inceleyin',
       secondaryCta: 'Yayın durumunu takip edin'
     },
 
     interface: {
-      tag: 'Gerçek arayüz',
+      tag: 'Ekran görüntüleri',
       title: 'Uzantı arayüzüne yakından bakın',
-      text: 'AntiRacketMantis penceresi ve koruma ayarlarından gerçek ekran görüntüleri. Uzantının henüz Türkçe arayüzü olmadığı için görüntüler İngilizce arayüzden alınmıştır.',
-      allLink: 'Tüm ayar ve filtre listesi görüntülerini görün'
+      text: 'Uzantı penceresinin ve koruma ayarlarının gerçek ekran görüntüleri. Uzantının henüz Türkçe arayüzü yok, bu yüzden görüntüler İngilizce arayüzden alındı.',
+      allLink: 'Tüm ayar ve filtre listesi görüntülerini görün',
+      prev: 'Önceki ekran görüntüsü',
+      next: 'Sonraki ekran görüntüsü'
     },
 
     steps: {
-      tag: 'Başlamak kolay',
-      title: 'Daha sakin internet için üç adım',
+      tag: 'Başlangıç',
+      title: 'Başlamak için üç adım',
       items: [
-        ['Kurulum rehberini inceleyin', 'Mağaza yayını öncesinde Chrome (110+) veya Firefox (128+) gereksinimlerini ve tarayıcı izinlerini görün.'],
-        ['Tarayıcınıza ekleyin', 'Chrome Web Store ve Firefox Add-ons yayınının ardından kurulumu onaylayıp simgeyi araç çubuğuna sabitleyin.'],
-        ['Kendi dengenizi seçin', '1 ile 5 arasında koruma seviyenizi belirleyin; gerektiğinde herhangi bir sitede korumayı tek tıkla duraklatın.']
+        ['Kurulum rehberini inceleyin', 'Mağaza yayınından önce Chrome (110+) veya Firefox (128+) gereksinimlerine ve tarayıcı izinlerine bakın.'],
+        ['Tarayıcınıza ekleyin', 'Chrome Web Store ve Firefox Add-ons’ta yayın başladığında kurulumu onaylayın ve simgeyi araç çubuğuna sabitleyin.'],
+        ['Seviyenizi seçin', '1 ile 5 arasında bir koruma seviyesi seçin. Herhangi bir sitede korumayı tek tıkla duraklatabilirsiniz.']
       ]
     },
 
     trust: {
-      tag: 'Gizlilik önceliğimiz',
-      title: 'Güven, açık iletişimle başlar',
-      text: 'Muallak vaatler yok. Nelerin tarayıcıda yerel çalıştığını, hangi izinlerin neden istendiğini ve filtrelemenin sınırlarını açıkça paylaşıyoruz.',
+      tag: 'Gizlilik',
+      title: 'Verileriniz nasıl işleniyor',
+      text: 'Nelerin tarayıcıda yerel çalıştığını, hangi izinlerin neden istendiğini ve filtrelemenin sınırlarını açıkça yazıyoruz.',
       bullets: [
-        'Bir site bozulduğunda veya erişimi engellediğinde tek tıkla site bazlı duraklatma anahtarı',
-        'Uyumluluktan Maksimuma kadar beş şeffaf koruma seviyesi',
+        'Bir site bozulduğunda veya açılmadığında tek tıkla o site için duraklatma anahtarı',
+        'Uyumluluktan Maksimuma kadar beş koruma seviyesi',
         'Ayarlar, site istisnaları ve tanılama günlüğü tarayıcınızda yerel olarak saklanır'
       ],
       privacyBtn: 'Gizlilik Politikası',
@@ -264,12 +260,9 @@ export default {
     },
 
     permissions: {
-      tag: 'İzinlerde şeffaflık',
-      title: 'Hangi izinler neden istenir?',
-      intro: 'Kurulum sırasında tarayıcınız bu izinleri gösterir. Her birinin gerçekte ne için kullanıldığını sade dille özetledik.',
-      devTitle: 'Geliştirici hakkında',
-      devText: 'AntiRacketMantis, bağımsız oyun ve uygulama stüdyosu WillowinWorlds tarafından geliştirilir. Amacımız, sınırları açıkça anlatılan sade ve güvenilir araçlar üretmektir.',
-      devLink: 'WillowinWorlds web sitesi',
+      tag: 'İzinler',
+      title: 'İstenen izinler ve nedenleri',
+      intro: 'Kurulum sırasında tarayıcınız bu izinleri gösterir. Her birinin gerçekte ne için kullanıldığını kısaca özetledik.',
       helpTitle: 'Bir site düzgün çalışmazsa',
       helpText: 'Uzantı penceresinden o site için korumayı kapatıp sayfayı yenileyin. Ayrıntılar için Bilinen Sınırlar ve Destek sayfalarına göz atın.',
       detailsLink: 'İzinlerin ayrıntılı açıklaması',
@@ -279,9 +272,17 @@ export default {
         ['Sitelerdeki verileri okuma ve değiştirme (http/https + scripting)', 'Reklam kutularını gizlemek, desteklenen çerez bildirimlerini reddetmek, istenmeyen açılır pencereleri durdurmak ve parmak izi kurallarını uygulamak için kullanılır.'],
         ['Ağ isteklerini engelleme ve düzenleme (declarativeNetRequest)', 'Tarayıcı motorunun kendisi, yerleşik kural listeleriyle reklam ve izleyici isteklerini keser ve bağlantılardaki takip etiketlerini temizler.'],
         ['Etkin sekmeyi ve sekmeleri görme (tabs, activeTab)', 'Açık sitenin koruma durumunu göstermek, o site için istisna olarak eklemek ve sekmeyi yenilemek için kullanılır.'],
-        ['Ayarları yerel depolama (storage)', 'Koruma seviyenizi, çerez bildirimi tercihinizi, istisna listesini ve yerel olay günlüğünü tarayıcı profilinizde saklar.']
+        ['Ayarları yerel depolama (storage)', 'Koruma seviyenizi, çerez bildirimi tercihinizi, istisna listesini ve yerel tanılama günlüğünü tarayıcı profilinizde saklar.']
       ],
       note: 'Kesin veri akışı açıklamaları ve nihai Gizlilik Politikası, yayın öncesi paket denetimi tamamlandığında kesinleşecektir.'
+    },
+
+    studio: {
+      title: 'Geliştirici hakkında',
+      text: 'AntiRacketMantis, oyun ve uygulama yapan küçük ve bağımsız bir stüdyo olan WillowinWorlds tarafından geliştirilir. Uzantının ne yaptığını ve nerede yetersiz kaldığını yazıyoruz.',
+      link: 'WillowinWorlds’i ziyaret edin',
+      changelogLink: 'Sürüm geçmişi',
+      bugLink: 'Sorun bildirin'
     },
 
     faq: {
@@ -293,20 +294,20 @@ export default {
     },
 
     final: {
-      tag: 'Daha sakin bir internete hazır mısınız?',
-      title: 'Önemli olan her zaman göz önünde kalsın.',
-      text: 'AntiRacketMantis temel koruması ücretsiz kalır. Yayın öncesinde tarayıcı uyumluluğunu ve kurulum adımlarını inceleyebilirsiniz.',
+      tag: 'Mağaza yayını öncesi',
+      title: 'Henüz mağazalarda değil.',
+      text: 'Temel koruma ücretsiz kalır. Kurulum rehberi ve tarayıcı sürümleri şimdiden incelenebilir; mağaza bağlantıları inceleme sonrasında eklenir.',
       compatNote: 'Chrome (110+) ve Firefox (128+) sürümleri hazırlanıyor. Diğer tarayıcılar test edilmeden vadedilmez.',
       compatLink: 'Uyumluluk',
       installLink: 'Kurulum rehberi',
-      mascotAlt: 'Peygamberdevesi Minty daha sakin bir interneti kutluyor'
+      mascotAlt: 'Peygamberdevesi Minty temiz bir sayfayı kutluyor'
     }
   },
 
   featuresHub: {
     eyebrow: 'Koruma özellikleri',
-    title: 'AntiRacketMantis neler yapar?',
-    lead: 'Chrome ve Firefox için birbiriyle uyumlu altı araç: reklam engelleme, izleyici koruması, çerez bildirimi reddi, açılır pencere kontrolü, gizlilik ayarları ve site istisnaları.',
+    title: 'Uzantının yaptıkları',
+    lead: 'Chrome ve Firefox için altı araç: reklam engelleme, izleyici koruması, çerez bildirimi reddi, açılır pencere kontrolü, gizlilik ayarları ve site istisnaları.',
     mascotAlt: 'Kalkanını tutan peygamberdevesi Minty',
     deepLinksIntro: 'Temel koruma alanlarını ayrıntılı inceleyin:',
     items: [
@@ -315,13 +316,13 @@ export default {
         route: 'features/ad-blocker',
         tone: 'lime',
         icon: 'ad',
-        cardTitle: 'Daha az rahatsız edici reklam',
+        cardTitle: 'Rahatsız edici reklamlar azalır',
         cardText: 'Banner ve yanıp sönen kutular yerine okuduğunuz içeriğe odaklanın.',
         title: 'Ağ ve sayfa düzeyinde reklam engelleme',
         summary: 'Üçüncü taraf reklam bannerlarını, ağır reklam betiklerini ve boş kutuları azaltarak sayfaları daha okunaklı kılar.',
         details: 'Yerleşik uBlock filters, EasyList, RU AdList, Peter Lowe ve AdGuard Turkish listelerine dayanan ağ kuralları, bilinen reklam alan adlarına giden istekleri yüklenmeden durdurur. Seviye 3 (Dengeli) ve üzerinde kozmetik filtreler sayfa içinde kalan reklam bloklarını da gizler.',
         limit: 'Sınır: İçerikle aynı alan adından sunulan birinci taraf reklamlar veya yeni sayfa yapıları, yerleşik listeler güncellenene kadar görünebilir.',
-        tags: ['Ağ kuralları', 'Kozmetik filtreler', 'Seviye 2–3’ten itibaren'],
+        tags: ['Ağ kuralları', 'Kozmetik filtreler', 'Seviye 2-3’ten itibaren'],
         ctaLabel: 'Reklam engellemeyi inceleyin'
       },
       {
@@ -329,7 +330,7 @@ export default {
         route: 'features/tracker-blocker',
         tone: 'sky',
         icon: 'eye',
-        cardTitle: 'Daha az siteler arası takip',
+        cardTitle: 'Siteler arası takip azalır',
         cardText: 'Bilinen analiz sayaçlarını, takip piksellerini ve bağlantı etiketlerini sınırlandırır.',
         title: 'İzleyici ve bağlantı etiketi koruması',
         summary: 'Bilinen üçüncü taraf izleyicileri, zararlı alan adlarını ve URL takip parametrelerini keser.',
@@ -343,21 +344,21 @@ export default {
         route: 'features/cookie-banners',
         tone: 'peach',
         icon: 'cookie',
-        cardTitle: 'Çerez pencereleri kontrol altında',
+        cardTitle: 'Çerez pencerelerinde reddetme',
         cardText: 'Desteklenen onay pencerelerinde isteğe bağlı çerezleri otomatik reddetmeye çalışır.',
         title: 'Sakin çerez bildirimi yönetimi',
         summary: 'Onay penceresi desteklediğinde “Tümünü kabul et” yerine isteğe bağlı çerezleri reddetmeyi seçer.',
-        details: 'Çerez bildirimleri ayarı 1–5 koruma seviyelerinden bağımsızdır: varsayılan olarak uyumlu onay pencerelerinde isteğe bağlı çerezleri reddeder. Seviye 4 ve üzerinde üçüncü taraf çerez bildirimi betikleri ve üçüncü taraf çerezler de engellenir.',
+        details: 'Çerez bildirimleri ayarı 1-5 koruma seviyelerinden bağımsızdır: varsayılan olarak uyumlu onay pencerelerinde isteğe bağlı çerezleri reddeder. Seviye 4 ve üzerinde üçüncü taraf çerez bildirimi betikleri ve üçüncü taraf çerezler de engellenir.',
         limit: 'Sınır: Bir site reddetme seçeneği sunmuyorsa yalnızca bildirimi gizlemek teknik reddetme anlamına gelmez; siteler gerekli güvenlik çerezlerini ayarlayabilir.',
-        tags: ['Bağımsız ayar', 'Önce reddet', 'Dürüst sınırlar'],
+        tags: ['Bağımsız ayar', 'Önce reddet', 'Bilinen sınırlar'],
         ctaLabel: 'Çerez bildirimlerini inceleyin'
       },
       {
         id: 'popups',
         route: 'features/popup-blocker',
-        tone: 'lilac',
+        tone: 'leaf',
         icon: 'popup',
-        cardTitle: 'Daha az istenmeyen pencere',
+        cardTitle: 'Kendiliğinden açılan pencereler',
         cardText: 'Tıklamanız olmadan açılan pop-up ve arka plan sekmelerini azaltır.',
         title: 'Açılır pencere ve yeni sekme kontrolü',
         summary: 'Siz tıklamadan açılmaya çalışan pop-up pencerelerini ve arka plan (pop-under) sekmelerini durdurur.',
@@ -371,11 +372,11 @@ export default {
         route: null,
         tone: 'mint',
         icon: 'lock',
-        cardTitle: 'Abartısız, şeffaf gizlilik',
-        cardText: 'Anlaşılır araçlar: gizlilik başlıkları, parmak izi koruması ve sıkı HTTPS.',
+        cardTitle: 'Gizlilik için ek ayarlar',
+        cardText: 'Gizlilik başlıkları, parmak izi koruması ve sıkı HTTPS.',
         title: 'Ek gizlilik araçları',
         summary: 'Canvas maskeleme anahtarı, Seviye 5 parmak izi koruması, ping engelleme ve HTTPS yönlendirmesi.',
-        details: 'Uzantı penceresinde deneysel Canvas maskeleme anahtarı yer alır. Seviye 5 (Maksimum) ise kapsamlı parmak izi koruması (canvas, WebGL, ses ve genel işlemci çekirdek sayısı), üçüncü taraf ping/CSP rapor engelleme ve özel yerel ağlar hariç HTTPS geçişi ekler.',
+        details: 'Uzantı penceresinde deneysel Canvas maskeleme anahtarı yer alır. Seviye 5 (Maksimum) ise parmak izi koruması (canvas, WebGL, ses ve genel işlemci çekirdek sayısı), üçüncü taraf ping/CSP rapor engelleme ve özel yerel ağlar hariç HTTPS geçişi ekler.',
         limit: 'Sınır: Parmak izi gürültüsü her sayfa yüklemesinde değiştiğinden bazı siteler daha sık doğrulama isteyebilir.',
         tags: ['Canvas / WebGL', 'Ping engelleme', 'Seviye 5 HTTPS'],
         ctaLabel: 'Nasıl çalışır bölümüne gidin'
@@ -385,7 +386,7 @@ export default {
         route: null,
         tone: 'butter',
         icon: 'sliders',
-        cardTitle: 'Sizin seviyeleriniz ve istisnalarınız',
+        cardTitle: 'Seviyeler ve site istisnaları',
         cardText: 'Beş hazır koruma seviyesi ve her site için tek tıkla duraklatma.',
         title: 'Koruma seviyeleri ve site istisnaları',
         summary: 'Beş seviye arasında istediğiniz an geçiş yapın, 100’e kadar alan adını istisna olarak ekleyin ve ayarları JSON olarak aktarın.',
@@ -396,7 +397,7 @@ export default {
       }
     ],
     nudge: {
-      title: 'Daha yakından bakmak ister misiniz?',
+      title: 'Ayrıntılara geçin',
       text: '5 seviyenin teknik yapısını, PRO planlarını veya bilinen sınırları inceleyin.',
       actions: [
         ['how-it-works', 'Nasıl çalışır', 'btn-primary'],
@@ -412,8 +413,8 @@ export default {
       tone: 'lime',
       icon: 'ad',
       eyebrow: 'Reklam engelleyici · Chrome ve Firefox',
-      title: 'Gürültüsüz reklam engelleme',
-      lead: 'AntiRacketMantis, Manifest V3 kurallarıyla üçüncü taraf reklam bannerlarını, ağır reklam betiklerini ve boş kutuları azaltarak yazıları ve web araçlarını daha rahat okumanızı sağlar.',
+      title: 'Reklamları ağ ve sayfa düzeyinde engelleyin',
+      lead: 'AntiRacketMantis, Manifest V3 kurallarıyla üçüncü taraf reklam bannerlarını, ağır reklam betiklerini ve boş kutuları azaltır. Yazılar ve web araçları daha rahat okunur.',
       mascotAlt: 'Kalkanıyla sayfayı reklam karmaşasından koruyan peygamberdevesi Minty',
       whatTitle: 'Reklam engelleyici ne yapar?',
       whatParagraphs: [
@@ -427,7 +428,7 @@ export default {
       ],
       benefitsTitle: 'Günlük kullanımda sağladığı kolaylıklar',
       benefits: [
-        { title: 'Sıkılık derecesi sizin elinizde', text: 'Varsayılan Seviye 2 yüksek uyumluluk için hafif ağ filtrelemesi sunar; Seviye 3 tam reklam listelerini ve kozmetik gizlemeyi açar.' },
+        { title: 'Sıkılığı siz seçersiniz', text: 'Varsayılan Seviye 2 yüksek uyumluluk için hafif ağ filtrelemesi sunar; Seviye 3 tam reklam listelerini ve kozmetik gizlemeyi açar.' },
         { title: 'Tek site için tek tıkla duraklatma', text: 'Bir site reklam engelleyiciyi kapatmanızı isterse veya düzeni bozulursa uzantı penceresinden o site için korumayı kapatıp sayfayı yenilemeniz yeterlidir.' },
         { title: 'Gezinirken arka plan indirmesi yok', text: 'Tüm filtre listeleri uzantı paketinin içindedir ve yalnızca uzantı güncellemeleriyle yenilenir.' }
       ],
@@ -445,7 +446,7 @@ export default {
       settingsTitle: 'İlgili ayarlar ve seviyeler',
       settingsText: 'Seviye 1 (Uyumluluk) reklam filtrelerini kapatır. Seviye 2 (Hafif, varsayılan) kozmetik olmadan Peter Lowe listesini açar. Seviye 3 (Dengeli) tam uBlock filters, EasyList, RU AdList, AdGuard Turkish listelerini ve kozmetik gizlemeyi etkinleştirir.',
       settingsLinkText: 'Beş koruma seviyesinin tümünü karşılaştırın',
-      limitsTitle: 'Dürüst sınırlar',
+      limitsTitle: 'Bilinen sınırlar',
       limitsText: 'Sitenin kendi alan adından sunduğu birinci taraf reklamlar, yazı içi sponsorlu bölümler ve hızla değişen sayfa yapıları görünmeye devam edebilir. Tüm sınırları Bilinen Sınırlar sayfasında bulabilirsiniz.',
       limitsLinkText: 'Tüm bilinen sınırları okuyun',
       faqTitle: 'Reklam engelleyici hakkında sık sorulanlar',
@@ -457,7 +458,7 @@ export default {
       ],
       relatedTitle: 'Diğer koruma araçları',
       nudge: {
-        title: 'Daha sakin gezinmeye hazır mısınız?',
+        title: 'Kurulum ve izleyici koruması',
         text: 'Chrome ve Firefox kurulum rehberine göz atın veya izleyici korumasını inceleyin.',
         actions: [
           ['install', 'Kurulum rehberi', 'btn-primary'],
@@ -472,7 +473,7 @@ export default {
       icon: 'eye',
       eyebrow: 'İzleyici koruması · Chrome ve Firefox',
       title: 'İzleyicileri, sayaçları ve bağlantı etiketlerini sınırlandırın',
-      lead: 'Bilinen analiz alan adlarını engelleyerek, bağlantılardaki takip etiketlerini temizleyerek ve gizlilik sinyalleri göndererek günlük gezinmede üçüncü taraf takibini azaltır.',
+      lead: 'Bilinen analiz alan adlarını engeller, bağlantılardaki takip etiketlerini temizler ve gizlilik sinyalleri gönderir. Günlük gezintide üçüncü taraf takibini azaltır.',
       mascotAlt: 'Üçüncü taraf izleyicilere karşı kalkan tutan peygamberdevesi Minty',
       whatTitle: 'İzleyici koruması ne yapar?',
       whatParagraphs: [
@@ -481,14 +482,14 @@ export default {
       ],
       howTitle: 'Sade dille nasıl çalışır?',
       howParagraphs: [
-        'Varsayılan Seviye 2 (Hafif koruma) ile birlikte tarayıcının declarativeNetRequest motoru, EasyPrivacy (9 binden fazla kural), RU AdList: Counters ve uBlock filters – Badware risks yerleşik listelerini uygular.',
+        'Varsayılan Seviye 2 (Hafif koruma) ile birlikte tarayıcının declarativeNetRequest motoru, EasyPrivacy (9 binden fazla kural), RU AdList: Counters ve uBlock filters - Badware risks yerleşik listelerini uygular.',
         'Seviye 4 (Sıkı) üçüncü taraf çerezleri isteklerden çıkarır ve sosyal medya bileşenlerini engeller. Seviye 5 (Maksimum) ise parmak izi koruması (canvas, WebGL, ses), üçüncü taraf ping/CSP engelleme ve özel yerel ağlar hariç HTTPS geçişi ekler.'
       ],
       benefitsTitle: 'Kullanıcıya sağladığı faydalar',
       benefits: [
         { title: 'İlk andan itibaren etkin', text: 'EasyPrivacy, RU AdList: Counters ve uBO Badware listeleri varsayılan Seviye 2’de açıktır.' },
         { title: 'Daha temiz bağlantılar', text: 'Seviye 3+ ile adreslerdeki yaygın takip parametreleri otomatik olarak temizlenir.' },
-        { title: 'Gizli kural yok, tam şeffaflık', text: 'Ayarlar sayfasında tüm yerleşik listeleri, kural sayılarını ve etkin durumlarını tek tabloda görebilirsiniz.' }
+        { title: 'Gizli kural yok', text: 'Ayarlar sayfasında tüm yerleşik listeleri, kural sayılarını ve etkin durumlarını tek tabloda görebilirsiniz.' }
       ],
       scene: {
         label: 'Temsili görsel',
@@ -496,15 +497,15 @@ export default {
         caption: 'İzleyici engelleme ve URL temizleme akışının temsili gösterimi (canlı telemetri değildir).',
         beforeTitle: 'İzleyici koruması olmadan',
         beforeItems: ['Bağlantı uzun ?utm_source=...&fbclid=... etiketleri taşır', 'Sayfayla birlikte üçüncü taraf sayaç ve pikseller yüklenir', 'Gömülü sosyal düğmeler ziyaretinizi farklı sitelerde görür'],
-        afterTitle: 'AntiRacketMantis ile (Seviye 3–4)',
+        afterTitle: 'AntiRacketMantis ile (Seviye 3-4)',
         afterItems: ['Bilinen takip parametreleri bağlantıdan temizlenir', 'Bilinen EasyPrivacy izleyici istekleri yerel olarak durdurulur', 'Sec-GPC sinyali gönderilir; Seviye 4 üçüncü taraf bileşenleri keser']
       },
       exampleTitle: 'Günlük kullanım örneği',
-      exampleText: 'Chrome veya Firefox’ta bir bültenden gelen bağlantıya tıkladınız. Seviye 3’te AntiRacketMantis takip etiketlerini adresten temizler ve bilinen EasyPrivacy sayaçlarını yerel olarak durdurur. Sıkı Seviye 4–5’te üçüncü taraf hesapla giriş düğmesi çalışmazsa Seviye 3’e dönmeniz veya siteyi istisna olarak eklemeniz yeterlidir.',
+      exampleText: 'Chrome veya Firefox’ta bir bültenden gelen bağlantıya tıkladınız. Seviye 3’te AntiRacketMantis takip etiketlerini adresten temizler ve bilinen EasyPrivacy sayaçlarını yerel olarak durdurur. Sıkı Seviye 4-5’te üçüncü taraf hesapla giriş düğmesi çalışmazsa Seviye 3’e dönmeniz veya siteyi istisna olarak eklemeniz yeterlidir.',
       settingsTitle: 'İlgili ayarlar ve seviyeler',
       settingsText: 'Seviye 2 EasyPrivacy, RU AdList: Counters ve uBO Badware listelerini açar. Seviye 3 bağlantı temizleme ve Sec-GPC/DNT ekler. Seviye 4 üçüncü taraf çerez ve sosyal bileşenleri sınırlar. Seviye 5 parmak izi koruması, ping engelleme ve HTTPS yönlendirmesi ekler.',
       settingsLinkText: 'Beş koruma seviyesinin tümünü görün',
-      limitsTitle: 'Dürüst sınırlar',
+      limitsTitle: 'Bilinen sınırlar',
       limitsText: 'Hiçbir tarayıcı uzantısı tam anonimlik sağlamaz: internet sağlayıcınız ve açtığınız site IP adresinizi ve o sitedeki işlemlerinizi görmeye devam eder. Gizli mod tek başına oturum sırasındaki izleyicileri engellemez.',
       limitsLinkText: 'Gizlilik sınırlarını okuyun',
       faqTitle: 'İzleyici koruması hakkında sık sorulanlar',
@@ -516,7 +517,7 @@ export default {
       ],
       relatedTitle: 'Diğer koruma araçları',
       nudge: {
-        title: 'Veri akışı hakkında tam açıklık mı arıyorsunuz?',
+        title: 'Veri akışının ayrıntıları',
         text: 'Gizlilik Politikamızı inceleyin veya çerez bildirimi yönetimine göz atın.',
         actions: [
           ['privacy', 'Gizlilik Politikası', 'btn-primary'],
@@ -530,20 +531,20 @@ export default {
       tone: 'peach',
       icon: 'cookie',
       eyebrow: 'Çerez bildirimleri · Chrome ve Firefox',
-      title: 'Çerez bildirimlerinde daha sakin deneyim',
-      lead: 'Desteklenen onay pencerelerinde isteğe bağlı çerezleri otomatik olarak reddetmeye çalışır; her sitede küçük reddetme düğmesini aramanıza gerek kalmaz.',
+      title: 'Çerez bildirimlerinde isteğe bağlı çerezleri reddetme',
+      lead: 'Desteklenen onay pencerelerinde isteğe bağlı çerezleri otomatik olarak reddetmeye çalışır. Her sitede reddetme düğmesini aramanız gerekmez.',
       mascotAlt: 'Tekrarlayan çerez bildirimlerine karşı kalkan tutan peygamberdevesi Minty',
       whatTitle: 'Çerez bildirimi modülü ne yapar?',
       whatParagraphs: [
         'Desteklenen sitelerde AntiRacketMantis onay penceresini tanır ve “Tümünü kabul et” yerine reklam ve analiz amaçlı isteğe bağlı çerezleri reddetme seçeneğini uygular.',
-        'Bu ayar 1–5 koruma seviyelerinden bağımsızdır: Seviye 1 (Uyumluluk) seçiliyken bile isteğe bağlı çerez reddini açık tutabilir veya dilediğinizde “Dokunma” seçeneğine alabilirsiniz.'
+        'Bu ayar 1-5 koruma seviyelerinden bağımsızdır: Seviye 1 (Uyumluluk) seçiliyken bile isteğe bağlı çerez reddini açık tutabilir veya dilediğinizde “Dokunma” seçeneğine alabilirsiniz.'
       ],
       howTitle: 'Sade dille nasıl çalışır?',
       howParagraphs: [
         'Modül, yerleşik onay penceresi kurallarını (DuckDuckGo autoconsent 18.6.0 tabanlı) scripting API aracılığıyla sayfanın izole ortamında çalıştırır ve sitenin kendi reddetme akışını seçer.',
         'Seviye 4 (Sıkı) ve üzerinde üçüncü taraf çerez bildirimi betikleri ile üçüncü taraf çerezler ayrıca ağ düzeyinde engellenir.'
       ],
-      benefitsTitle: 'Neden yalnızca gizlemek yerine reddetmek daha iyidir?',
+      benefitsTitle: 'Gizlemek yerine reddetmenin faydaları',
       benefits: [
         { title: 'Kabul etmek yerine reddeder', text: 'Onay penceresi isteğe bağlı çerezleri reddetmeyi desteklediğinde uzantı doğrudan reddetme yolunu seçer.' },
         { title: 'Bağımsız kontrol', text: 'Reklam ve izleyici seviyenizi değiştirmeden “İsteğe bağlı çerezleri reddet” veya “Dokunma” seçenekleri arasında geçiş yapabilirsiniz.' },
@@ -561,21 +562,21 @@ export default {
       exampleTitle: 'Günlük kullanım örneği',
       exampleText: 'Chrome veya Firefox’ta bir haber sitesi veya yazılım belgesi açtınız. Üç ayrı onay menüsüyle uğraşmak yerine AntiRacketMantis reddetme adımını otomatik uygular. Bir sitede tercihlerinizi elle seçmek isterseniz o siteyi istisna olarak eklemeniz veya ayarı “Dokunma” yapmanız yeterlidir.',
       settingsTitle: 'İlgili ayarlar ve seviyeler',
-      settingsText: 'Ayarlar → Gizlilik ve koruma bölümünde Çerez bildirimleri için “İsteğe bağlı çerezleri reddet” (varsayılan) veya “Dokunma” seçebilirsiniz. Seviye 4–5 üçüncü taraf bildirim betiklerini de engeller.',
+      settingsText: 'Ayarlar → Gizlilik ve koruma bölümünde Çerez bildirimleri için “İsteğe bağlı çerezleri reddet” (varsayılan) veya “Dokunma” seçebilirsiniz. Seviye 4-5 üçüncü taraf bildirim betiklerini de engeller.',
       settingsLinkText: 'Nasıl Çalışır sayfasındaki ayar görüntüsünü görün',
-      limitsTitle: 'Dürüst sınırlar',
+      limitsTitle: 'Bilinen sınırlar',
       limitsText: 'Bir site reddetme akışı sunmuyorsa veya özel bir pencere kullanıyorsa yalnızca bildirimi gizlemek teknik olarak çerez reddi anlamına gelmez. Siteler güvenlik ve oturum çerezlerini saklamaya devam edebilir.',
       limitsLinkText: 'Tüm bilinen sınırları okuyun',
       faqTitle: 'Çerez bildirimleri hakkında sık sorulanlar',
       faqs: [
         { q: 'Uzantı pencereyi kapatmak için “Tümünü kabul et” düğmesine mi basar?', a: 'Hayır. Modül, onay penceresi desteklediğinde isteğe bağlı çerezleri reddetmek üzere yapılandırılmıştır.' },
         { q: 'Bazı sitelerde çerez penceresi neden hâlâ görünüyor?', a: 'Bazı siteler yerleşik kurallarda yer almayan özel pencereler kullanır. Sayfa kaydırmasının veya düğmelerin bozulmaması için bu pencereler görünür bırakılır.' },
-        { q: 'Seviye 4–5’te bildirim betiği engellenince tüm çerezler reddedilmiş mi olur?', a: 'Her zaman değil. Bildirim betiğinin engellenmesi pencereyi gizler; ancak site zorunlu veya güvenlik amaçlı çerezleri yine ayarlayabilir.' },
+        { q: 'Seviye 4-5’te bildirim betiği engellenince tüm çerezler reddedilmiş mi olur?', a: 'Her zaman değil. Bildirim betiğinin engellenmesi pencereyi gizler; ancak site zorunlu veya güvenlik amaçlı çerezleri yine ayarlayabilir.' },
         { q: 'Reklam engellemeyi koruyup çerez modülünü kapatabilir miyim?', a: 'Evet. Çerez bildirimleri bağımsız bir ayardır; “Dokunma” seçeneğini seçtiğinizde koruma seviyeniz normal çalışmaya devam eder.' }
       ],
       relatedTitle: 'Diğer koruma araçları',
       nudge: {
-        title: 'Sürpriz açılır pencereleri de durdurmak ister misiniz?',
+        title: 'Açılır pencere koruması',
         text: 'AntiRacketMantis’in istenmeyen pop-up ve arka plan sekmelerini nasıl yönettiğini görün.',
         actions: [
           ['features/popup-blocker', 'Açılır pencere engelleyici', 'btn-primary'],
@@ -586,11 +587,11 @@ export default {
 
     'features/popup-blocker': {
       id: 'popup-blocker',
-      tone: 'lilac',
+      tone: 'leaf',
       icon: 'popup',
       eyebrow: 'Açılır pencere engelleyici · Chrome ve Firefox',
       title: 'İstenmeyen açılır pencere ve arka plan sekmelerini durdurun',
-      lead: 'Tıklamanız olmadan açılmaya çalışan pop-up pencerelerini ve arka plan (pop-under) sekmelerini sınırlandırırken giriş ve ödeme pencerelerini korumayı hedefler.',
+      lead: 'Tıklamanız olmadan açılmaya çalışan pop-up ve arka plan (pop-under) sekmelerini sınırlar. Giriş ve ödeme pencerelerini korumayı hedefler.',
       mascotAlt: 'İstenmeyen açılır pencerelere karşı kalkan tutan peygamberdevesi Minty',
       whatTitle: 'Açılır pencere koruması ne yapar?',
       whatParagraphs: [
@@ -602,7 +603,7 @@ export default {
         'Seviye 3 ve üzerinde scripting izniyle çalışan hafif pencere koruyucu, yeni pencere çağrısının gerçek bir kullanıcı eylemine bağlı olup olmadığını denetler ve kendiliğinden açılanları bastırır.',
         'Alışılmadık bir pencere akışı kullanan güvenilir bir sitede sorun yaşarsanız o alan adı için korumayı tek tıkla kapatıp sayfayı yenileyebilirsiniz.'
       ],
-      benefitsTitle: 'Pencere kontrolü neden faydalıdır?',
+      benefitsTitle: 'Pencere kontrolünün faydaları',
       benefits: [
         { title: 'Daha az sürpriz sekme', text: 'Tıklamanız olmadan açılan reklam pencerelerini ve arka plana saklanan pop-under sekmelerini durdurur.' },
         { title: 'Giriş ve ödeme dostu', text: 'Kullanıcı tarafından başlatılan oturum açma, banka doğrulama ve yazdırma pencerelerini korumayı amaçlar.' },
@@ -622,7 +623,7 @@ export default {
       settingsTitle: 'İlgili ayarlar ve seviyeler',
       settingsText: 'Pop-up ve pop-under koruması Seviye 3 (Dengeli) ile otomatik olarak açılır ve Seviye 4 ile 5’te de etkin kalır. Seviye 1 ve 2 maksimum uyumluluk için pencere betiklerine dokunmaz.',
       settingsLinkText: 'Beş koruma seviyesinin tümünü karşılaştırın',
-      limitsTitle: 'Dürüst sınırlar',
+      limitsTitle: 'Bilinen sınırlar',
       limitsText: 'Ayrı tarayıcı penceresi olmayıp doğrudan sayfa DOM yapısında açılan katmanlar veya kullanıcı tıklamasını taklit eden betikler farklı davranabilir. Bir OAuth ya da ödeme penceresi açılmazsa o site için korumayı duraklatın.',
       limitsLinkText: 'Tüm bilinen sınırları okuyun',
       faqTitle: 'Açılır pencere engelleyici hakkında sık sorulanlar',
@@ -634,7 +635,7 @@ export default {
       ],
       relatedTitle: 'Diğer koruma araçları',
       nudge: {
-        title: 'Temel özellikleri incelediniz mi?',
+        title: 'Kurulum ve PRO planları',
         text: 'Kurulum rehberine göz atın veya AntiRacketMantis PRO için planlananlara bakın.',
         actions: [
           ['install', 'Kurulum rehberi', 'btn-primary'],
@@ -647,7 +648,7 @@ export default {
   proPage: {
     eyebrow: 'Yol haritası',
     title: 'AntiRacketMantis PRO',
-    lead: 'Tek tarayıcı uzantısı: temel koruma ücretsiz kalırken, ileride yerel sinir ağları, yapay zekâ destekli CAPTCHA yardımı ve gelişmiş otomasyon isteyenler için isteğe bağlı PRO aboneliği geliştiriliyor.',
+    lead: 'Temel koruma ücretsiz kalır. Yerel sinir ağları, yapay zekâ destekli CAPTCHA yardımı ve gelişmiş otomasyon isteyenler için aynı uzantıda isteğe bağlı bir PRO aboneliği planlanıyor. Şu anda geliştiriliyor.',
     mascotAlt: 'Planlanan PRO sürümünü simgeleyen vizörlü ve yerel yapay zekâ çipli peygamberdevesi Minty',
     statusBadge: 'Geliştiriliyor',
     statusBoxTitle: 'PRO şu anda geliştiriliyor ve henüz kullanıma sunulmadı',
@@ -747,12 +748,12 @@ export default {
     popupShield: {
       alt: 'AntiRacketMantis açılır penceresi, example.org üzerindeki koruma sekmesi (İngilizce arayüz): koruma açık, site anahtarı, 4 etkin liste, seviye 2/5 ve Canvas maskeleme',
       title: 'Uzantı penceresindeki Koruma sekmesi',
-      desc: 'Açık site için koruma durumunu, etkin filtre listesi sayısını, tek tıkla site anahtarını ve 1–5 seviye kaydırıcısını gösterir.',
+      desc: 'Açık site için koruma durumunu, etkin filtre listesi sayısını, tek tıkla site anahtarını ve 1-5 seviye kaydırıcısını gösterir.',
       caption: `Sürüm ${VERSION} ekran görüntüsü · example.org (uzantının Türkçe arayüzü henüz yok; İngilizce arayüz gösteriliyor)`
     },
     optionsLevels: {
       alt: 'Ayarlar ekranında Seviye 2/5 seçimi ve Uyumluluktan Maksimuma uzanan kaydırıcı (İngilizce arayüz)',
-      title: 'Koruma seviyesi seçimi (1–5)',
+      title: 'Koruma seviyesi seçimi (1-5)',
       desc: 'Kozmetik değişiklik yapmayan hafif filtrelemeden (varsayılan Seviye 2) sıkı gizlilik kurallarına kadar kolay geçiş sağlar.',
       caption: `Sürüm ${VERSION} ekran görüntüsü · koruma seviyeleri (İngilizce arayüz)`
     },
@@ -763,7 +764,7 @@ export default {
       caption: `Sürüm ${VERSION} ekran görüntüsü · istisnalar ve çerez ayarı (İngilizce arayüz)`
     },
     optionsLists: {
-      alt: 'AntiRacketMantis ayarlarında yerleşik filtre listeleri tablosu: EasyPrivacy (9.162 kural), RU AdList: Counters (1.086), uBlock filters – Badware risks (435) ve Peter Lowe açık (İngilizce arayüz)',
+      alt: 'AntiRacketMantis ayarlarında yerleşik filtre listeleri tablosu: EasyPrivacy (9.162 kural), RU AdList: Counters (1.086), uBlock filters - Badware risks (435) ve Peter Lowe açık (İngilizce arayüz)',
       title: 'Şeffaf yerleşik filtre listeleri tablosu',
       desc: 'uBlock Origin Lite 2026.1116.1650 tabanlı her yerleşik listeyi, kural sayısını ve etkin durumunu görebilirsiniz; gezinirken indirme yapılmaz.',
       caption: `Sürüm ${VERSION} ekran görüntüsü · yerleşik filtre listeleri (İngilizce arayüz)`
@@ -785,7 +786,7 @@ export default {
   howItWorks: {
     eyebrow: 'Çalışma düzeni',
     title: 'Tarayıcı koruması nasıl çalışır?',
-    lead: 'AntiRacketMantis standart Manifest V3 kural motoruna, izole sayfa betiklerine ve anlaşılır seviyelere dayanır; gezinme geçmişinizi uzak sunuculara göndermez.',
+    lead: 'AntiRacketMantis, standart Manifest V3 kural motoruna ve izole sayfa betiklerine dayanır. Gezinme geçmişinizi uzak sunuculara göndermez.',
     mascotAlt: 'Koruma kurallarının işleyişini inceleyen peygamberdevesi Minty',
     cards: [
       {
@@ -817,7 +818,7 @@ export default {
       ['Öngörülemez kendi kendine öğrenme yok:', 'filtreleme öngörülebilirdir; yalnızca seçtiğiniz seviyeye ve açık istisnalarınıza göre çalışır.']
     ],
     interfaceTitle: 'Uzantı arayüzü',
-    interfaceText: `Aşağıda ${VERSION} sürümünün gerçek koruma ekranları yer alır (uzantının Türkçe arayüzü henüz hazır olmadığından İngilizce arayüz gösterilmiştir): site penceresi, 1–5 seviye ayarı, yerleşik filtre listeleri, istisnalar, çerez bildirimleri, karşılama özeti ve tema.`,
+    interfaceText: `Aşağıda ${VERSION} sürümünün gerçek koruma ekranları yer alır (uzantının Türkçe arayüzü henüz hazır olmadığından İngilizce arayüz gösterilmiştir): site penceresi, 1-5 seviye ayarı, yerleşik filtre listeleri, istisnalar, çerez bildirimleri, karşılama özeti ve tema.`,
     nudge: {
       title: 'Sonraki adım',
       text: 'Tarayıcı kurulum adımlarını veya Gizlilik Politikamızı inceleyin.',
@@ -831,7 +832,7 @@ export default {
   install: {
     eyebrow: 'Kurulum',
     title: 'AntiRacketMantis nasıl kurulur?',
-    lead: 'Chrome ve Firefox için adım adım kurulum rehberi. Uzantı ilk herkese açık mağaza yayınına hazırlandığı için burada sahte indirme bağlantıları bulunmaz.',
+    lead: 'Chrome ve Firefox için adım adım kurulum rehberi. Uzantı henüz mağazada olmadığı için burada sahte indirme bağlantısı bulunmaz.',
     mascotAlt: 'Kurulum için el sallayan peygamberdevesi Minty',
     statusTitle: 'Güncel yayın durumu',
     statusP1: `Sürüm ${VERSION}, Chrome Web Store ve Firefox Add-ons resmi dizinleri için hazırlanıyor. Mağaza incelemeleri tamamlandığında doğrudan bağlantılar burada yayınlanacaktır.`,
@@ -863,7 +864,7 @@ export default {
     checklistFourthMid: ' ve ',
     compatLinkText: 'desteklenen tarayıcı sürümlerini',
     nudge: {
-      title: 'Kaldırma veya uyumluluk bilgisi mi gerekiyor?',
+      title: 'Kaldırma ve uyumluluk',
       text: 'Kaldırma işleminin yerel verileri nasıl temizlediğini veya tarayıcı matrisini inceleyin.',
       actions: [
         ['uninstall', 'Nasıl kaldırılır?', 'btn-primary'],
@@ -896,7 +897,7 @@ export default {
       ['Kaldırmaya alternatif:', 'yalnızca tek bir site sorun çıkarıyorsa uzantıyı silmek yerine açılır pencereden o site için korumayı kapatıp sayfayı yenileyin.']
     ],
     nudge: {
-      title: 'Bir sitede sorun mu yaşadınız?',
+      title: 'Bir sitede sorun varsa',
       text: 'Kaldırmadan önce bilinen sınırları veya Destek sayfasındaki hızlı çözümleri kontrol edin.',
       actions: [
         ['limits', 'Bilinen sınırlar', 'btn-primary'],
@@ -906,9 +907,9 @@ export default {
   },
 
   limits: {
-    eyebrow: 'Dürüst sınırlar',
+    eyebrow: 'Sınırlar',
     title: 'Bilinen koruma sınırları',
-    lead: 'Hiçbir tarayıcı uzantısı tüm interneti yan etkisiz ve kusursuz biçimde filtreleyemez. Sonuçların değişebileceği durumları aşağıda açıkça listeledik.',
+    lead: 'Hiçbir tarayıcı uzantısı tüm interneti yan etkisiz ve kusursuz biçimde filtreleyemez. Sonuçların değişebileceği durumları aşağıda listeledik.',
     mascotAlt: 'Koruma sınırlarını kalkanıyla gösteren peygamberdevesi Minty',
     cards: [
       {
@@ -920,7 +921,7 @@ export default {
       {
         icon: 'cookie',
         title: 'Çerez bildirimini gizlemek ≠ çerezleri reddetmek',
-        p1: 'Uzantı desteklenen onay pencerelerinde isteğe bağlı çerezleri reddetmeye çalışır. Ancak site reddetme seçeneği sunmuyorsa Seviye 4–5’te bildirimi gizlemek, çerezlerin teknik olarak reddedildiği anlamına gelmez.',
+        p1: 'Uzantı desteklenen onay pencerelerinde isteğe bağlı çerezleri reddetmeye çalışır. Ancak site reddetme seçeneği sunmuyorsa Seviye 4-5’te bildirimi gizlemek, çerezlerin teknik olarak reddedildiği anlamına gelmez.',
         p2: 'Ayrıca siteler oturum güvenliği için zorunlu çerezleri saklayabilir.'
       },
       {
@@ -949,7 +950,7 @@ export default {
       }
     ],
     nudge: {
-      title: 'Belirli bir sitede sorun mu yaşıyorsunuz?',
+      title: 'Belirli bir sitede sorun yaşıyorsanız',
       text: 'Destek sayfasındaki önerileri okuyun veya tarayıcı uyumluluğunu kontrol edin.',
       actions: [
         ['support', 'Destek', 'btn-primary'],
@@ -961,7 +962,7 @@ export default {
   compatibility: {
     eyebrow: 'Uyumluluk',
     title: 'Desteklenen tarayıcılar ve gereksinimler',
-    lead: 'Yalnızca uzantı manifesti ve kuralları gerçekten hazırlanmış tarayıcıları ve sürümleri listeliyoruz.',
+    lead: 'Yalnızca uzantının manifestini ve kurallarını gerçekten hazırladığımız tarayıcıları ve sürümleri listeliyoruz.',
     mascotAlt: 'Tarayıcı uyumluluğunu kontrol eden peygamberdevesi Minty',
     tableTitle: 'Güncel uyumluluk matrisi',
     tableCaption: 'AntiRacketMantis tarayıcı ve sürüm uyumluluk tablosu',
@@ -969,7 +970,7 @@ export default {
     tableRows: [
       ['Google Chrome / Chromium', 'Sürüm 110 ve üzeri (Manifest V3)', 'Yayına hazırlanıyor', 'Uzantı penceresinde etkin sekme kural eşleşme sayacını destekler (tarayıcı kotası: 10 dakikada 20 sorgu).'],
       ['Mozilla Firefox', 'Sürüm 128.0 ve üzeri (Manifest V3)', 'Yayına hazırlanıyor', 'Gecko arka plan betikleriyle çalışır; Firefox sekme kural sayacını paylaşmaz (tüm filtreleme çalışır).'],
-      ['Safari, mobil tarayıcılar ve eski sürümler', '—', 'Desteklenmiyor', 'Ayrı uyarlama ve test yapılmadan destek vadedilmez.']
+      ['Safari, mobil tarayıcılar ve eski sürümler', '-', 'Desteklenmiyor', 'Ayrı uyarlama ve test yapılmadan destek vadedilmez.']
     ],
     calloutTitle: 'Teknik izin kapsamı ve gerçek davranış:',
     calloutText: 'tarayıcının “Tüm web sitelerindeki verilerinizi okuyabilir ve değiştirebilir” standart uyarısı, reklam kutularını gizlemek ve çerez bildirimlerini yönetmek için gereken teknik sayfa erişimini ifade eder. Temel filtreleme parolalarınızı, yazışmalarınızı veya formlarınızdaki özel bilgileri okumaz ve gezinme geçmişinizi geliştiriciye göndermez.',
@@ -979,7 +980,7 @@ export default {
       ['Yerel ev ağı cihazları:', 'Seviye 5 (Maksimum) açıkken bile HTTPS yönlendirmesi localhost, 127.0.0.1 ve yerel ağ adreslerine (192.168.*, 10.*, .local yönlendirici ve yazıcılar) dokunmaz.']
     ],
     nudge: {
-      title: 'Kuruluma hazır mısınız?',
+      title: 'Kurulum adımları',
       text: 'Kurulum adımlarını ve tarayıcı izinlerini inceleyin.',
       actions: [
         ['install', 'Kurulum rehberi', 'btn-primary'],
@@ -991,7 +992,7 @@ export default {
   privacy: {
     eyebrow: 'Gizlilik ve veriler',
     title: 'AntiRacketMantis Gizlilik Politikası',
-    lead: 'Bu web sitesinin nasıl davrandığını, uzantının cihazınızda neleri sakladığını, izinlerin neden gerektiğini ve ağ isteklerinin ne zaman oluşabileceğini açıkça anlatır.',
+    lead: 'Bu belge web sitesinin davranışını, uzantının cihazınızda sakladığı verileri, izinlerin nedenlerini ve ağ isteklerinin ne zaman oluşabileceğini anlatır.',
     mascotAlt: 'Veri gizliliğini kalkanıyla koruyan peygamberdevesi Minty',
     draftBadge: 'Ön taslak · hukuk incelemesi gerektirir',
     draftTitle: 'Yayın öncesi belge durumu',
@@ -1007,7 +1008,7 @@ export default {
     s2Title: '2. Uzantının tarayıcıda yerel sakladığı veriler',
     s2Lead: 'Uzantı, tarayıcı profilinizde storage.local alanını ve geçici oturum belleği olarak storage.session alanını kullanır. Yerel depolama, aşağıda belirtilen ek modüllerin ağ isteklerini dışlamaz:',
     s2Items: [
-      ['Koruma tercihleri:', 'seçili seviye (1–5), çerez bildirimi modu ve arayüz teması.'],
+      ['Koruma tercihleri:', 'seçili seviye (1-5), çerez bildirimi modu ve arayüz teması.'],
       ['Site listeleri:', 'korumanın kapatıldığı istisna alan adlarınız ve canvas maskeleme siteleri (liste başına en fazla 100 adres).'],
       ['Tanılama günlüğü:', 'zaman, alan adı, olay türü ve hata kayıtları (en fazla 200 kayıt, 14 gün saklama). Ayarlardan kapatılabilir veya temizlenebilir.'],
       ['Ek modüller:', 'tercihleri, onay bayrakları, seçilen harici servis erişim anahtarları ve sayaçlar yerel saklanır. Modül çalışırken geçici bellekte kaynak sekme adresi ve işlenen görsel bulunabilir.'],
@@ -1027,7 +1028,7 @@ export default {
     s3CalloutText: 'tarayıcının “Tüm web sitelerindeki verilerinizi okuyabilir ve değiştirebilir” uyarısı yalnızca reklam kutularını gizlemek ve çerez bildirimleriyle etkileşmek için gereken teknik izni gösterir. Temel filtreleme parolalarınızı, özel mesajlarınızı veya formlarınızdaki özel bilgileri okumaz ve gezinme geçmişinizi geliştiriciye göndermez.',
     s4Title: '4. Ağ istekleri ve harici servisler',
     s4Paragraphs: [
-      'Temel koruma — reklam, izleyici, bağlantı etiketi, açılır pencere engelleme ve çerez bildirimi yönetimi — yerleşik listelerle tarayıcınızda yerel çalışır ve gezinme geçmişinizi geliştiriciye veya üçüncü taraflara göndermez.',
+      'Temel koruma - reklam, izleyici, bağlantı etiketi, açılır pencere engelleme ve çerez bildirimi yönetimi - yerleşik listelerle tarayıcınızda yerel çalışır ve gezinme geçmişinizi geliştiriciye veya üçüncü taraflara göndermez.',
       'İncelenen kod tabanında ek ağ modülleri de bulunur. Denetlenen sürümde bu modüllerin bazı ağ ayarları varsayılan olarak açıktır; yani kullanıcının ayrı bir açma adımı olmadan harici servise istek gidebilir. Bu nedenle mevcut derlemenin tüm kiplerde yalnızca yerel çalıştığı söylenemez.',
       'Bu tür istekler işlenen görseli, anahtarlı servis seçiliyse erişim anahtarını ve görev kimliğini iletebilir. Her harici istekte karşı servis bağlantı IP adresini görür; ayrı IP kontrolü yalnızca ayarlardan kullanıcı başlattığında çalışır. İncelenen isteklerde çerezler ve kaynak sayfa Referer bilgisi gönderilmez. Ağ modülleri ayarlardan kapatılabilir.',
       'Ağ isteklerinin nihai listesi, varsayılan ayarları ve açıklamaları resmi mağaza yayını öncesinde ek paket denetimi gerektirir.'
@@ -1052,7 +1053,7 @@ export default {
   terms: {
     eyebrow: 'Hukuki bilgi',
     title: 'Kullanım Koşulları (Taslak)',
-    lead: 'Resmi yayın öncesinde AntiRacketMantis web sitesi ve tarayıcı uzantısına ilişkin taslak kullanım koşulları.',
+    lead: 'AntiRacketMantis web sitesi ve tarayıcı uzantısı için resmi yayın öncesi taslak kullanım koşulları.',
     mascotAlt: 'Taslak koşulları inceleyen peygamberdevesi Minty',
     draftBadge: 'Taslak · hukuk incelemesi gerektirir',
     draftTitle: 'Önemli bildirim',
@@ -1082,7 +1083,7 @@ export default {
       {
         title: '4. Sorumluluğun sınırlandırılması',
         paragraphs: [
-          'Yürürlükteki hukukun izin verdiği en geniş ölçüde geliştirici; dolaylı zararlardan, kazanç kaybından, üçüncü taraf sitelerdeki görünüm bozukluklarından veya sıkı filtre kuralları nedeniyle giriş/ödeme kesintilerinden sorumlu değildir — bu durumlar için her sitede tek tıkla istisna anahtarı bulunur.'
+          'Yürürlükteki hukukun izin verdiği en geniş ölçüde geliştirici; dolaylı zararlardan, kazanç kaybından, üçüncü taraf sitelerdeki görünüm bozukluklarından veya sıkı filtre kuralları nedeniyle giriş/ödeme kesintilerinden sorumlu değildir - bu durumlar için her sitede tek tıkla istisna anahtarı bulunur.'
         ]
       },
       {
@@ -1107,7 +1108,7 @@ export default {
       ['Yürürlük tarihi, lisans ve PRO koşulları:', 'belgelerin yürürlük tarihi, nihai dağıtım lisansı ve PRO lansmanı öncesi abonelik koşulları.']
     ],
     nudge: {
-      title: 'Gizlilik ve verilerle ilgili sorularınız mı var?',
+      title: 'Gizlilik ve veriler hakkında',
       text: 'Ön Gizlilik Politikamızı inceleyin veya Destek sayfasına geçin.',
       actions: [
         ['privacy', 'Gizlilik Politikası', 'btn-primary'],
@@ -1117,9 +1118,9 @@ export default {
   },
 
   faqPage: {
-    eyebrow: 'Net yanıtlar',
+    eyebrow: 'Yanıtlar',
     title: 'Sıkça Sorulan Sorular',
-    lead: 'Kurulum, izinler, veri kullanımı, performans, tarayıcı uyumluluğu, planlanan PRO sürümü ve kaldırma hakkında kısa ve dürüst yanıtlar.',
+    lead: 'Kurulum, izinler, veri kullanımı, performans, tarayıcı uyumluluğu, planlanan PRO sürümü ve kaldırma hakkında kısa yanıtlar.',
     mascotAlt: 'Sık sorulan soruları yanıtlayan peygamberdevesi Minty',
     items: [
       {
@@ -1172,7 +1173,7 @@ export default {
       },
       {
         q: 'Bir site bozulursa veya giriş yapamazsam ne yapmalıyım?',
-        a: 'Önce uzantı penceresinden o site için korumayı kapatıp sekmeyi yenileyin. Sorun yalnızca Seviye 4–5’te (üçüncü taraf giriş veya yalnızca HTTP kullanan site) yaşanıyorsa Seviye 3 (Dengeli) seçin ya da alan adını istisnalara ekleyin.'
+        a: 'Önce uzantı penceresinden o site için korumayı kapatıp sekmeyi yenileyin. Sorun yalnızca Seviye 4-5’te (üçüncü taraf giriş veya yalnızca HTTP kullanan site) yaşanıyorsa Seviye 3 (Dengeli) seçin ya da alan adını istisnalara ekleyin.'
       },
       {
         q: 'Uzantıyı nasıl kaldırırım ve ayarlarıma ne olur?',
@@ -1180,7 +1181,7 @@ export default {
       }
     ],
     nudge: {
-      title: 'Aradığınız yanıtı bulamadınız mı?',
+      title: 'Aradığınızı bulamadıysanız',
       text: 'Sorun giderme adımları için Destek sayfasına veya Bilinen Sınırlara göz atın.',
       actions: [
         ['support', 'Destek', 'btn-primary'],
@@ -1211,7 +1212,7 @@ export default {
         icon: 'ad',
         title: 'Sayfada reklamlar kalıyor',
         p1: 'Varsayılan Seviye 2 (Hafif koruma) yalnızca hafif ağ filtrelemesi yapar ve kozmetik gizleme kapalıdır. Seviye 3 (Dengeli) seçin.',
-        p2Prefix: 'Aynı alan adından sunulan birinci taraf reklamlar genel kurallarla eşleşmeyebilir — bkz. ',
+        p2Prefix: 'Aynı alan adından sunulan birinci taraf reklamlar genel kurallarla eşleşmeyebilir - bkz. ',
         limitsLinkText: 'bilinen sınırlar',
         p2Suffix: '.'
       }
@@ -1237,7 +1238,7 @@ export default {
   changelog: {
     eyebrow: 'Güncellemeler ve yol haritası',
     title: 'Sürüm Geçmişi ve Yol Haritası',
-    lead: 'Yalnızca doğrulanmış ön sürüm içeriği ve uydurma çıkış tarihleri olmadan dürüst geliştirme aşamaları.',
+    lead: 'Doğrulanmış ön sürüm içeriği ve geliştirme aşamaları. Uydurulmuş çıkış tarihi yok.',
     mascotAlt: 'Yeni sürüm aşamasını kutlayan peygamberdevesi Minty',
     versionBadge: `Sürüm ${VERSION} · ilk herkese açık yayına hazırlanıyor`,
     releaseTitle: 'İlk herkese açık sürüm hazırlığı',
@@ -1283,7 +1284,7 @@ export default {
       }
     ],
     nudge: {
-      title: 'Daha fazlasını keşfetmek ister misiniz?',
+      title: 'Diğer sayfalar',
       text: 'Tüm koruma araçlarını, PRO planlarını veya kurulum rehberini inceleyin.',
       actions: [
         ['features', 'Özellikler', 'btn-primary'],
@@ -1294,12 +1295,12 @@ export default {
   },
 
   notFound: {
-    metaTitle: '404 — AntiRacketMantis',
+    metaTitle: '404 - AntiRacketMantis',
     metaDescription: 'Sayfa bulunamadı. AntiRacketMantis ana sayfasına, özelliklere, kurulum rehberine veya sık sorulan sorulara dönebilirsiniz.',
-    heading: 'AntiRacketMantis — 404',
+    heading: 'AntiRacketMantis - 404',
     eyebrow: 'Hata 404',
     title: 'Sanırım yolumuzu biraz kaybettik.',
-    text: 'Aradığınız sayfa burada yok — en dikkatli koruyucu bile bazen bir sekmesini kaybedebilir.',
+    text: 'Aradığınız sayfa burada yok. En dikkatli uzantı bile bazen bir sekmeyi kaybedebilir.',
     mascotAlt: 'Kayıp sayfayı büyüteçle arayan peygamberdevesi Minty',
     homeBtn: 'Ana sayfa (TR)',
     installBtn: 'Kurulum',

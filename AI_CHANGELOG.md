@@ -1,5 +1,41 @@
 # AI changelog — AntiRacketMantis site
 
+## 2026-11-21 - Cartoon redesign: design tokens, dark theme, living meadow, new home, humanized copy
+
+- Scope: owner asked for a full redesign that keeps the cartoon style and mascot, a studio link to WillowinWorlds, a
+  "living" cartoon background like willowinworlds.com, and more human copy with a plain hyphen instead of long dashes.
+  Work is in the `main` working tree, not committed, not pushed (push to `main` deploys the live site).
+- Changed:
+  - Design system (`src/styles.css`, `src/inner.css`, `src/nojs.css`): semantic colour/type/spacing/motion tokens,
+    light + dark theme (`[data-theme]` and `prefers-color-scheme`), one outline colour and width, flat "sticker"
+    shadows instead of glows, pill buttons, pill eyebrows, WiW motion tokens; decorative unicode sparkles removed.
+  - Living background: new `scripts/scene.mjs` (`sceneMarkup('hero'|'page')`, inline SVG meadow: hills, swaying grass,
+    drifting clouds and leaves, sun; moon and fireflies in dark) + `src/scene.css` (bundled into `styles.css`);
+    transform/opacity only, off under reduced motion, the pause button, and when off screen.
+  - Home (`scripts/build.mjs` `homePage()`, `src/home.css`): hero with the real popup screenshot in a browser frame,
+    Minty on the meadow, two callouts, "Works in Chrome 110+ / Firefox 128+" + honest store status, studio sign;
+    before/after slider with level-qualified points; features in two tiers; CSS-only level picker (works without JS);
+    scroll-snap screenshot gallery; one dark privacy + permissions band; compact PRO strip; final card with steps and
+    a "Who makes it" studio box. Store buttons are replaced by "Installation guide" until `STORES` URLs exist.
+  - Shared markup: theme toggle in the header (`src/theme-init.js` sets the saved theme before paint, key
+    `arm-theme`), "Made by WillowinWorlds" sign with `src/wiw-logo.webp` in the footer, meadow strip on inner-page heroes.
+  - Copy (`src/content/{ru,en,tr}.mjs`): new/removed home keys, humanized headings/leads/cards in all three languages,
+    no long dashes anywhere in `dist/`; feature facts, prices, limits and "in development" wording unchanged.
+    `scripts/test-check.mjs` fixture updated to the new PRO-page heading. Manifest `theme_color` = `#fffaf1`.
+- Compatibility/config: no new dependencies; CSP unchanged (`theme-init.js` is a same-origin blocking script);
+  minified CSS +24.9% (scene included).
+- Validation: `node scripts/build.mjs` - PASS (52 HTML, 0 errors, 0 warnings); `node scripts/test-check.mjs` - PASS (146);
+  Brave screenshots at 360/390/768/1024/1440, light and dark - no horizontal overflow; all home images load; text
+  contrast scan (solid backgrounds) on 4 pages × 2 themes - 0 failures; Lighthouse 13.6.0 single runs, local server,
+  before -> after: mobile Performance RU home 94 -> 100, EN home 99 -> 100, EN features 100 -> 100, LCP 2.2 s -> 1.5 s
+  (RU home), CLS <= 0.001, A11y/BP/SEO 100; home weight 203 -> 291 KiB. Real devices, screen readers, Firefox runtime,
+  independent review - NOT RUN.
+- Risks/follow-up: the current extension build already contains CAPTCHA tools with a cloud OCR fallback (NopeCHA)
+  on by default; the privacy page discloses default-on network modules only in general terms, and the site presents
+  CAPTCHA help as PRO-planned - owner decision needed before store release. TR/RU copy not native-speaker reviewed.
+- Rollback: `git checkout -- .` and delete `scripts/scene.mjs`, `src/scene.css`, `src/theme-init.js`, `src/wiw-logo.webp`
+  (nothing committed yet).
+
 ## 2026-11-20 — One repo for the site; RU/EN/TR, PRO «в разработке», SEO/discovery files (TASK-003)
 
 - Scope: owner asked to move the former AntiRacketMantis-Website repo into this repo and delete it, then improve

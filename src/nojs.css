@@ -1,4 +1,6 @@
-.menu-toggle,.motion-toggle{display:none}
+.menu-toggle,.motion-toggle,.theme-toggle{display:none}
+.level-panel{display:block!important}
+.gallery-nav{display:none!important}
 @media(max-width:1300px){
   .site-header{position:static}
   .nav-shell{height:auto;min-height:84px;flex-wrap:wrap;gap:8px;padding:12px 0}
