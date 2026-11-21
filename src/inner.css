@@ -6,11 +6,12 @@
 .breadcrumbs a{color:var(--primary);text-decoration:underline;text-underline-offset:3px;min-height:44px;display:inline-flex;align-items:center}
 .breadcrumbs a:hover{color:var(--primary-hover)}
 
-/* The meadow strip (scripts/scene.mjs, 'page') fills the band; hero content stays above it */
-.page-hero-band{position:relative;isolation:isolate;margin-bottom:var(--s-6)}
+/* The meadow strip (scripts/scene.mjs, 'page') is a --ground-h band at the bottom (highest hill line 0.72 of it, front hill
+   line 0.2): the mascot stands on the front hill and the text ends 20px above the highest hill */
+.page-hero-band{--ground-h:clamp(110px,4vw + 70px,150px);position:relative;isolation:isolate;overflow-x:clip;margin-bottom:var(--s-6)}
 .page-hero-band>.container{position:relative;z-index:1}
-.page-hero-band .page-hero-split{align-items:end;padding-bottom:var(--s-5)}
-.page-hero-band .page-hero-split>div{padding-bottom:130px}
+.page-hero-band .page-hero-split{align-items:end;padding-bottom:calc(var(--ground-h)*.2)}
+.page-hero-band .page-hero-split>div{padding-bottom:calc(var(--ground-h)*.52 + 20px)}
 .page-hero{padding-top:52px;padding-bottom:44px;max-width:1080px}
 .page-hero-split{display:grid;grid-template-columns:minmax(0,1fr) 240px;gap:36px;align-items:center}
 .page-hero-split>*,.info-grid>*,.doc-stack>*,.scene-grid>*,.benefits-grid>*,.related-features-grid>*,.roadmap-grid>*,.not-found-langs>*{min-width:0}

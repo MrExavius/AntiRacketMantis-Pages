@@ -1,206 +1,206 @@
 {
   "/": {
-    "hash": "40c296c1e4a6b3eeef0cfc0cf7542acc5e58c7b5be62c6b1d1a3fe21c79c08f0",
+    "hash": "c64475ca53de7e1a1e2122a58baa2b822577522302f1c8281dc36c9a630a8547",
     "lastmod": "2026-11-21"
   },
   "/features/": {
-    "hash": "987e4fdb107d01ac49e30e37324855fe4aa548031c884379f6a3643772789287",
+    "hash": "783314a8c913bb600b61c231d299ff3851991987a11f2a3b173fb28dad017199",
     "lastmod": "2026-11-21"
   },
   "/how-it-works/": {
-    "hash": "d52dd0351cbe4af3ba86ec535ef2ca1cec93753ee3e6867ff03e7d38d60b0fb8",
+    "hash": "50ff8a281b4e1760248e3a371f88c8a7716be1d3845e0d508b592a1921896e4a",
     "lastmod": "2026-11-21"
   },
   "/install/": {
-    "hash": "d5bb099e10b748893ecb8604abe5e39a7c04593712ecc6efd06f9fd00c393bad",
+    "hash": "220786167a0c05afab48e7e577473f3d7ce8f8e8206b33356fc21b9c3ff7315d",
     "lastmod": "2026-11-21"
   },
   "/uninstall/": {
-    "hash": "a6003aad20518d8cb4f9c3f9223a8ca4ea75086416239e22b4f0cc85fc58feb6",
+    "hash": "ace4ff28a2b862ab22b44ddfc0f02014ac91c6804a730e756494107b08ec7afb",
     "lastmod": "2026-11-21"
   },
   "/limits/": {
-    "hash": "879f1cfdfb9c6b2aa8d682d0b1dfdab8691f41812de02908369c305d89f91106",
+    "hash": "d493a4fc915e4cc90e64509497350c650410c318e4737916e6bfc19953d060c8",
     "lastmod": "2026-11-21"
   },
   "/compatibility/": {
-    "hash": "ea1c685fad5431c0e5bed45b5f528e7309546d89cca28c45f8d66e5b675f8599",
+    "hash": "d7af34b04ff310043ede467ac9f99d5d8ec6129375b51ef7f88e536eb1e6311a",
     "lastmod": "2026-11-21"
   },
   "/privacy/": {
-    "hash": "6720b249b872e3f5eee1a2b0332f081fe1776f43a61e060a83be7bd4de09ba78",
+    "hash": "0440a6337b7a1c95d9b9581ceddca8b8571b2c70d0afc95a869e3526832e1034",
     "lastmod": "2026-11-21"
   },
   "/terms/": {
-    "hash": "fab10c289206013b2782a159c37d41c9ab87b772774680d175c71a69e23865cd",
+    "hash": "b9b4ef9d7b55a2ea6fda0a09bd046b0e09eb813aef4b91b708f47dced39a8d07",
     "lastmod": "2026-11-21"
   },
   "/faq/": {
-    "hash": "e7510390aa8dee9936607c5dfe4c344b5d10e8ae75428a64463f966c28872c35",
+    "hash": "42202509a4fb9b1b629a812236f688223f8c19b1136ff261c7b3708ca7587cdf",
     "lastmod": "2026-11-21"
   },
   "/support/": {
-    "hash": "8af1831cf881102f3b947669987a932810d3f9cf253ea11ff43e544d848f3048",
+    "hash": "b96cc4f376716eb64e1955fb32078f36f667e254ed99e5c6ef45eb2690759bc4",
     "lastmod": "2026-11-21"
   },
   "/changelog/": {
-    "hash": "f67083e29aeb31134f7609c365c1b849ff70cec7435e1e4e70e806f827d39374",
+    "hash": "a25f895ba40086bc9b51a63bc81c4fb7ec2f45da4314ab56e9e411bbecd9e161",
     "lastmod": "2026-11-21"
   },
   "/features/ad-blocker/": {
-    "hash": "c9f0ea1f80a34d6decccb481a353a6723a1cbc01bae7559413963d1a1ef5e95e",
+    "hash": "be4bb14920c732e2b66ceb4c39ca60e07e221ed087297c61b182c9f3437367ed",
     "lastmod": "2026-11-21"
   },
   "/features/tracker-blocker/": {
-    "hash": "9b51daeb161e0c7cbf46acfb1f984a6c1e601b55486fd99dc84ddd891063c8a6",
+    "hash": "220761e4a9241d3d86f153e3f61c8f1fd9538b03673a350053855fe3f119988a",
     "lastmod": "2026-11-21"
   },
   "/features/cookie-banners/": {
-    "hash": "1d60902a416c43d5740d4067213f4a367c041351f97bf291e08c580c58b267ff",
+    "hash": "aa4d729632fcabf9b3fb2e060d91466651c46987a9d545a288d2627bb8acc0b9",
     "lastmod": "2026-11-21"
   },
   "/features/popup-blocker/": {
-    "hash": "072875409bafb36c14f821f413e57d53a19fa5690b20079cd2f066fb49f5c352",
+    "hash": "ad886d640e4d3d0773bc87d24f0bd32ec3a2e158d5e2ec3ebbefd83a648e8f11",
     "lastmod": "2026-11-21"
   },
   "/pro/": {
-    "hash": "56aa2fe3e0cde6d96cdcefbdfc94bc803f0b29b77359692f4aaf1ff592acfc36",
+    "hash": "74d08c38f9a52272044528ff01f04eb86359b3b7d1670adf4fa41fc013278493",
     "lastmod": "2026-11-21"
   },
   "/en/": {
-    "hash": "3e9d873e40078cf31b7716a0b0c18c2a6a5f9e03035631a4f2337e540167d7c6",
+    "hash": "38cec20b43e129ef359b08225b5f645dcd90a7ddca4b59359ce1851c91f7c962",
     "lastmod": "2026-11-21"
   },
   "/en/features/": {
-    "hash": "40b30319252a8bc08db8407e509094e4d4af86a9c6d1f1f301aeb430dd40a5b4",
+    "hash": "d1b9b6c56ca237a582c6788daae818f6ee1fe6198ba0acc6041544ecb6017261",
     "lastmod": "2026-11-21"
   },
   "/en/features/ad-blocker/": {
-    "hash": "7617648d40dfece5476eb1b3f4158fd3c19c198f906ab6055a22446a0cbded53",
+    "hash": "420f16df2ad2b51a8ec6e37480bce6725162a567a54c53f802897f6a120f6ab7",
     "lastmod": "2026-11-21"
   },
   "/en/features/tracker-blocker/": {
-    "hash": "a425541a6abbffbafb720878bb6b746ee92ebe22fb4f7eea9a2e8f66adee8efa",
+    "hash": "33fdca071a36b4326af93d30ccb51a851988fa9874b94c740678fefdb7bf1271",
     "lastmod": "2026-11-21"
   },
   "/en/features/cookie-banners/": {
-    "hash": "16df8dd480179fa0dc5f6c0f8b6a9234c9de234bedd550520b6ce2cbea2415f2",
+    "hash": "b6abb7c752cd84eb53bf069fba45afbf7d25ae9135463d5bb926641145f0adec",
     "lastmod": "2026-11-21"
   },
   "/en/features/popup-blocker/": {
-    "hash": "043b3663c48486379a01436f124095e1b07c0cd92f374c57d76f27cb95c66b30",
+    "hash": "e88f33d1863dc3f27bdb465d2c459d52075f36fc3a58e3c2b7f5acc03abcc70e",
     "lastmod": "2026-11-21"
   },
   "/en/pro/": {
-    "hash": "a4c004bd4c4f713cdb324de0f65d0a9c6faff29923111b9ec3d0d44af7ffa5bf",
+    "hash": "c9d3819b7aec2820e02b2e246a733ef5aab20df5945c42cc3c890f8021bd6f0f",
     "lastmod": "2026-11-21"
   },
   "/en/how-it-works/": {
-    "hash": "82551d042085d385a2bb2706ff086aaa5b5a1b1eac699dbdd423ae2d48b1b448",
+    "hash": "e9d7083803bf58ea6b5d297dd1b3fda8585c8abd164b926558656090c27de22a",
     "lastmod": "2026-11-21"
   },
   "/en/install/": {
-    "hash": "43bde5538fc7cf583c1a4aab81b4bb3a9597918cd7b42ad7b6cabd1eb416e98d",
+    "hash": "c320a2a17d261577233c9c5306bdad1c72ec41022b097b7fe34a7ccca0710781",
     "lastmod": "2026-11-21"
   },
   "/en/uninstall/": {
-    "hash": "e6e8b3e1ce0c0a1511fff501c524cd08a2fd3b2d13b7f7c34b34d3d15bba85eb",
+    "hash": "a25de3f270fb672b49e92ad71e8d04087c21b051b1acc38cc802673c1d216efd",
     "lastmod": "2026-11-21"
   },
   "/en/limits/": {
-    "hash": "a70ac6bdccced3a23ed75b8df16ab9f218ef6b4a043df0e6761beb5095605069",
+    "hash": "41f236b6cfd03593b6639c60be9b2dfcdc074840895851328b98c4520397b6f6",
     "lastmod": "2026-11-21"
   },
   "/en/compatibility/": {
-    "hash": "7f3fd038bf3c1ef59b664872d96770bac3a78043fd1533b6466ae15e714fe38b",
+    "hash": "2c1ad0592622473889ba39904915fc5455e1c14db0f4b1640669fe3aa078b8f0",
     "lastmod": "2026-11-21"
   },
   "/en/privacy/": {
-    "hash": "47eca49e46e9de6a8f701b7731aebbf011e7107f18df490e94e5777ccaa705c9",
+    "hash": "0b28a18427b72efac259f00815fa4c08211511ab0de07936168451fd428c391c",
     "lastmod": "2026-11-21"
   },
   "/en/terms/": {
-    "hash": "fd54b81f044da938c7a81ad79116b5aa4608cf68ce5670e0ed919b0478c6bc34",
+    "hash": "b9461aebca1663cdde5210e216c70223e9df6e14abd4b8307b861e0f2381c962",
     "lastmod": "2026-11-21"
   },
   "/en/faq/": {
-    "hash": "0034055bf265202caa26fb750b96f91610f0162bfd024dc506c6d600d8f67e71",
+    "hash": "dacff8ceafb2556ea52c875f1ec24a62bd6cf6306100ed5a30c0955234baaa02",
     "lastmod": "2026-11-21"
   },
   "/en/support/": {
-    "hash": "856561b6102d34bc7d8674e108c87b587838cc8405624db9dbaec6076f236a72",
+    "hash": "c950bbe07527df014862b2fa67bccedef6fe74f2874e6c4c7b88d0196cd46cdd",
     "lastmod": "2026-11-21"
   },
   "/en/changelog/": {
-    "hash": "4ce843fc8491a4cca63360951429f91d3fb00d4bfd26538a7addb0fd52e8a825",
+    "hash": "3e28a707f4d4d905008f9ca078a954a367ea6b41a44701bbb736c321a40d0059",
     "lastmod": "2026-11-21"
   },
   "/tr/": {
-    "hash": "e9ee8d71ff60691b29fae99a3acb828627f0e78c8a6cc5048fc3da7db0a98d0a",
+    "hash": "90d5551f03eea22f9d07280e147a9d24cc1edd62b81812a7ef03a3408cac1545",
     "lastmod": "2026-11-21"
   },
   "/tr/features/": {
-    "hash": "cfc8e7d6ce0a39d35f709ecd4ded8d66caf40a18cd1fb268f35da5d65b23cf8c",
+    "hash": "0ec9933a20944d9bc384e4b22f997d4d0f12ecd093ac50f3b50295d850b5e623",
     "lastmod": "2026-11-21"
   },
   "/tr/features/ad-blocker/": {
-    "hash": "e04452348a12072bab99a0a316d12b006bd874a6e9458a99cfaf0f7f25bff2ed",
+    "hash": "8b0de30ad486fc2da55cde46fd46c55d767201698f92afbccc6710ffa18f8b24",
     "lastmod": "2026-11-21"
   },
   "/tr/features/tracker-blocker/": {
-    "hash": "193cd5ffe051d0a322da086662463784481d3addb7af57de697abd48f1ca1b48",
+    "hash": "428e6c82d6bfd60bb86824c6820e669edf99a7f696cd7885556862491cb4e0bf",
     "lastmod": "2026-11-21"
   },
   "/tr/features/cookie-banners/": {
-    "hash": "03b165bcc89e0e8c1bcef9980b051644942a8fab097a0823ae9513309e9368d4",
+    "hash": "dc15e1c071612c5b15311f6a0b15f02028e8322613426aa61651f67e4dbd2bb9",
     "lastmod": "2026-11-21"
   },
   "/tr/features/popup-blocker/": {
-    "hash": "964f0c43ad575e943542f11cc0adbf2bef965af7d75ec8a34ae5c3edf750cc68",
+    "hash": "85cc1718744a88ebedba0f08c2c8027050a00049b32738cae9dbf72c2e9a38b3",
     "lastmod": "2026-11-21"
   },
   "/tr/pro/": {
-    "hash": "770d2f82372a46bbf65335e755d8f2ecb8d87c2ef2da168c53dfa50afaf31aa7",
+    "hash": "698ac286608226307b1abe69afc765ba8ab2c78a776d0424f8a1869eea8c12a8",
     "lastmod": "2026-11-21"
   },
   "/tr/how-it-works/": {
-    "hash": "62e259a08ccc0f8b8f5125cc73a23c89e8ee481b49a7795b43af0441c31ea84d",
+    "hash": "db91ecff7993dcd68a9a950954899d381979c4b35ebe1e4126a0cff3b8ab36ea",
     "lastmod": "2026-11-21"
   },
   "/tr/install/": {
-    "hash": "6e33ef82d1868b1d9eac8f5100aa65e6d30781043c1489f29dfe98b7dd442737",
+    "hash": "b15802a200ef955bc01a4ded4c350aa7b64de355408642df5e163fa7d65c4a1c",
     "lastmod": "2026-11-21"
   },
   "/tr/uninstall/": {
-    "hash": "c8ca3a11d398cbbb591490e11da406eb064ea4b2937d4a1edefbd8aeb352bc8b",
+    "hash": "6b36e49abc002884b482efac0699c053f1551867a121dd75250cc9bbce59e9c3",
     "lastmod": "2026-11-21"
   },
   "/tr/limits/": {
-    "hash": "0303af6ab69859d0b5c79bcabf28bc1b329d644751755bea9906c2cb8ff5ae63",
+    "hash": "52a574c1ba37e2c06fe2b7620fe91775c425e26365de7edf4761145ea7b62717",
     "lastmod": "2026-11-21"
   },
   "/tr/compatibility/": {
-    "hash": "008a1f8a85be5aae9259b66c2708a999a50952d2bce5b11305611f5411b9e02a",
+    "hash": "20b106a7be543b64f334a0f7c488b07b30491b135cc0ab78b4efd7a25819c676",
     "lastmod": "2026-11-21"
   },
   "/tr/privacy/": {
-    "hash": "bcc5b223d5da201cefd1e321fc8c09406efc17acce271af53056f29de390e4b1",
+    "hash": "926bd70a7e60a0e6fffb7c0ca61d1d61d1b39c80dc1b3d968755bc321ee18036",
     "lastmod": "2026-11-21"
   },
   "/tr/terms/": {
-    "hash": "3767039ab39b65651664ee32f8530a6bbb5eca27ef75a8f45372685db9e9384d",
+    "hash": "354128c92667cbf36e5414b08c317552e6b18e19ef68059a20e181bcb61a1365",
     "lastmod": "2026-11-21"
   },
   "/tr/faq/": {
-    "hash": "cf0b9de69488e3300180e5336714f2c20c0de8dc37979022fbce7758ea0a9766",
+    "hash": "6fb02c71434ba8d78057d4678fe68fa7176ec74ea73541dc9fca134e5105f041",
     "lastmod": "2026-11-21"
   },
   "/tr/support/": {
-    "hash": "2f2b023ca1caef2a7341dac951f5b591fd06656175b4f6aeb465a4784beb3557",
+    "hash": "2ddb14360496ed9cf9e564bf51e4783e7b22e484e1a3fa25e2a92fd227a5226c",
     "lastmod": "2026-11-21"
   },
   "/tr/changelog/": {
-    "hash": "a75f136b3238938266bff95daf62db0b82d60df138dd78601875109a0c723458",
+    "hash": "42fc808560de53c102431a60a7f1fafcea19516fa4bdd3d07d782a14c85b4831",
     "lastmod": "2026-11-21"
   }
 }

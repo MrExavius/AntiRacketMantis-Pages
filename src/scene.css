@@ -1,18 +1,20 @@
-/* Living meadow background (markup: scripts/scene.mjs sceneMarkup('hero'|'page')).
+/* Living meadow background (markup: scripts/scene.mjs sceneMarkup('hero'|'page') = two layers, both .scene).
    Integration: the parent (hero) needs position:relative; isolation:isolate; its own content needs
-   position:relative; z-index:1. .scene is absolute, bottom-anchored, aria-hidden, pointer-events:none.
-   JS may add .is-paused (offscreen); body.motion-off and prefers-reduced-motion freeze it.
-   Only transform and opacity are animated. Colours: site tokens + --scn-* below (dark overrides at the end).
-   Hero art is anchored to the bottom edge; the mascot ledge (flat, leaf-green) is ~14-16% of the scene height
-   above the bottom edge and spans ~25-55% of its width (viewBox x 360-800); the sun/moon (.scn-sky) sits in the top-right corner. */
-.scene{position:absolute;inset:auto 0 0 0;height:100%;z-index:0;pointer-events:none;overflow:hidden;
+   position:relative; z-index:1, and the parent sets --ground-h (height of the ground band). Layers are absolute,
+   aria-hidden, pointer-events:none. JS may add .is-paused (offscreen); body.motion-off and prefers-reduced-motion
+   freeze them. Only transform and opacity are animated. Colours: site tokens + --scn-* below (dark overrides at the end).
+   .scene-sky: fixed-size box in the top-right corner (sun/moon, clouds, pollen, fireflies); clouds drift only inside it.
+   .scene-ground: bottom band of height --ground-h; its wide viewBox is centred and cropped at the sides, so hills keep
+   one scale from ~390px to ~2500px wide. Hero: highest hill line ~0.77 of the band, front hill (mascot) ~0.19. */
+.scene{position:absolute;z-index:0;pointer-events:none;overflow:hidden;
   --scn-day:block;--scn-night:none;
   --scn-sun:#ffe98f;--scn-hb-a:var(--mint);--scn-hb-b:#cdeed9;--scn-hm-a:#c2edd0;--scn-hm-b:#a6e3b9;
   --scn-hf-a:#9be095;--scn-hf-b:#74c983;--scn-bl-a:#3fa56a;--scn-bl-b:#8fdf7a;--scn-lf:#68c778;--scn-lf-b:#a4e58d;
   --scn-petal:#fff}
-.scene-hero{height:min(100%,max(52.8vw,420px))}
-.scene-page{height:180px}
-.scene svg{display:block;width:100%;height:100%}
+.scene-ground{inset:auto 0 0 0;height:var(--ground-h,150px)}
+.scene-ground svg{display:block;width:100%;height:100%}
+.scene-sky{top:0;right:max(0px,calc(50% - 760px));width:620px}
+.scene-sky svg{display:block;width:100%;height:auto}
 .scene *{vector-effect:non-scaling-stroke}
 
 /* gradients: two stops per class, colours from custom properties */
@@ -40,9 +42,8 @@
 .scn-sw,.scn-rays{transform-box:fill-box}
 .scn-rays{transform-origin:50% 50%;animation:scn-spin 60s linear infinite}
 .scn-cl{animation:scn-cl 70s ease-in-out infinite alternate}
-.c1{--dx:120px;animation-duration:80s;animation-delay:-20s}
-.c2{--dx:-90px;animation-duration:60s;animation-delay:-35s}
-.c3{--dx:70px;animation-duration:42s;animation-delay:-10s}
+.c1{--dx:70px;animation-duration:80s;animation-delay:-20s}
+.c2{--dx:-60px;animation-duration:60s;animation-delay:-35s}
 .scn-sw{transform-origin:50% 100%;animation:scn-sw 5s ease-in-out infinite alternate}
 .s1{animation-delay:-1s}.s2{animation-duration:6.4s;animation-delay:-3s}
 .s3{animation-duration:4.4s;animation-delay:-2s}.s4{animation-duration:5.8s;animation-delay:-4.5s}
@@ -56,19 +57,17 @@
 @keyframes scn-spin{to{transform:rotate(360deg)}}
 @keyframes scn-cl{to{transform:translateX(var(--dx))}}
 @keyframes scn-sw{from{transform:rotate(-4deg)}to{transform:rotate(4deg)}}
-@keyframes scn-d1{0%{transform:translate(0,0) rotate(-20deg);opacity:0}12%{opacity:.9}88%{opacity:.9}100%{transform:translate(320px,200px) rotate(110deg);opacity:0}}
-@keyframes scn-d2{0%{transform:translate(0,0) rotate(30deg);opacity:0}12%{opacity:.9}88%{opacity:.9}100%{transform:translate(-300px,190px) rotate(-100deg);opacity:0}}
+@keyframes scn-d1{0%{transform:translate(0,0) rotate(-20deg);opacity:0}12%{opacity:.9}88%{opacity:.9}100%{transform:translate(200px,110px) rotate(110deg);opacity:0}}
+@keyframes scn-d2{0%{transform:translate(0,0) rotate(30deg);opacity:0}12%{opacity:.9}88%{opacity:.9}100%{transform:translate(-190px,100px) rotate(-100deg);opacity:0}}
 @keyframes scn-tw{0%,100%{opacity:.15}50%{opacity:1}}
 
 .scene.is-paused *{animation-play-state:paused}
 body.motion-off .scene *{animation:none !important}
 @media (prefers-reduced-motion:reduce){.scene *{animation:none !important}}
 
-/* narrow screens: keep the sun/moon inside the cropped view; page strip keeps a legible scale */
+/* narrow screens: smaller sun, tucked into the corner */
 @media (max-width:700px){
-  .scn-sky{transform:translate(-430px,30px)}
-  .scene-page{height:110px}
-  .scene-page svg{position:absolute;left:50%;width:800px;max-width:none;margin-left:-400px}
+  .scene-sky{width:360px;right:-26px;top:-4px}
 }
 
 /* night meadow */

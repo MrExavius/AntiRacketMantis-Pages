@@ -22,6 +22,10 @@
   - Copy (`src/content/{ru,en,tr}.mjs`): new/removed home keys, humanized headings/leads/cards in all three languages,
     no long dashes anywhere in `dist/`; feature facts, prices, limits and "in development" wording unchanged.
     `scripts/test-check.mjs` fixture updated to the new PRO-page heading. Manifest `theme_color` = `#fffaf1`.
+  - Follow-up fix (owner: "looks crooked in Brave"): the meadow grew with viewport width and covered the hero text
+    at 1920 px; the scene is now a fixed-height ground band (wide 3200-unit viewBox) plus a separate sky layer, and the
+    hero reserves space above it. The header burger now starts below 1100 px (was 1300 px) with fluid nav tiers;
+    `src/main.js` and `src/nojs.css` follow the new breakpoint.
 - Compatibility/config: no new dependencies; CSP unchanged (`theme-init.js` is a same-origin blocking script);
   minified CSS +24.9% (scene included).
 - Validation: `node scripts/build.mjs` - PASS (52 HTML, 0 errors, 0 warnings); `node scripts/test-check.mjs` - PASS (146);
